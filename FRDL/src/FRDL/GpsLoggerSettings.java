@@ -75,6 +75,7 @@ public class GpsLoggerSettings extends javax.swing.JDialog {
                 }
             }
             loggerInfoLabel.setText("<HTML>" + App.gpsLoggersMaster.getValue(loggerType, "usernote") + "</HTML>");
+            cimaStatusLabel.setText(App.gpsLoggersMaster.getValue(loggerType, "cimaApproval"));
 
             loggerUuidLabel.setText(App.logr.loggerFileContent.readValue("logger.uuid"));
             pilotNameTextField.setText(App.logr.loggerFileContent.readValue("pilot.name"));
@@ -146,6 +147,8 @@ public class GpsLoggerSettings extends javax.swing.JDialog {
         loggerTypeComboBox = new javax.swing.JComboBox();
         loggerInfoLabel = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
+        cimaStatusTxt = new javax.swing.JLabel();
+        cimaStatusLabel = new javax.swing.JLabel();
         pilotPanel = new javax.swing.JPanel();
         nameLabel = new javax.swing.JLabel();
         nationLabel = new javax.swing.JLabel();
@@ -192,6 +195,13 @@ public class GpsLoggerSettings extends javax.swing.JDialog {
         jLabel1.setText(resourceMap.getString("jLabel1.text")); // NOI18N
         jLabel1.setName("jLabel1"); // NOI18N
 
+        cimaStatusTxt.setText(resourceMap.getString("cimaStatusTxt.text")); // NOI18N
+        cimaStatusTxt.setName("cimaStatusTxt"); // NOI18N
+
+        cimaStatusLabel.setFont(resourceMap.getFont("cimaStatusLabel.font")); // NOI18N
+        cimaStatusLabel.setText(resourceMap.getString("cimaStatusLabel.text")); // NOI18N
+        cimaStatusLabel.setName("cimaStatusLabel"); // NOI18N
+
         org.jdesktop.layout.GroupLayout loggerPanelLayout = new org.jdesktop.layout.GroupLayout(loggerPanel);
         loggerPanel.setLayout(loggerPanelLayout);
         loggerPanelLayout.setHorizontalGroup(
@@ -204,7 +214,11 @@ public class GpsLoggerSettings extends javax.swing.JDialog {
                     .add(org.jdesktop.layout.GroupLayout.LEADING, loggerPanelLayout.createSequentialGroup()
                         .add(jLabel1)
                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                        .add(loggerUuidLabel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 455, Short.MAX_VALUE)))
+                        .add(loggerUuidLabel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 455, Short.MAX_VALUE))
+                    .add(org.jdesktop.layout.GroupLayout.LEADING, loggerPanelLayout.createSequentialGroup()
+                        .add(cimaStatusTxt)
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                        .add(cimaStatusLabel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 428, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         loggerPanelLayout.setVerticalGroup(
@@ -215,8 +229,12 @@ public class GpsLoggerSettings extends javax.swing.JDialog {
                     .add(jLabel1))
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(loggerTypeComboBox, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .add(loggerPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
+                    .add(cimaStatusTxt)
+                    .add(cimaStatusLabel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 15, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(loggerInfoLabel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 36, Short.MAX_VALUE))
+                .add(loggerInfoLabel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 41, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
         );
 
         pilotPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(resourceMap.getString("pilotPanel.border.title"))); // NOI18N
@@ -308,7 +326,7 @@ public class GpsLoggerSettings extends javax.swing.JDialog {
                         .add(statusLabel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 428, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 28, Short.MAX_VALUE)
                         .add(saveButton, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 90, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                    .add(pilotPanel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .add(org.jdesktop.layout.GroupLayout.TRAILING, pilotPanel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -318,11 +336,11 @@ public class GpsLoggerSettings extends javax.swing.JDialog {
                 .add(loggerPanel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(pilotPanel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .add(47, 47, 47)
+                .add(18, 18, 18)
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                     .add(saveButton, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 26, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                     .add(statusLabel))
-                .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(18, Short.MAX_VALUE))
         );
 
         pack();
@@ -332,12 +350,17 @@ public class GpsLoggerSettings extends javax.swing.JDialog {
         JComboBox cb = (JComboBox)evt.getSource();
         String newSelection = (String)cb.getSelectedItem();
         //makeBaseKey(CimaLoggersMaster.readKey(newSelection));
+        try {
         loggerInfoLabel.setText("<HTML>" + App.gpsLoggersMaster.getValue(newSelection, "usernote") + "</HTML>");
-
-        
+        cimaStatusLabel.setText(App.gpsLoggersMaster.getValue(newSelection, "cimaApproval"));
+        } catch (Exception e) {
+            //probably selected "please select a logger"
+        }
     }//GEN-LAST:event_loggerTypeComboBoxActionPerformed
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel cimaStatusLabel;
+    private javax.swing.JLabel cimaStatusTxt;
     private javax.swing.JLabel compNoLabel;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel loggerInfoLabel;

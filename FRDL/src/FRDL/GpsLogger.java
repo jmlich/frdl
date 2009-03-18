@@ -5,6 +5,8 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.swing.JFrame;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
@@ -299,6 +301,8 @@ public class GpsLogger {
          */
         public String prepareToBackupFiles () {
             if (loggerFile == null) return null;
+
+            DateTimeFormatter fmt = DateTimeFormat.forPattern("yyyyMMddHHmmss");
             
             //delete any AUTORUN.INF file or dir
             String autorunName = path + "AUTORUN.INF";
@@ -338,7 +342,7 @@ public class GpsLogger {
 
             //logger configuration file (optional - only needed on some types of logger
             //like the geochron)
-            //as above, could be 'after the horse has bolted' but should be OK for
+            //could be 'after the horse has bolted' but should configure it OK for
             //next time.
             String loggertype = loggerFileContent.readValue("logger.type");
 
@@ -358,11 +362,38 @@ public class GpsLogger {
                 }
             }
 
+            //for geochron and others where we may have to rename some files on the logger
+            //don't need to do anything fancy like look inside the file to find the first
+            //date - a simple now() will do.
+            String regEx = App.gpsLoggersMaster.getValue(loggertype, "logFileForcedRenameRegex");
+            System.out.println("regex: " + regEx);
+            if (regEx.trim().length() > 0) {
+                Pattern p = Pattern.compile(regEx.trim());
+                for (int i=0; i<allLogFiles.size(); i++) {
+                    File f = (File) allLogFiles.get(i);
+                    Matcher m = p.matcher(f.getName().toLowerCase());
+                    if (m.find()) {
+                        //need to rename the file
+                        String newFileName = f.getParent() +
+                                fmt.print(new DateTime()) +
+                                "_" +
+                                f.getName();
+                        File f2 = new File(newFileName);
+                        // Rename file
+                        if (f.renameTo(f2)) {
+                            MainView.addLog("Renamed " + f.getName() + " to " + f2.getName());
+                            allLogFiles.set(i, f2);
+                        } else {
+                            MainView.addLog("ERROR failed to rename " + f.getName() + " on logger.");
+                        }
+                    }
+                }
+            }
+
             makeBackupDir();
 
             //make a backup of the current logger configuration file to the backup dir
             if (loggerFile != null && Utilities.directoryExists(loggerBackupDir)) {
-                DateTimeFormatter fmt = DateTimeFormat.forPattern("yyyyMMddHHmmss");
                 String dest = Utilities.getFileNameWithoutExtension(loggerFile.getName());
                 dest = loggerBackupDir +
                         File.separatorChar +

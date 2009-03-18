@@ -35,7 +35,7 @@
                       <EmptySpace pref="28" max="32767" attributes="0"/>
                       <Component id="saveButton" min="-2" pref="90" max="-2" attributes="0"/>
                   </Group>
-                  <Component id="pilotPanel" alignment="0" max="32767" attributes="0"/>
+                  <Component id="pilotPanel" alignment="1" max="32767" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
@@ -48,12 +48,12 @@
               <Component id="loggerPanel" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="pilotPanel" min="-2" max="-2" attributes="0"/>
-              <EmptySpace min="-2" pref="47" max="-2" attributes="0"/>
+              <EmptySpace type="separate" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="saveButton" alignment="3" min="-2" pref="26" max="-2" attributes="0"/>
                   <Component id="statusLabel" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace max="32767" attributes="0"/>
+              <EmptySpace pref="18" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -94,6 +94,11 @@
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="loggerUuidLabel" pref="455" max="32767" attributes="1"/>
                       </Group>
+                      <Group type="102" alignment="0" attributes="0">
+                          <Component id="cimaStatusTxt" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="cimaStatusLabel" pref="428" max="32767" attributes="0"/>
+                      </Group>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
@@ -108,8 +113,13 @@
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="loggerTypeComboBox" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace max="32767" attributes="0"/>
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="cimaStatusTxt" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="cimaStatusLabel" alignment="3" min="-2" pref="15" max="-2" attributes="0"/>
+                  </Group>
                   <EmptySpace max="-2" attributes="0"/>
-                  <Component id="loggerInfoLabel" pref="36" max="32767" attributes="0"/>
+                  <Component id="loggerInfoLabel" min="-2" pref="41" max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -149,6 +159,19 @@
           <Properties>
             <Property name="text" type="java.lang.String" resourceKey="jLabel1.text"/>
             <Property name="name" type="java.lang.String" value="jLabel1" noResource="true"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="cimaStatusTxt">
+          <Properties>
+            <Property name="text" type="java.lang.String" resourceKey="cimaStatusTxt.text"/>
+            <Property name="name" type="java.lang.String" value="cimaStatusTxt" noResource="true"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="cimaStatusLabel">
+          <Properties>
+            <Property name="font" type="java.awt.Font" resourceKey="cimaStatusLabel.font"/>
+            <Property name="text" type="java.lang.String" resourceKey="cimaStatusLabel.text"/>
+            <Property name="name" type="java.lang.String" value="cimaStatusLabel" noResource="true"/>
           </Properties>
         </Component>
       </SubComponents>
