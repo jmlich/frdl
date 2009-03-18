@@ -1,0 +1,51 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="stdStyle.css"/>
+</head>
+<body>
+<h1>Logger settings</h1>
+
+Logger settings are only available when a logger is connected.  <B>Do 
+NOT disconnect a logger while the logger settings window is open.</B>
+<p>
+In Download-only mode all logger settings are read-only  (see <B>Modes of 
+operation</B>).
+
+<h2>Logger</h2>
+
+The FRDL Id is the unique identifier FRDL gives to a logger the first 
+time it is connected to FRDL. It is not editable.
+<p>
+The correct type of logger MUST be selected as the data retrieved from it 
+may otherwise not be processed correctly.
+
+<h2>Pilot</h2>
+
+These fields must all be filled in correctly as they are used to generate 
+the correct .igc output file according to the CIMA Specification.
+<p>
+<B>Name</B>: The usual protocol is to use the same name as used in the 
+analysis and scoring systems which should be in the format Given Name <I>(lower case)</I> 
+FAMILY NAME <I>(upper case)</I>.
+<p>
+<B>Nation</B>: The usual protocol is to use the FAI three letter code.  
+(FAI is the same as the Olympic system which is slightly different to the ISO system, eg 
+ISO - DEU = FAI - GER).
+<p>
+<B>Competition number</B>: The competition number of the pilot.  Must be less 
+than 999 to meet the CIMA Specification.
+<p>
+<B>Primary secondary Etc.</B>:  Pilots often carry more than one logger on 
+a competition flight.  This identifies which logger this one is.  The normal 
+convention is that only the data from the pilot's primary logger is used in 
+analysis unless there was some sort of technical fault in which case the 
+secondary data is used.
+there 
+
+<h2>Save</h2>
+
+Saves the information to the configuration file on the logger.
+
+</body>
+</html>
