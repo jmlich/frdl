@@ -4,8 +4,59 @@
 <link rel="stylesheet" type="text/css" href="stdStyle.css"/>
 </head>
 <body>
-<h1>Geochron</h1>
+<h1>GeoChron</h1>
 
-Further information will be provided once it is closer to CIMA FRAC Approval.
+<img src="geochron_overview2.jpg" width="295" height="543" align="right">
+
+<p>
+The geoChron will accept SD cards of up to 2Gb capacity.  A 2Gb card
+will easily contain over 1000 hours of logging at 1 second intervals!
+
+<h2>Battery</h2>
+
+The geoCron has a 1000 mAh liPo battery which gives an advertised
+continuous run time of 7.4 hours.
+<p>
+When plugged into a voltage source (6v to 14v), the unit will
+operate normally and the battery will charge at a maximum of 280
+ma. While the unit is charging the red charge indicator LED will
+be on, and will go off when charge is completed.
+<p>
+The charging characteristic curve of a liPo battery is such that it
+slowly tapers off over time, and so the charge time can be longer
+than one might expect as the battery slowly tops-up. but for the
+most part, the battery is essentially charged after about 4 hours,
+whether the indicator LED goes off or not.
+
+<h2>Setup</h2>
+
+With a fully charged battery, insert a blank SD card
+(formatted in FAT 16) into the SD slot and turn the unit
+on. Make sure that the Stop/Standby switch is in the off
+position - opposite to that of the power switch.
+<p>
+The LED's will blink red-blue-green very quickly 5 times, and then
+will periodically blink blue or green indicating that it is
+logging to the card.
+<p>
+If it blinks red repeatedly, shut the unit off and reformat the SD card on
+a computer (FAT 16).
+
+<h2>Operation</h2>
+
+FRDL will write the configuration file GLOGCON.TXT to the SD card
+with the correct settings for recording flights in Microlight and
+Paramotor competitions; notably that it is recording the NMEA RMC, GGA
+and GSA lines at 1 second fix intervals in mode 0.
+
+<h2>Removing the SD card</h2>
+
+Flip the stop/standby switch to stop.  The geoChron will close
+the log file and flash the red LED indicating that it is stopped.
+You can now remove the SD card to retrieve the log files.
+
+<h2>Do NOT remove the SD card while the geoChron is still logging; this
+will result in a corrupted log file which will be useless!</h2>
+
 </body>
 </html>
