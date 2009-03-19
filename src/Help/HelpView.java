@@ -110,13 +110,16 @@ public class HelpView extends JPanel implements TreeSelectionListener {
         book = new DefaultMutableTreeNode(new BookInfo("Modes of operation","2_11_modes_of_operation.html"));
         category.add(book);
 
-        book = new DefaultMutableTreeNode(new BookInfo("Language","2_12_language.html"));
+        book = new DefaultMutableTreeNode(new BookInfo("Disconnecting a logger","2_12_Disconnecting_a_logger.html"));
         category.add(book);
 
-        book = new DefaultMutableTreeNode(new BookInfo("Errors","2_13_errors.html"));
+        book = new DefaultMutableTreeNode(new BookInfo("Language","2_13_Language.html"));
         category.add(book);
 
-        book = new DefaultMutableTreeNode(new BookInfo("Release notes","2_14_release_notes.html"));
+        book = new DefaultMutableTreeNode(new BookInfo("Errors","2_14_Errors.html"));
+        category.add(book);
+
+        book = new DefaultMutableTreeNode(new BookInfo("Release notes","2_15_Release_notes.html"));
         category.add(book);
 
         book = new DefaultMutableTreeNode(new BookInfo("History","2_98_history.html"));
