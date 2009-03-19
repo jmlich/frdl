@@ -41,6 +41,7 @@ removing a SD card from a logger; the logger MUST be switched off first.
 
     <li><b>If FRDL recognizes it as a 'known' logger:</b>
         <ul>
+        <li>FRDL will perform some management exercises on files on the logger (see below).
         <li>FRDL will back up the entire contents of the logger.</li>
         <li>FRDL will create a .igc file according to the CIMA specification
         and save it to the location defined in <b>Settings - Championship</b></li>
@@ -61,5 +62,42 @@ removing a SD card from a logger; the logger MUST be switched off first.
         </ul>
     </ul>
 </p>
+
+
+<h2>Logger file management</h2>
+
+Every time a logger is connected, FRDL deletes any AUTORUN.INF files or folders
+it finds and creates an AUTORUN.INF folder containing a README.TXT file which briefly
+describes why it does this and when it did it.  See <b>Protecting against malware</b>
+for more info on this. Do not place any files inside this AUTORUN.INF folder
+as FRDL will delete them all without warning!
+<p>
+Some types of logger, for example the Geochron, require a settings file to be on
+the logger which tells the logger things like what it should log and the
+frequency it should log fixes at.  FRDL always re-writes this file to the
+logger so it is properly configured for CIMA competitions the next time it is used.
+<p>
+Some types of logger, for example the Geochron, do not create unique log file names
+but a simple series such as Log0.txt, Log1.txt Log2.txt Etc.  To avert the
+possibility of duplicate log file names getting into the FRDL backup system, FRDL
+renames these files <b>on the logger</b> with a unique file name based
+on current date-time <b>before</b> it backs up the files.  Say there is a Log0.txt and
+a Log1.txt on the logger when you return from a flight.  FRDL will rename
+these to something like 20090319072133_Log0.txt and 20090319072133_Log1.txt before it
+backs them up and processes them.  The next time the logger is started, it will totally
+ignore these files, see there is no Log0.txt and create one with the new log data
+inside it.  The data inside the 20090319072133_Log0.txt and 20090319072133_Log1.txt
+is not affected at all.
+<p>
+Because all the loggers FRDL is compatible with behave exactly like ordinary memory
+sticks it is prefectly possible for you to put other files like photos or documents
+on it.  This is not advisable because it will reduce the memory available for your
+log files, but otherwise FRDL will completely ignore them and it will NOT back them
+up.  FRDL knows that an AMOD writes its log files with .log in the name or a Geochron
+writes them with .txt in the name and it will ignore files with any other file
+name extension on that logger.
+
+
+
 </body>
 </html>
