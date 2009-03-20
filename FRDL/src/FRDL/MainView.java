@@ -4,6 +4,7 @@
 
 package FRDL;
 
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.CancellationException;
@@ -19,7 +20,10 @@ import org.jdesktop.application.FrameView;
 import org.jdesktop.application.TaskMonitor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.InputStreamReader;
+import java.net.URL;
 import javax.swing.DefaultListModel;
 import javax.swing.Timer;
 import javax.swing.Icon;
@@ -46,6 +50,9 @@ public class MainView extends FrameView {
         super(main_app);
 
         initComponents();
+
+        CheckLatestVersionTask t = new CheckLatestVersionTask();
+        t.execute();
 
         //outerSplitPane.getRightComponent().setSize(outerSplitPane.getRightComponent().getWidth(), 0);
         //logPane.ge
@@ -580,6 +587,91 @@ public class MainView extends FrameView {
         //App.mapCaption = st;
     }
 
+
+// START check for latest version task (swingWorker)
+
+    /*
+     * this takes a look at
+     * http://www.flymicro.com/frdl/checkLatestVersion.cfm
+     * if no contact ot current version is OK, do nothing
+     * otherwise dialog with reminder
+     *
+     */
+    private class CheckLatestVersionTask extends SwingWorker<Boolean , Void> {
+        String latestVersion = null;
+        
+        //the constructor
+        public CheckLatestVersionTask() {
+            
+        }
+        /*
+         * this is happening quietly in a separate thread
+         * although this seems to work, will it on a crappy connection?
+         * seems no ability to set a timeout
+         * perhaps it doesn't matter - there's no dialog or anything
+         * if it fails.  
+         * Did I neet to go to all the trouble to put 
+         * it in a separate thread though?
+         * 
+         * */
+        @Override  protected Boolean doInBackground() {
+            try {
+
+                URL flyMicro = new URL("http://www.flymicro.com/frdl/checkLatestVersion.cfm");
+                BufferedReader in = new BufferedReader(new InputStreamReader(flyMicro.openStream()));
+                String pageContent = "";
+                String thisLine;
+                while ((thisLine = in.readLine()) != null) {
+                    pageContent = pageContent + thisLine;
+                }
+                in.close();
+                latestVersion = pageContent.trim();
+                if (App.getResourceMap().getString("Application.version").trim().equals(pageContent.trim())) {
+                    return true;
+                } else {
+                    return false;
+                }
+            } catch (IOException ex) {
+                return false;
+            }
+        }
+
+        /* Back on the EDT
+         * runs when the task ends
+         */
+        @Override public void done() {
+            try {
+                Boolean result = get();
+                if (result) {
+                    addLog("This is the latest version of FRDL (v " + latestVersion + ")");
+                } else {
+                    if (latestVersion != null) {
+                        addLog("Need to upgrade to FRDL v " + latestVersion);
+                        Dialogs d = new Dialogs();
+                        String msg = "(" + 
+                                App.getResourceMap().getString("Application.name") + " " + 
+                                App.getResourceMap().getString("version.line1") + " " +
+                                App.getResourceMap().getString("Application.version") + ")\n\n" +
+                                App.getResourceMap().getString("Application.name") + " " +
+                                App.getResourceMap().getString("version.line1") + " " +
+                                latestVersion + " " +
+                                App.getResourceMap().getString("version.line2") + "\n" +
+                                App.getResourceMap().getString("Application.homepage");
+                        d.showInfoDialog(msg);
+                    } else {
+                        addLog("Unable to check flymicro.com for latest FRDL version.");
+                    }
+                }
+                System.out.println("result: " + latestVersion);
+                
+            } catch (InterruptedException ex) {
+                //do nothing
+            } catch (ExecutionException ex) {
+                //do nothing
+            }
+        }
+    }
+// END check for latest version task (swingWorker)
 
 // START drivescan asynchronous task (swingWorker)
     
