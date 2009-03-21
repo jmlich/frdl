@@ -506,7 +506,7 @@ public class ChampionshipSettings extends javax.swing.JDialog {
             fc.setCurrentDirectory(new File(App.thisChampionship.getItemAsString("master.pathToFlightAnalysis")));
         }
 
-        int returnVal = fc.showOpenDialog(this);
+        int returnVal = fc.showSaveDialog(this);
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             String st = null; // + fc.getSelectedFile() + File.separatorChar;
             try {

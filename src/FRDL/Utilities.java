@@ -195,7 +195,7 @@ public class Utilities {
         if (directoryExists(App.pathToAllFiles)) {
             fc.setCurrentDirectory(new File(App.pathToAllFiles));
         }
-        int returnVal = fc.showOpenDialog(null);
+        int returnVal = fc.showSaveDialog(null);
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             Boolean test = true;
 
@@ -271,7 +271,7 @@ public class Utilities {
         if (directoryExists(App.pathToAllFiles)) {
             fc.setCurrentDirectory(new File(App.pathToAllFiles));
         }
-        int returnVal = fc.showOpenDialog(null);
+        int returnVal = fc.showSaveDialog(null);
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             Boolean test = true;
 
