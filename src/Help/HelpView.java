@@ -77,37 +77,37 @@ public class HelpView extends JPanel implements TreeSelectionListener {
         top.add(category);
 
         //folder items
-        book = new DefaultMutableTreeNode(new BookInfo("FRDL overview","2_01_overview.html"));
+        book = new DefaultMutableTreeNode(new BookInfo("FRDL overview","2_01_Overview.html"));
         category.add(book);
 
-        book = new DefaultMutableTreeNode(new BookInfo("Installation","2_02_installation.html"));
+        book = new DefaultMutableTreeNode(new BookInfo("Installation","2_02_Installation.html"));
         category.add(book);
 
-        book = new DefaultMutableTreeNode(new BookInfo("Starting FRDL","2_03_startup.html"));
+        book = new DefaultMutableTreeNode(new BookInfo("Starting FRDL","2_03_Startup.html"));
         category.add(book);
 
-        book = new DefaultMutableTreeNode(new BookInfo("New Championship","2_04_new_championship.html"));
+        book = new DefaultMutableTreeNode(new BookInfo("New Championship","2_04_New_championship.html"));
         category.add(book);
 
-        book = new DefaultMutableTreeNode(new BookInfo("Open Championship","2_05_open_championship.html"));
+        book = new DefaultMutableTreeNode(new BookInfo("Open Championship","2_05_Open_championship.html"));
         category.add(book);
 
-        book = new DefaultMutableTreeNode(new BookInfo("Championship settings","2_06_championship_settings.html"));
+        book = new DefaultMutableTreeNode(new BookInfo("Championship settings","2_06_Championship_settings.html"));
         category.add(book);
 
-        book = new DefaultMutableTreeNode(new BookInfo("Task settings","2_07_task_settings.html"));
+        book = new DefaultMutableTreeNode(new BookInfo("Task settings","2_07_Task_settings.html"));
         category.add(book);
 
-        book = new DefaultMutableTreeNode(new BookInfo("Connecting a Logger","2_08_connecting_a_logger.html"));
+        book = new DefaultMutableTreeNode(new BookInfo("Connecting a Logger","2_08_Connecting_a_logger.html"));
         category.add(book);
 
-        book = new DefaultMutableTreeNode(new BookInfo("Logger settings","2_09_logger_settings.html"));
+        book = new DefaultMutableTreeNode(new BookInfo("Logger settings","2_09_Logger_settings.html"));
         category.add(book);
 
-        book = new DefaultMutableTreeNode(new BookInfo("Protecting against malware","2_10_protecting_against_malware.html"));
+        book = new DefaultMutableTreeNode(new BookInfo("Protecting against malware","2_10_Protecting_against_malware.html"));
         category.add(book);
 
-        book = new DefaultMutableTreeNode(new BookInfo("Modes of operation","2_11_modes_of_operation.html"));
+        book = new DefaultMutableTreeNode(new BookInfo("Modes of operation","2_11_Modes_of_operation.html"));
         category.add(book);
 
         book = new DefaultMutableTreeNode(new BookInfo("Disconnecting a logger","2_12_Disconnecting_a_logger.html"));
@@ -122,7 +122,7 @@ public class HelpView extends JPanel implements TreeSelectionListener {
         book = new DefaultMutableTreeNode(new BookInfo("Release notes","2_15_Release_notes.html"));
         category.add(book);
 
-        book = new DefaultMutableTreeNode(new BookInfo("History","2_98_history.html"));
+        book = new DefaultMutableTreeNode(new BookInfo("History","2_98_History.html"));
         category.add(book);
 
         book = new DefaultMutableTreeNode(new BookInfo("Licence","2_99_licence.html"));
@@ -134,13 +134,13 @@ public class HelpView extends JPanel implements TreeSelectionListener {
         top.add(category);
 
         //folder items
-        book = new DefaultMutableTreeNode(new BookInfo("AMOD 3080","3_02_amod_3080.html"));
+        book = new DefaultMutableTreeNode(new BookInfo("AMOD 3080","3_02_AMOD_3080.html"));
         category.add(book);
 
-        book = new DefaultMutableTreeNode(new BookInfo("Geochron","3_03_geochron.html"));
+        book = new DefaultMutableTreeNode(new BookInfo("Geochron","3_03_GeoChron.html"));
         category.add(book);
 
-        book = new DefaultMutableTreeNode(new BookInfo("The CIMA Specification","3_99_cima_spec.html"));
+        book = new DefaultMutableTreeNode(new BookInfo("The CIMA Specification","3_99_CIMA_spec.html"));
         category.add(book);
 
     }
