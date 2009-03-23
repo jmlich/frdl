@@ -223,12 +223,14 @@
     </Container>
     <Component class="javax.swing.JLabel" name="supportedLoggersLabel">
       <Properties>
+        <Property name="font" type="java.awt.Font" resourceKey="supportedLoggersLabel.font"/>
         <Property name="text" type="java.lang.String" resourceKey="supportedLoggersLabel.text"/>
         <Property name="name" type="java.lang.String" value="supportedLoggersLabel" noResource="true"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="faiApprovalsURLLabel">
       <Properties>
+        <Property name="font" type="java.awt.Font" resourceKey="faiApprovalsURLLabel.font"/>
         <Property name="horizontalAlignment" type="int" value="4"/>
         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
           <Connection code="resourceMap.getString(&quot;faiApprovalsMsg&quot;)" type="code"/>
