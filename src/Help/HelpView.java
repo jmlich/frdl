@@ -150,7 +150,7 @@ public class HelpView extends JPanel implements TreeSelectionListener {
      *
     */
     private void showFirstPage() {
-        String s = "2_01_overview.html";
+        String s = "2_01_Overview.html";
         helpURL = getClass().getResource(s);
         if (helpURL == null) {
             System.err.println("Couldn't open help file: " + s);
