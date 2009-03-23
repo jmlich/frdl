@@ -116,7 +116,9 @@ public class App extends SingleFrameApplication {
         // The default shutdown saves session window state.
         super.shutdown();  //remove this to not preserve session state
         // Now perform any other shutdown tasks you need.
-        sessionProperties.setProperty("lastPathToAllFiles", pathToAllFiles) ;
+        if (pathToAllFiles != null) {
+            sessionProperties.setProperty("lastPathToAllFiles", pathToAllFiles) ;
+        }
         writeSessionProperties();
         System.out.println("about to shut down");
     }
