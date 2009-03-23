@@ -15,7 +15,7 @@ root {
     display: block;
 }
 
-BODY  {
+.body  {
 	background : white;
 	font-family : Verdana, Arial, Helvetica, sans-serif;
 	color : Black;
