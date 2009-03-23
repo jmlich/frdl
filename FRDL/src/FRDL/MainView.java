@@ -42,6 +42,7 @@ public class MainView extends FrameView {
     private JDialog championshipSettings;
     private JDialog taskSettings;
     private JDialog loggerSettings;
+    private JDialog loggersInfo;
     private boolean loggerIsConnected = false;
     //private boolean champFileIsOpen = false;
     private boolean stopRepaint = false;
@@ -155,6 +156,14 @@ public class MainView extends FrameView {
         System.out.println("is this after the dialog has closed?");
     }
 
+        @Action(enabledProperty = "champFileIsOpen")
+    public void showLoggersInfo() {
+        JFrame mainFrame = App.getApplication().getMainFrame();
+        loggersInfo = new GpsLoggersInfo(mainFrame);
+        loggersInfo.setLocationRelativeTo(mainFrame);
+        App.getApplication().show(loggersInfo);
+    }
+
 
     /* Utility which writes to the log pane
      * only allows 100 lines
@@ -216,6 +225,8 @@ public class MainView extends FrameView {
         languageMenuItem_CZ = new javax.swing.JMenuItem();
         languageMenuItem_FR = new javax.swing.JMenuItem();
         languageMenuItem_ES = new javax.swing.JMenuItem();
+        infoMenu = new javax.swing.JMenu();
+        loggerInfoMenuItem = new javax.swing.JMenuItem();
         javax.swing.JMenu helpMenu = new javax.swing.JMenu();
         helpMenuItem = new javax.swing.JMenuItem();
         jSeparator4 = new javax.swing.JSeparator();
@@ -290,7 +301,7 @@ public class MainView extends FrameView {
 
         topPanel.setName("topPanel"); // NOI18N
 
-        mainStatusLabel.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        mainStatusLabel.setFont(new java.awt.Font("Tahoma", 0, 18));
         mainStatusLabel.setForeground(resourceMap.getColor("mainStatusLabel.foreground")); // NOI18N
         mainStatusLabel.setName("mainStatusLabel"); // NOI18N
 
@@ -410,6 +421,16 @@ public class MainView extends FrameView {
         settingsMenu.add(LanguageMenu);
 
         menuBar.add(settingsMenu);
+
+        infoMenu.setText(resourceMap.getString("infoMenu.text")); // NOI18N
+        infoMenu.setName("infoMenu"); // NOI18N
+
+        loggerInfoMenuItem.setAction(actionMap.get("showLoggersInfo")); // NOI18N
+        loggerInfoMenuItem.setText(resourceMap.getString("loggerInfoMenuItem.text")); // NOI18N
+        loggerInfoMenuItem.setName("loggerInfoMenuItem"); // NOI18N
+        infoMenu.add(loggerInfoMenuItem);
+
+        menuBar.add(infoMenu);
 
         helpMenu.setText(resourceMap.getString("helpMenu.text")); // NOI18N
         helpMenu.setName("helpMenu"); // NOI18N
@@ -1002,6 +1023,7 @@ public class MainView extends FrameView {
     private javax.swing.JMenuItem championshipSettingsMenuItem;
     private javax.swing.JMenuItem forceDownloadMenuItem;
     private javax.swing.JMenuItem helpMenuItem;
+    private javax.swing.JMenu infoMenu;
     private javax.swing.JSplitPane innerSplitPane;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
@@ -1013,6 +1035,7 @@ public class MainView extends FrameView {
     private javax.swing.JMenuItem languageMenuItem_FR;
     private static javax.swing.JList logList;
     private javax.swing.JScrollPane logPane;
+    private javax.swing.JMenuItem loggerInfoMenuItem;
     private javax.swing.JMenuItem loggerMenuItem;
     private javax.swing.JPanel mainPanel;
     private static javax.swing.JLabel mainStatusLabel;

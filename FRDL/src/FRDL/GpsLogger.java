@@ -115,7 +115,7 @@ public class GpsLogger {
                 } else {
                     //add the logger to the championship file
                     MainView.addLog("Added logger in full mode");
-                    App.thisChampionship.champData.writeProperty("logger." + App.logr.loggerFileContent.readValue("logger.uuid"),(new DateTime().withZone(DateTimeZone.UTC)).toString());
+                    App.thisChampionship.champData.writeProperty("logger." + App.logr.loggerFileContent.readValue("logger.uuid"),writeLoggerInfoForChampionship());
                     App.clientFullMode = true;
                     openLoggerSettings(false); //ie is NOT a new logger
                     return true;
@@ -158,7 +158,7 @@ public class GpsLogger {
                     MainView.addLog("Added logger connected in download mode");
                     App.clientFullMode = false;
                     App.thisChampionship.champData.writeProperty("logger.downloadmode." + App.logr.loggerFileContent.readValue("logger.uuid"),
-                            (new DateTime().withZone(DateTimeZone.UTC)).toString());
+                            writeLoggerInfoForChampionship());
                     writeLatestLoggerSettingsToChampionship();
                     MainView.setMainStatus("");  //this will reset the active task on screen, if necessary
                     return true;
@@ -261,6 +261,9 @@ public class GpsLogger {
             App.logr.loggerFileContent.writeProperty("championship.utcOffsetH",App.thisChampionship.getItemAsString("championship.utcOffsetH"));
             App.logr.loggerFileContent.writeProperty("championship.utcOffsetM",App.thisChampionship.getItemAsString("championship.utcOffsetM"));
             App.logr.loggerFileContent.writeProperty("championship.adjustIgcFileTimes",App.thisChampionship.getItemAsString("championship.adjustIgcFileTimes"));
+
+            // this writes the latest logger info about the logger to the championship
+            App.thisChampionship.champData.writeProperty("logger." + App.logr.loggerFileContent.readValue("logger.uuid"),writeLoggerInfoForChampionship());
         }
         
         
@@ -287,6 +290,10 @@ public class GpsLogger {
             App.thisChampionship.champData.writeProperty("championship.utcOffsetH", App.logr.loggerFileContent.readValue("championship.utcOffsetH"));
             App.thisChampionship.champData.writeProperty("championship.utcOffsetM", App.logr.loggerFileContent.readValue("championship.utcOffsetM"));
             App.thisChampionship.champData.writeProperty("championship.adjustIgcFileTimes", App.logr.loggerFileContent.readValue("championship.adjustIgcFileTimes"));
+
+            //the latest logger info to championship
+            App.thisChampionship.champData.writeProperty("logger.downloadmode." + App.logr.loggerFileContent.readValue("logger.uuid"),
+                            writeLoggerInfoForChampionship());
         }
         /*
          * this sets things up for the asynchronous task to 
@@ -490,5 +497,24 @@ public class GpsLogger {
             }   while (Utilities.fileExists(igcFileName));
 
             return igcFileName;
+        }
+
+        /*
+         * this extracts info from loggerFileContent and puts it into a \n delimited
+         * string to save to the logger.[uuid] property value in the championship file
+         * which effectively acts as a history of the loggers seen by this instance of FRDL
+         *
+         * logger.[uuid]=pilot.compNo|pilot.loggerPriority|pilot.name|pilot.nation|logger.type|lastSeen
+         *
+         * see also readLoggerInfoFromChampionship{} in GpsLoggerInfo class
+         */
+        private String writeLoggerInfoForChampionship() {
+            String st = loggerFileContent.readValue("pilot.compNo") + "\n" +
+                    loggerFileContent.readValue("pilot.loggerPriority") + "\n" +
+                    loggerFileContent.readValue("pilot.name") + "\n" +
+                    loggerFileContent.readValue("pilot.nation") + "\n" +
+                    loggerFileContent.readValue("logger.type") + "\n" +
+                    new DateTime().withZone(DateTimeZone.UTC).toString();
+            return st;
         }
 }
