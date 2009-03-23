@@ -112,9 +112,11 @@ public class AboutBox extends javax.swing.JDialog {
         supportedLoggersList.setName("supportedLoggersList"); // NOI18N
         jScrollPane1.setViewportView(supportedLoggersList);
 
+        supportedLoggersLabel.setFont(resourceMap.getFont("supportedLoggersLabel.font")); // NOI18N
         supportedLoggersLabel.setText(resourceMap.getString("supportedLoggersLabel.text")); // NOI18N
         supportedLoggersLabel.setName("supportedLoggersLabel"); // NOI18N
 
+        faiApprovalsURLLabel.setFont(resourceMap.getFont("faiApprovalsURLLabel.font")); // NOI18N
         faiApprovalsURLLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         faiApprovalsURLLabel.setText(resourceMap.getString("faiApprovalsMsg"));
         faiApprovalsURLLabel.setName("faiApprovalsURLLabel"); // NOI18N
