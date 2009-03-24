@@ -24,7 +24,7 @@ public class ChampionshipSettings extends javax.swing.JDialog {
         initComponents();
         getRootPane().setDefaultButton(saveButton);
         loadChampionshipSettings();
-        System.out.println("championship settings loaded");
+        //System.out.println("championship settings loaded");
         //MainView.addLog("Championship settings dialog loaded");
 
         setTzOffsetDisplay(Integer.parseInt(App.thisChampionship.champData.readValue("championship.utcOffsetH")),
