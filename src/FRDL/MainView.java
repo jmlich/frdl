@@ -683,7 +683,7 @@ public class MainView extends FrameView {
                         addLog("Unable to check flymicro.com for latest FRDL version.");
                     }
                 }
-                System.out.println("result: " + latestVersion);
+                //System.out.println("result: " + latestVersion);
                 
             } catch (InterruptedException ex) {
                 //do nothing

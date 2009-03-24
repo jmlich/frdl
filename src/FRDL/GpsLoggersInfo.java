@@ -1,6 +1,9 @@
 package FRDL;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Vector;
 import javax.swing.table.DefaultTableModel;
 import org.jdesktop.application.Action;
 import org.joda.time.DateTime;
@@ -11,9 +14,6 @@ import org.joda.time.format.DateTimeFormatter;
  * The settings-devices popup dialog box.
  */
 public class GpsLoggersInfo extends javax.swing.JDialog {
-    String[] tableColumnNames = null;
-    String[][] tableData = null;
-    
 
     public GpsLoggersInfo(java.awt.Frame parent) {
         super(parent);
@@ -41,34 +41,50 @@ public class GpsLoggersInfo extends javax.swing.JDialog {
      */
      private void readLoggerInfoFromChampionship() {
          DateTimeFormatter fmt = DateTimeFormat.forPattern("d MM yyyy HH:mm");
-         ArrayList <String> ar = App.thisChampionship.champData.readAllValues("logger.");
+         ArrayList <String> ar = null;
+         ar = App.thisChampionship.champData.readAllValues("logger.");
 
          DefaultTableModel model = new DefaultTableModel();
-         model.addColumn("Comp No");
-         model.addColumn("Logger");
-         model.addColumn("Pilot");
-         model.addColumn("Nation");
-         model.addColumn("Type");
-         model.addColumn("Last seen");
-        
-         for (int i = 0;i < ar.size();i++) {
-             String[] st = ar.get(i).split("\n");
-             if (st.length == 6) {
-                 st[5] = fmt.print(new DateTime(st[5]).withZone(DateTimeZone.UTC));
-                 model.insertRow(i, st);
-             } else {
-                String[] stx = {"0","0","n/a","n/a","n/a","Unknown"};
-                model.insertRow(i, stx);
+         //add columns
+         model.addColumn(App.getResourceMap().getString("loggersInfoColTitle.1"));
+         model.addColumn(App.getResourceMap().getString("loggersInfoColTitle.2"));
+         model.addColumn(App.getResourceMap().getString("loggersInfoColTitle.3"));
+         model.addColumn(App.getResourceMap().getString("loggersInfoColTitle.4"));
+         model.addColumn(App.getResourceMap().getString("loggersInfoColTitle.5"));
+         model.addColumn(App.getResourceMap().getString("loggersInfoColTitle.6"));
+
+         //add data
+         if (ar != null) {
+             for (int i = 0;i < ar.size();i++) {
+                 String[] st = ar.get(i).split("\n");
+                 if (st.length == 6) {
+                     //leading zeros for compNo
+                     st[0] = Utilities.repeatString("0", 3 - st[0].length()) + st[0];
+                     //decent date format for last seen - won't sort correctly of course.
+                     st[5] = fmt.print(new DateTime(st[5]).withZone(DateTimeZone.UTC));
+                     model.insertRow(i, st);
+                 } else {
+                    String na = App.getResourceMap().getString("notFoundValue");
+                    String[] stx = {"000","0",na,na,na,na};
+                    model.insertRow(i, stx);
+                 }
              }
-             
-
          }
-        
+         // setAutoCreateRowSorter is Java 1.6 specific...
+         //loggerInfoTable.setAutoCreateRowSorter(true);
+         //so won't work on mac...
+
          loggerInfoTable.setModel(model);
-         loggerInfoTable.setAutoCreateRowSorter(true);
+         //bit of as fudge this... set the model as above so we can get the
+         //table header from it and apply it to sorter...
+         TableSorter sorter = new TableSorter(loggerInfoTable.getModel(),loggerInfoTable.getTableHeader());
+         loggerInfoTable.setModel(sorter);
+         //set an initial default sort on CompNo & Logger
+         sorter.setSortingStatus(0, 1);
+         sorter.setSortingStatus(1, 1);
      }
-
-
+     
+    
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -80,6 +96,7 @@ public class GpsLoggersInfo extends javax.swing.JDialog {
         closeButton = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         loggerInfoTable = new javax.swing.JTable();
+        helpButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(FRDL.App.class).getContext().getResourceMap(GpsLoggersInfo.class);
@@ -109,12 +126,22 @@ public class GpsLoggersInfo extends javax.swing.JDialog {
         loggerInfoTable.setName("loggerInfoTable"); // NOI18N
         jScrollPane1.setViewportView(loggerInfoTable);
 
+        helpButton.setText(resourceMap.getString("helpButton.text")); // NOI18N
+        helpButton.setName("helpButton"); // NOI18N
+        helpButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                helpButtonActionPerformed(evt);
+            }
+        });
+
         org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(layout.createSequentialGroup()
-                .addContainerGap(478, Short.MAX_VALUE)
+                .addContainerGap()
+                .add(helpButton)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 425, Short.MAX_VALUE)
                 .add(closeButton, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 90, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
             .add(org.jdesktop.layout.GroupLayout.TRAILING, jScrollPane1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 580, Short.MAX_VALUE)
@@ -124,15 +151,30 @@ public class GpsLoggersInfo extends javax.swing.JDialog {
             .add(org.jdesktop.layout.GroupLayout.TRAILING, layout.createSequentialGroup()
                 .add(jScrollPane1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 438, Short.MAX_VALUE)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(closeButton, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 26, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
+                    .add(closeButton, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 26, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(helpButton))
                 .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void helpButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_helpButtonActionPerformed
+        Dialogs d = new Dialogs();
+        String msg = App.getResourceMap().getString("loggersInfoHelp.line1") + "\n\n" +
+                App.getResourceMap().getString("loggersInfoHelp.line2") +  "\n\n" +
+                App.getResourceMap().getString("loggersInfoHelp.line3") + "\n\n" +
+                App.getResourceMap().getString("loggersInfoHelp.line4") + "\n" +
+                App.getResourceMap().getString("loggersInfoHelp.line5") + "\n" +
+                App.getResourceMap().getString("loggersInfoHelp.line6") ;
+
+        d.showInfoDialog(msg);
+    }//GEN-LAST:event_helpButtonActionPerformed
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton closeButton;
+    private javax.swing.JButton helpButton;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable loggerInfoTable;
     // End of variables declaration//GEN-END:variables
