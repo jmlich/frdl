@@ -38,7 +38,7 @@ public class GpsLoggerSettings extends javax.swing.JDialog {
     }
 
 
-    @Action public void closeDeviceSettings() {
+    @Action public void closeLoggerSettings() {
         //only close if all fields are filled
         if (loggerTypeComboBox.getSelectedIndex() > 0 &&
                 pilotNameTextField.getText().trim().length() > 0 &&
@@ -162,13 +162,13 @@ public class GpsLoggerSettings extends javax.swing.JDialog {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(FRDL.App.class).getContext().getResourceMap(GpsLoggerSettings.class);
-        setTitle(resourceMap.getString("title")); // NOI18N
+        setTitle(resourceMap.getString("LoggerSettings.title")); // NOI18N
         setModal(true);
         setName("deviceSettings"); // NOI18N
         setResizable(false);
 
         javax.swing.ActionMap actionMap = org.jdesktop.application.Application.getInstance(FRDL.App.class).getContext().getActionMap(GpsLoggerSettings.class, this);
-        saveButton.setAction(actionMap.get("closeDeviceSettings")); // NOI18N
+        saveButton.setAction(actionMap.get("closeLoggerSettings")); // NOI18N
         saveButton.setFont(resourceMap.getFont("saveButton.font")); // NOI18N
         saveButton.setText(resourceMap.getString("saveButton.text")); // NOI18N
         saveButton.setName("saveButton"); // NOI18N
