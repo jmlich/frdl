@@ -11,6 +11,7 @@ import java.awt.Stroke;
 import java.awt.geom.GeneralPath;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Map;
 import javax.swing.JPanel;
@@ -42,6 +43,9 @@ public class AltitudeView extends JPanel {
     private double vScale;
     private double hScale;
 
+    private static final long GAP_BETWEEN_TRACKS = 30; //threshold in sec before a new line is generated
+    private ArrayList <GeneralPath> gPaths = null;
+
     /* this is the inherited method to actually draw in the component
      *
     */
@@ -60,7 +64,12 @@ public class AltitudeView extends JPanel {
             if (getHeight() > PADDING * 3) {
                 // only draw if there's some space to draw in
                 setScale();
-                g2d.draw(drawTrack());
+                //g2d.draw(drawTrack());  //one single track; not used
+                if (drawTracks()) {
+                    for (GeneralPath gp : gPaths) {
+                        g2d.draw(gp);
+                    }
+                }
                 drawStats();
             } 
 
@@ -79,7 +88,8 @@ public class AltitudeView extends JPanel {
     }
 
     /*
-     * creates the line to draw on the screen
+     * creates a single line to draw on the screen
+     * NOT USED see drawTracks()
      */
     private GeneralPath drawTrack () {
         GeneralPath gp = new GeneralPath(GeneralPath.WIND_EVEN_ODD);
@@ -99,6 +109,50 @@ public class AltitudeView extends JPanel {
             gp.lineTo(p2.getX(),p2.getY()); //all further points
         }
         return gp;
+    }
+
+    /*
+     * creates possibly multiple lines to draw on the screen
+     */
+    private Boolean drawTracks () {
+        gPaths = new ArrayList <GeneralPath> ();
+        GeneralPath gp = null;
+        Double alt = null;
+        Point2D p2 = null;
+        
+        DateTime t = ((LocalDateTime) App.track.firstEntry().getKey()).toDateTime(DateTimeZone.UTC);
+        long elapsed = new Duration(start_time,t).getStandardSeconds();
+        long lastElapsed = elapsed;
+
+        for (Iterator it=App.track.entrySet().iterator(); it.hasNext(); ) {
+            Map.Entry entry = (Map.Entry)it.next();
+            alt = ((GpsPoint) entry.getValue()).getAlt();
+            t = ((LocalDateTime) entry.getKey()).toDateTime(DateTimeZone.UTC);
+            elapsed = new Duration(start_time,t).getStandardSeconds();
+            p2 = projectMapToScreen(elapsed,alt);
+            if (gp == null) {
+                //new generalpath
+                gp = new GeneralPath(GeneralPath.WIND_EVEN_ODD);
+                gp.moveTo(p2.getX(),p2.getY()); //track start point
+            }
+            if (elapsed - lastElapsed < GAP_BETWEEN_TRACKS) {
+                //continue this generalpath
+                gp.lineTo(p2.getX(),p2.getY()); 
+            } else {
+                //end this generalpath
+                gPaths.add(gp);
+                //and start a new one
+                gp = new GeneralPath(GeneralPath.WIND_EVEN_ODD);
+                gp.moveTo(p2.getX(),p2.getY()); //track start point
+            }
+            lastElapsed = elapsed;
+        }
+        //add the last one
+        if (gp != null) gPaths.add(gp);
+
+        if (gPaths == null) return false;
+
+        return true;
     }
 
     /*
