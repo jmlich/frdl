@@ -12,12 +12,15 @@ import java.awt.geom.Ellipse2D;
 import java.awt.geom.GeneralPath;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Random;
 import javax.swing.JPanel;
+
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
+import org.joda.time.Duration;
 import org.joda.time.LocalDateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
@@ -56,6 +59,9 @@ public class MapView extends JPanel {
 
     public static final double     MAX_SCALE       = 500000.0;
     public static final double     MIN_SCALE       = 20.0;
+    
+    private static final long GAP_BETWEEN_TRACKS = 30; //threshold in sec before a new line is generated
+    private ArrayList <GeneralPath> gPaths = null;
 
       /*
        * test: this just draws random lines on the map panel
@@ -93,7 +99,12 @@ public class MapView extends JPanel {
             if (getHeight() > PADDING * 3) {
                 // only draw if there's some space to draw in
                 setScale();
-                g2d.draw(drawTrack());
+                //g2d.draw(drawTrack());  //not used, see drawTracks()
+                if (drawTracks()) {
+                    for (GeneralPath gp : gPaths) {
+                        g2d.draw(gp);
+                    }
+                }
                 drawStartAndFinish();
                 drawScale();
                 drawStats();
@@ -113,7 +124,7 @@ public class MapView extends JPanel {
 
     /*
      * this draws the track
-     *
+     * NOT USED see drawTracks()
      */
     private GeneralPath drawTrack () {
         GeneralPath gp = new GeneralPath(GeneralPath.WIND_EVEN_ODD);
@@ -129,6 +140,53 @@ public class MapView extends JPanel {
             gp.lineTo(p2.getX(),p2.getY()); //all further points
         }
         return gp;
+    }
+    
+     /*
+     * creates possibly multiple lines to draw on the screen
+     */
+    private Boolean drawTracks () {
+        gPaths = new ArrayList <GeneralPath> ();
+        GeneralPath gp = null;
+        GpsPoint p = null;
+        Point2D p2 = null;
+        totalDist = 0;
+        DateTime start_time = ((LocalDateTime) App.track.firstEntry().getKey()).toDateTime(DateTimeZone.UTC);
+        DateTime t = start_time;
+        long elapsed = new Duration(start_time,t).getStandardSeconds();
+        long lastElapsed = elapsed;
+
+        for (Iterator it=App.track.entrySet().iterator(); it.hasNext(); ) {
+            Map.Entry entry = (Map.Entry)it.next();
+            t = ((LocalDateTime) entry.getKey()).toDateTime(DateTimeZone.UTC);
+            elapsed = new Duration(start_time,t).getStandardSeconds();
+            p = (GpsPoint) entry.getValue();
+            p2 = projectMapToScreen(p.getLon(),p.getLat());
+
+            if (gp == null) {
+                //new generalpath
+                gp = new GeneralPath(GeneralPath.WIND_EVEN_ODD);
+                gp.moveTo(p2.getX(),p2.getY()); //track start point
+            }
+            if (elapsed - lastElapsed < GAP_BETWEEN_TRACKS) {
+                //continue this generalpath
+                gp.lineTo(p2.getX(),p2.getY());
+                totalDist += p.getDist();
+            } else {
+                //end this generalpath
+                gPaths.add(gp);
+                //and start a new one
+                gp = new GeneralPath(GeneralPath.WIND_EVEN_ODD);
+                gp.moveTo(p2.getX(),p2.getY()); //track start point
+            }
+            lastElapsed = elapsed;
+        }
+        //add the last one
+        if (gp != null) gPaths.add(gp);
+
+        if (gPaths == null) return false;
+
+        return true;
     }
       
     /*
