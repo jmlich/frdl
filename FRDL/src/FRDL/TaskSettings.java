@@ -80,14 +80,14 @@ public class TaskSettings extends javax.swing.JDialog {
             }
             if (wo.getDayOfYear() != wc.getDayOfYear()) {
                 Dialogs d = new Dialogs();
-                DateTimeFormatter fmt = DateTimeFormat.forPattern("d MM yyyy HH:mm");
+                DateTimeFormatter fmt = DateTimeFormat.forPattern("d MMM yyyy HH:mm");
                 String st = App.getResourceMap().getString("multipleDayWarningMsg.line1") + "\n\n" +
                         App.getResourceMap().getString("taskWindowPanelText") + " " +
                         App.getResourceMap().getString("fromLabel.text").toLowerCase() + " " +
                         fmt.print(wo) + " UTC\n" +
                         App.getResourceMap().getString("taskWindowPanelText") + " " +
                         App.getResourceMap().getString("toLabel.text").toLowerCase() + " " +
-                        fmt.print(wc) + " UTC\n" +
+                        fmt.print(wc) + " UTC\n\n" +
                         App.getResourceMap().getString("multipleDayWarningMsg.line2") + "\n" +
                         App.getResourceMap().getString("multipleDayWarningMsg.line3") + "\n" +
                         App.getResourceMap().getString("multipleDayWarningMsg.line4") + "\n" +
