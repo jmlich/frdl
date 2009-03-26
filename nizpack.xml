@@ -1,12 +1,12 @@
 <installation version="1.0">
     <info>
         <appname>FRDL</appname>
-        <appversion>0.21</appversion>
+        <appversion>0.22</appversion>
         <appsubpath>$APP_NAME $APP_VER</appsubpath>
         <javaversion>1.5</javaversion>
         <url>http://www.flymicro.com/frdl</url>
         <authors>
-            <author name="Richard Meredith-Hardy" email="r.mh@flymicro.com"/>
+            <author email="r.mh@flymicro.com" name="Richard Meredith-Hardy"/>
         </authors>
     </info>
     <guiprefs height="450" resizable="yes" width="600">
@@ -22,7 +22,7 @@
     <native name="ShellLink.dll" type="izpack">
         <os family="windows"/>
     </native>
-    <native stage="both" name="COIOSHelper.dll" type="3rdparty">
+    <native name="COIOSHelper.dll" stage="both" type="3rdparty">
         <os family="windows"/>
     </native>
     <listeners>

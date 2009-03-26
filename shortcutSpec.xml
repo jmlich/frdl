@@ -1,6 +1,6 @@
 <shortcuts>
     <skipIfNotSupported/>
     <programGroup location="applications" defaultName="$APP_NAME $APP_VER"/>
-    <shortcut name="Start CIMA FRDL $APP_VER" description="Downloads loggers" encoding="UTF-8" startMenu="no" target="$INSTALL_PATH/dist/FRDL.jar" programGroup="yes" desktop="yes"/>
-    <shortcut name="Uninstall $APP_NAME $APP_VER" description="$APP_NAME Uninstaller" encoding="UTF-8" target="$INSTALL_PATH/Uninstaller/uninstaller.jar" programGroup="yes"/>
+    <shortcut name="Start CIMA FRDL $APP_VER" startMenu="no" encoding="UTF-8" description="Downloads loggers" target="$INSTALL_PATH/dist/FRDL.jar" programGroup="yes" desktop="yes"/>
+    <shortcut name="Uninstall $APP_NAME $APP_VER" encoding="UTF-8" description="$APP_NAME Uninstaller" target="$INSTALL_PATH/Uninstaller/uninstaller.jar" programGroup="yes"/>
 </shortcuts>

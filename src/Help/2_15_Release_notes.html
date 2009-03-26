@@ -6,6 +6,18 @@
 <body class="body">
 <h1>FRDL release notes</h1>
 
+<p><b>0.22</b> 26 Mar 2009:
+<br>
+Improved error trapping for unrecognized NMEA lines
+<br>
+Added warning if a task is set to extend over more than
+one UTC day.  No problem for FRDL, but can be a problem in
+the output igc file format because there is no
+properly defined way of changing day half way through
+a track, therefore some analysis programs may
+show the portion of track after midnight BEFORE the
+portion of track before midnight...
+
 <p><b>0.21</b> 25 Mar 2009:
 <br>
 Non contiguous tracks are displayed with gaps if the
