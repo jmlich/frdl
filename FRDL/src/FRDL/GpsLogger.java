@@ -357,15 +357,16 @@ public class GpsLogger {
             String configFileName = App.gpsLoggersMaster.getValue(loggertype, "configFileName");
             String configFileContent = App.gpsLoggersMaster.getValue(loggertype, "configFileContent");
 
-            System.out.println(configFileContent);
+            //System.out.println(configFileContent);
             //writes the file
             if (configFileName.trim().length() > 0) {
                 try {
                     BufferedWriter out = new BufferedWriter(new FileWriter(path + configFileName));
                     out.write(configFileContent);
                     out.close();
+                    MainView.addLog("Logger configuration file " + configFileName + " written to logger.");
                 } catch (IOException e) {
-                    MainView.addLog("ERROR: failed to write logger configuration file: " + e.getMessage());
+                    MainView.addLog("ERROR: failed to write logger configuration file: " + configFileName + " " + e.getMessage());
                 }
             }
 
@@ -373,7 +374,7 @@ public class GpsLogger {
             //don't need to do anything fancy like look inside the file to find the first
             //date - a simple now() will do.
             String regEx = App.gpsLoggersMaster.getValue(loggertype, "logFileForcedRenameRegex");
-            System.out.println("regex: " + regEx);
+            //System.out.println("regex: " + regEx);
             if (regEx.trim().length() > 0) {
                 Pattern p = Pattern.compile(regEx.trim());
                 for (int i=0; i<allLogFiles.size(); i++) {
@@ -464,7 +465,7 @@ public class GpsLogger {
             RecursiveFileListIterator it = new RecursiveFileListIterator(f);
             while (it.hasNext()) {
                 f = it.next();
-                if (Utilities.getFileExtension(f.getName()).equals(logFileExtension)) {
+                if (Utilities.getFileExtension(f.getName().trim().toLowerCase()).equals(logFileExtension.trim().toLowerCase())) {
                     allLogFiles.add(f);
                 }
             }

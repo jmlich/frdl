@@ -914,11 +914,12 @@ public class MainView extends FrameView {
             //System.out.println("total: " + totalBytes);
             for (int i = 0;i < App.logr.allLogFiles.size();i++ ) {
                 File srcFile = (File) App.logr.allLogFiles.get(i);
-                //System.out.println("file length: " + srcFile.length());
+                //System.out.println("file: " + srcFile.getAbsolutePath());
                 doneBytes = doneBytes + srcFile.length();
 
-                if (Utilities.getFileExtension(srcFile.getName()).equals(logFileExtension)) {
+                if (Utilities.getFileExtension(srcFile.getName().trim().toLowerCase()).equals(logFileExtension.trim().toLowerCase())) {
                     File destFile = new File(App.logr.loggerBackupDir + File.separatorChar + srcFile.getName());
+                    //System.out.println("backup: " + srcFile.getAbsolutePath() + " to: " + destFile.getAbsolutePath());
                     if (!Utilities.fileExists(destFile.getAbsolutePath())) {
                         Utilities.copy(srcFile, destFile);
                         ctr = ctr + 1;

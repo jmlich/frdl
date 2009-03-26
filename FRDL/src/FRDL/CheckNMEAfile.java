@@ -112,9 +112,14 @@ public class CheckNMEAfile  {
     private static LocalDateTime parseRMC (String str) {
         String sb[] = str.split(",");
         if (sb[0].compareTo("$GPRMC") == 0 && sb.length >= 9) {
-            LocalDate Ldate = new LocalDate(nmeaDateFormat.parseDateTime(sb[9]));
-            LocalTime Ltime = new LocalTime(nmeaTimeFormat.parseDateTime(sb[1].substring(0,6)));
-            return new LocalDateTime(Ldate.toDateTime(Ltime));
+            try {
+                LocalDate Ldate = new LocalDate(nmeaDateFormat.parseDateTime(sb[9]));
+                LocalTime Ltime = new LocalTime(nmeaTimeFormat.parseDateTime(sb[1].substring(0,6)));
+                return new LocalDateTime(Ldate.toDateTime(Ltime));
+            } catch (Exception e) {
+                //in case of parsing error.
+                return null;
+            }
         } else return null;
     }
 

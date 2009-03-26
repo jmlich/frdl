@@ -73,6 +73,7 @@ public class ParseNMEA {
 
         for (int i = 0;i < logger.allLogFiles.size();i++) {
             File f = (File) logger.allLogFiles.get(i);
+            //System.out.println("About to check: " + f.getAbsolutePath());
             if (checkWindow(f,this.windowOpen,this.windowClose)) {
                 readNMEAfile(f.getAbsolutePath());
             }
@@ -98,11 +99,16 @@ public class ParseNMEA {
      */
     private Boolean checkWindow(File f, LocalDateTime windowOpen, LocalDateTime windowClose) {
         LocalDateTime[] ldt = CheckNMEAfile.getStartAndFinishTimes(f.getAbsolutePath());
-        if (ldt[0] != null || ldt[1] != null) {
+        if (ldt[0] != null && ldt[1] != null) {
             if (ldt[0].isBefore(windowOpen) && ldt[1].isAfter(windowOpen) && ldt[1].isBefore(windowClose)) return true;
             if (ldt[0].isBefore(windowOpen) && ldt[1].isAfter(windowClose)) return true;
             if (ldt[0].isAfter(windowOpen) && ldt[1].isBefore(windowClose)) return true;
             if (ldt[0].isAfter(windowOpen)&& ldt[0].isBefore(windowClose) && ldt[1].isAfter(windowClose) ) return true;
+        } else {
+            String warning = "WARNING cannot find ";
+            if (ldt[0] == null) warning = warning + "starting ";
+            if (ldt[1] == null) warning = warning + "ending ";
+            MainView.addLog(warning + "date-time in " + f.getName());
         }
        return false;
     }
@@ -111,10 +117,13 @@ public class ParseNMEA {
         try {
         BufferedReader in = new BufferedReader(new FileReader(logFileName));
         String str;
+        String fName = (new File(logFileName)).getName();
+        int lineCtr = 0;
         while ((str = in.readLine()) != null) {
+            lineCtr++;
              if (null != str && NMEA_PATTERN.matcher(str).matches())  {
                  //if (checkSumOk(str)) {
-                     processNMEAline(str);
+                     processNMEAline(str, lineCtr, fName);
                  //}
             } 
         }
@@ -124,58 +133,76 @@ public class ParseNMEA {
         }
     }
 
-    private void processNMEAline (String str) {
+    private void processNMEAline (String str, int lineNo, String fileName) {
         Boolean wayPointDetected = false;
         String pevDescr = "";
         String sb[] = str.split(",");
         int len = sb.length;
         if (sb[0].compareTo("$GPRMC") == 0 && len >= 9) {
             //NMEA RMC line has date,time,lat,lon but no alt or fix validity
-            Ldate = new LocalDate(nmeaDateFormat.parseDateTime(sb[9]));
-            Ltime = new LocalTime(nmeaTimeFormat.parseDateTime(sb[1].substring(0,6)));
-            recordDt = new LocalDateTime(Ldate.toDateTime(Ltime).withZone(DateTimeZone.UTC));
-            lat = sb[3].substring(0,4) + sb[3].subSequence(5, 8) + sb[4];
-            lon = sb[5].substring(0,5) + sb[5].subSequence(6, 9) + sb[6];
-            dLat = parseLat(sb[3],sb[4]);
-            dLon = parseLon(sb[5],sb[6]);
+            try {
+                Ldate = new LocalDate(nmeaDateFormat.parseDateTime(sb[9]));
+                Ltime = new LocalTime(nmeaTimeFormat.parseDateTime(sb[1].substring(0,6)));
+                recordDt = new LocalDateTime(Ldate.toDateTime(Ltime).withZone(DateTimeZone.UTC));
+                lat = sb[3].substring(0,4) + sb[3].substring(5, 8) + sb[4];
+                lon = sb[5].substring(0,5) + sb[5].substring(6, 9) + sb[6];
+                dLat = parseLat(sb[3],sb[4]);
+                dLon = parseLon(sb[5],sb[6]);
+            } catch (Exception e) {
+                MainView.addLog("ERROR parsing RMC line " + Integer.toString(lineNo) + " in " + fileName + " ["  + str + "] " + e);
+            }
 
         } else if (sb[0].compareTo("$GPGGA") == 0 && len >= 11) {
             //NMEA GGA line has time,lat,lon,alt but no date or fix validity
             if (Ldate != null) {
-                Ltime = new LocalTime(nmeaTimeFormat.parseDateTime(sb[1].substring(0,6)));
-                recordDt = new LocalDateTime(Ldate.toDateTime(Ltime).withZone(DateTimeZone.UTC));
-                lat = sb[2].substring(0,4) + sb[2].subSequence(5, 8) + sb[3];
-                lon = sb[4].substring(0,5) + sb[4].subSequence(6, 9) + sb[5];
-                dLat = parseLat(sb[2],sb[3]);
-                dLon = parseLon(sb[4],sb[5]);
-                dAlt = Double.parseDouble(sb[9]);
-                int iAlt = dAlt.intValue();
-                alt = repeatString("0",5 - Integer.toString(iAlt).length()) + Integer.toString(iAlt);
-                
+                try {
+                    Ltime = new LocalTime(nmeaTimeFormat.parseDateTime(sb[1].substring(0,6)));
+                    recordDt = new LocalDateTime(Ldate.toDateTime(Ltime).withZone(DateTimeZone.UTC));
+                    lat = sb[2].substring(0,4) + sb[2].substring(5, 8) + sb[3];
+                    lon = sb[4].substring(0,5) + sb[4].substring(6, 9) + sb[5];
+                    dLat = parseLat(sb[2],sb[3]);
+                    dLon = parseLon(sb[4],sb[5]);
+                    dAlt = Double.parseDouble(sb[9]);
+                    int iAlt = dAlt.intValue();
+                    alt = repeatString("0",5 - Integer.toString(iAlt).length()) + Integer.toString(iAlt);
+                } catch (Exception e) {
+                    MainView.addLog("ERROR parsing GGA line " + Integer.toString(lineNo) + " in " + fileName + " ["  + str + "] " + e);
+                }
                 //System.out.println("gga alt" + alt + " - " + str);
             }
         } else if (sb[0].compareTo("$GPGSA") == 0 && len >= 2) {
             //NMEA GSA line has fix validity but no date,time,lat,lon,alt
-            val = "X";
-            if (sb[2].equals("3")) val = "A";
-            if (sb[2].equals("2")) val = "V";
-            //System.out.println("GSA len: " + len);
-
+            try {
+                val = "X";
+                if (sb[2].equals("3")) val = "A";
+                if (sb[2].equals("2")) val = "V";
+                //System.out.println("GSA len: " + len);
+            } catch (Exception e) {
+                MainView.addLog("ERROR parsing GSA line " + Integer.toString(lineNo) + " in " + fileName + " ["  + str + "] " + e);
+            }
         } else if (sb[0].compareTo("$GPWPL") == 0 && len >= 5) {
             // waypoint has time,lat,lon no date,alt,fix validity
             // IGC only needs time and we fix it to be +500 ms so it
             // is definitely included in the resulting data map
             if (recordDt != null) {
-                wayPointDetected = true;
-                recordDt = recordDt.plusMillis(500);
-                String[] q = sb[5].split("\\*");
-                pevDescr = q[0];
+                try {
+                    wayPointDetected = true;
+                    recordDt = recordDt.plusMillis(500);
+                    String[] q = sb[5].split("\\*");
+                    pevDescr = q[0];
+                } catch (Exception e) {
+                    MainView.addLog("ERROR parsing WPL line " + Integer.toString(lineNo) + " in " + fileName + " ["  + str + "] " + e);
+                }
             }
         } else if (sb[0].compareTo("$ADVER") == 0 && len >=3 ) {
             //proprietry header for AMOD  $ADVER,3080,2.2
             //assume this means model:3080 firmware 2.2
-            loggerModel = sb[1];
-            loggerFirmwareVer = sb[2];
+            try {
+                loggerModel = sb[1];
+                loggerFirmwareVer = sb[2];
+            } catch (Exception e) {
+                MainView.addLog("ERROR parsing ADVER line " + Integer.toString(lineNo) + " in " + fileName + " ["  + str + "] " + e);
+            }
         }
         
         if (recordDt != null && lat != null && lon != null && alt != null) {
