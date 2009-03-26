@@ -69,15 +69,21 @@ public class TaskSettings extends javax.swing.JDialog {
         if (App.clientFullMode) {
             DateTime wo = makeDateTime(new DateTime(windowOpenDatePicker.getDate()),windowOpenTimeComboBox.getSelectedIndex());
             DateTime wc = makeDateTime(new DateTime(windowCloseDatePicker.getDate()),windowCloseTimeComboBox.getSelectedIndex());
-            int utcOffsetH = Integer.valueOf(App.thisChampionship.champData.readValue("championship.utcOffsetH"));
-            int utcOffsetM = Integer.valueOf(App.thisChampionship.champData.readValue("championship.utcOffsetM"));
-            if (utcOffsetH >= 0) {
-                wo = wo.minusHours(Math.abs(utcOffsetH)).minusMinutes(utcOffsetM);
-                wc = wc.minusHours(utcOffsetH).minusMinutes(utcOffsetM);
-            } else {
-                wo = wo.plusHours(Math.abs(utcOffsetH)).plusMinutes(utcOffsetM);
-                wc = wc.plusHours(utcOffsetH).plusMinutes(utcOffsetM);
+            //task window settings are local time
+            //if we are NOT adjusting final output to local time
+            //then need to check the output will still be the same day UTC
+            if (!App.thisChampionship.getItemAsBoolean("championship.adjustIgcFileTimes", false)) {
+                int utcOffsetH = Integer.valueOf(App.thisChampionship.champData.readValue("championship.utcOffsetH"));
+                int utcOffsetM = Integer.valueOf(App.thisChampionship.champData.readValue("championship.utcOffsetM"));
+                if (utcOffsetH >= 0) {
+                    wo = wo.minusHours(Math.abs(utcOffsetH)).minusMinutes(utcOffsetM);
+                    wc = wc.minusHours(utcOffsetH).minusMinutes(utcOffsetM);
+                } else {
+                    wo = wo.plusHours(Math.abs(utcOffsetH)).plusMinutes(utcOffsetM);
+                    wc = wc.plusHours(utcOffsetH).plusMinutes(utcOffsetM);
+                }
             }
+            
             if (wo.getDayOfYear() != wc.getDayOfYear()) {
                 Dialogs d = new Dialogs();
                 DateTimeFormatter fmt = DateTimeFormat.forPattern("d MMM yyyy HH:mm");
@@ -87,7 +93,7 @@ public class TaskSettings extends javax.swing.JDialog {
                         fmt.print(wo) + " UTC\n" +
                         App.getResourceMap().getString("taskWindowPanelText") + " " +
                         App.getResourceMap().getString("toLabel.text").toLowerCase() + " " +
-                        fmt.print(wc) + " UTC\n\n" +
+                        fmt.print(wc) + " UTC\n" +
                         App.getResourceMap().getString("multipleDayWarningMsg.line2") + "\n" +
                         App.getResourceMap().getString("multipleDayWarningMsg.line3") + "\n" +
                         App.getResourceMap().getString("multipleDayWarningMsg.line4") + "\n" +
