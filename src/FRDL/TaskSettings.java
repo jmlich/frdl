@@ -13,6 +13,8 @@ import javax.swing.JComboBox;
 import org.jdesktop.application.Action;
 import org.joda.time.DateTime;
 import org.joda.time.Instant;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 /**
  * The Settings - Tasks popup dialog box.
  */
@@ -31,8 +33,8 @@ public class TaskSettings extends javax.swing.JDialog {
            //capture the window closing event i.e clicking 'X'
            public void windowClosing(WindowEvent evt){
               ///do any actions that u wish to
-               MainView.addLog("Task settings dialog closed");
-              dispose();//dispose the JDialog
+               //MainView.addLog("Task settings dialog closed");
+           if (checkTaskIsSameDay()) dispose();//dispose the JDialog
            }
         });
 
@@ -42,15 +44,62 @@ public class TaskSettings extends javax.swing.JDialog {
         setTzOffsetDisplay(Integer.parseInt(App.thisChampionship.champData.readValue("championship.utcOffsetH")),
                 Integer.parseInt(App.thisChampionship.champData.readValue("championship.utcOffsetM")));
 
-        MainView.addLog("Task settings dialog opened");
+        //MainView.addLog("Task settings dialog opened");
     }
 
     @Action public void closetaskSettings() {
-        if (saveTask(TaskNoComboBox.getSelectedIndex()+1)) {
+        if (saveTask(TaskNoComboBox.getSelectedIndex()+1) && checkTaskIsSameDay()) {
             //Utilities.saveChampionshipToFile(FRDLApp.thisChampionship);
-            MainView.addLog("Task settings dialog saved & closed");
+            //MainView.addLog("Task settings dialog saved & closed");
             dispose();
         }
+    }
+
+    /*
+     * Shows a warning message if the task will be spread over
+     * more than one UTC day.  No problem for FRDL, but can be
+     * a problem in the output igc file format because there is no
+     * properly defined way of changing day half way through
+     * a track, therefore some analysis programs may
+     * show the portion of track after midnight BEFORE the
+     * portion of track before midnight...
+     *
+    */
+    private Boolean checkTaskIsSameDay() {
+        if (App.clientFullMode) {
+            DateTime wo = makeDateTime(new DateTime(windowOpenDatePicker.getDate()),windowOpenTimeComboBox.getSelectedIndex());
+            DateTime wc = makeDateTime(new DateTime(windowCloseDatePicker.getDate()),windowCloseTimeComboBox.getSelectedIndex());
+            int utcOffsetH = Integer.valueOf(App.thisChampionship.champData.readValue("championship.utcOffsetH"));
+            int utcOffsetM = Integer.valueOf(App.thisChampionship.champData.readValue("championship.utcOffsetM"));
+            if (utcOffsetH >= 0) {
+                wo = wo.minusHours(Math.abs(utcOffsetH)).minusMinutes(utcOffsetM);
+                wc = wc.minusHours(utcOffsetH).minusMinutes(utcOffsetM);
+            } else {
+                wo = wo.plusHours(Math.abs(utcOffsetH)).plusMinutes(utcOffsetM);
+                wc = wc.plusHours(utcOffsetH).plusMinutes(utcOffsetM);
+            }
+            if (wo.getDayOfYear() != wc.getDayOfYear()) {
+                Dialogs d = new Dialogs();
+                DateTimeFormatter fmt = DateTimeFormat.forPattern("d MM yyyy HH:mm");
+                String st = App.getResourceMap().getString("multipleDayWarningMsg.line1") + "\n\n" +
+                        App.getResourceMap().getString("taskWindowPanelText") + " " +
+                        App.getResourceMap().getString("fromLabel.text").toLowerCase() + " " +
+                        fmt.print(wo) + " UTC\n" +
+                        App.getResourceMap().getString("taskWindowPanelText") + " " +
+                        App.getResourceMap().getString("toLabel.text").toLowerCase() + " " +
+                        fmt.print(wc) + " UTC\n" +
+                        App.getResourceMap().getString("multipleDayWarningMsg.line2") + "\n" +
+                        App.getResourceMap().getString("multipleDayWarningMsg.line3") + "\n" +
+                        App.getResourceMap().getString("multipleDayWarningMsg.line4") + "\n" +
+                        App.getResourceMap().getString("multipleDayWarningMsg.line5") + "\n\n" +
+                        App.getResourceMap().getString("multipleDayWarningMsg.line6") + "\n" +
+                        App.getResourceMap().getString("multipleDayWarningMsg.line7") + "\n" +
+                        App.getResourceMap().getString("multipleDayWarningMsg.line8") + "\n" +
+                        App.getResourceMap().getString("multipleDayWarningMsg.line9");
+                return !d.showQuestionDialog(st);
+            }
+        }
+        return true;
     }
 
     public void loadTask(int taskId) {
