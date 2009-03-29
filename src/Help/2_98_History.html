@@ -4,20 +4,23 @@
 <link rel="stylesheet" type="text/css" href="stdStyle.css"/>
 </head>
 <body class="body">
-<h1>CIMA FRDL Help</h1>
-
-This flight recorder downloader is designed to be simple
-and idiot proof to use in the heat of running a Microlight or
-Paramotor championship.
+<h1>Why FRDL?</h1>
 
 <h2>A little bit of history</h2>
 
 Whilst the gliding community had been using loggers since
 the mid-1990's, they were specialist devices, very expensive, and generally
-displayed at least some navigational information.  In practice, the rules for
-microlights and Paramotors were originally written around the first device to
-become available which was reasonably priced and more-or-less met the basic
-requirement.  This was the <a
+displayed at least some navigational information.  
+<p>
+It is generally considered that it would remove half the element of competition
+if pilots were permitted to use GPS information whilst flying in microlight
+or Paramotor championships.  GPS is nevertheless a very useful and accurate
+way of measuring pilot performance so 'blind' GPS loggers are required, while
+the pilot is expected to plan and fly all tasks by 'traditional' means.
+<p>
+The rules for using GPS loggers in microlight and Paramotor championships
+were originally written around the first device to become available which
+was reasonably priced and more-or-less met the basic requirement.  This was the <a
 href="http://www.flymicro.com/fr/index.cfm?page=General%2FHome">MLR SP24-XC</a>
 which is a normal hand-held GPS with firmware modified by the manufacturer so
 it only displays GPS time, number of satellites in view, and battery and memory
@@ -31,23 +34,64 @@ a MLR download software which has been demonstrated many times to be an
 essential part of the championship organizer's armoury.
 <p>
 The MLR has some significant faults, but in general has
-proven to be robust and reliable.  Unfortunately however, not long after it
+proven to be fairly robust and reliable.  Unfortunately however, not long after it
 came into use, MLR were taken over by another company who discontinued the
 SP24-XC, and today it is impossible to find. Only one other type, made by Air
 Observer in South Africa, has become available since 2003 but it is not very
-cheap. It is the responsibility of teams or pilots to supply their own loggers,
+cheap.
+<p>
+It is the responsibility of teams or pilots to supply their own loggers,
 but with such limited availability they often don't have them. Championships
 have been saved more than once by FFPlUM, the French microlight federation, who
-bought a substantial quantity of MLR's and often lend their spare ones to
-pilots.
+bought a substantial quantity of MLR's and sometimes lend their spare ones to
+pilots.  This has had the unfortunate effect that many pilots have not had much
+experience of using loggers outside of international competition which means
+organizers of championships see far too many simple problems such as tracks full
+of errors caused by the them simply not being positioned in the aircraft
+so they have a clear view of the sky.  These pilots get discouragingly poor
+scores as a result.
 <p>
 With so many cheap GPS loggers available today, you might be
 wondering why there aren't other types in use.  The answer is quite simple; the
 hardware requirement in the specification is only half the story.  The other
 half is in reliably and quickly getting the data out of them in a useful
 format.
+<p>
+If you have 120 pilots in a championship, each with a primary and a backup
+secondary logger, and the pilots fly two tasks in a day, it means the
+organization has a significant job just to download these 480 tracks from
+the loggers, let alone analyse and score them as well.  Practice has shown
+that the downloading procedure must be as automated as possible because
+with so many tracks to handle, manual intervention is an open invitation
+for error.  Even one simple error such as the loss of a track can lead
+to the voiding of the whole task, and if it is a poor weather week, the
+loss of one task can lead to the loss of the whole championship.  Even with
+these automated procedures, more than one championship has
+come close to disaster through inadvertent loss of track data.
+<p>
+So the data obtained from loggers must always be the same, and an approval
+system is described in FAI Section 10 Annex 6 which permits the use
+in championships of loggers which have been checked to see the data they
+produce is correct. Approval is by definition inclusive of the download
+software, which perhaps explains why there are so few approved models.
+<p>
+In 2005, the World Microlight championships and the World Paramotor
+Championships were held simultaneously at Levroux in France.  Even with
+the generosity of FFPlUM, there were not enough MLRs
+for everyone, and pilots without an approved type were permitted to
+use a limited selection of Garmins sealed in an opaque container.
+In the Paramotor championship it usually took about the same time to
+manually get the data from 7 Garmins into a useful form as it took to
+get it from the 150 MLR’s and Air Observers with their automated software.
+<p>
+Levroux unequivocally demonstrated the case for specialist software,
+but the demise of the MLR demonstrated that creating it could be a lot
+of work creating it for nothing.
+
+<h2>A new generation of 'driverless' loggers</h2>
+
 <A NAME="test"></A>
-<p>In 2008, a new genre of loggers have begun to appear which
+<p>In 2008, a new genre of loggers began to appear which
 are sometimes described as 'photo loggers'.  They are intended to be used to
 record a fix every second whilst you are out and about taking photographs, and
 then when you get home, a special software is used to match the times in the
@@ -55,21 +99,38 @@ track with the times of the photos to effectively 'geolocate' the photos you
 took.
 <p>
 The point about these devices is that they often record
-their tracks to a SD card, or to on-board memory which in either case appears
-to the host computer as just another hard drive in exactly the same way as a standard
-memory stick does.
+their tracks to a SD card, or to on-board memory which in either case is 'driverless' 
+and appears to the host computer as just another hard drive, in
+exactly the same way as a standard memory stick does.
+<p>
+It is therefore possible to create a downloader software which is only dependent
+on a genre of loggers rather than one particular type, and that is what FRDL is.
+<p>
+FRDL makes it possible to approve many different types of logger to the CIMA standard 
+which match this broad genre.
 
 <h2>What FRDL does</h2>
 
-FRDL will download the data from any of these devices quickly and easily
+FRDL will download the data from certain kinds of these devices quickly and easily
 and convert the output into a CIMA specification .igc file which may be read
 by many commonly available flight analysis programs.
 <p>
 FRDL also adds a bit of value by backing up all log files it finds on a logger
 and by instantly displaying a simple outline and altitude profile of the track it has
 downloaded.  This means the downloading can confidently be done the moment
-the pilot lands from a championship task, and in the knowledge of what has been
-downloaded, the logger can immediately be handed back to the pilot.
+the pilot lands from a championship task with everyone being very clear in
+the knowledge of what has been downloaded.  The logger can therefore be immediately
+returned to the pilot which avoids the logistical problem of boxes full of hundreds
+of loggers waiting to be read.
+
+<h2>New logger types</h2>
+
+It is fairly easy for the developer to amend FRDL so it will download other
+types of logger of the 'driverless' genre.  If you have a type which is not
+approved for use with FRDL, simply send it to the developer for an assessment.
+Note that types with external comms (eg Bluetooth or GPRS) cannot
+presently be approved to the CIMA standard so there is no point in
+getting them to work with FRDL.
 
 </body>
 </html>
