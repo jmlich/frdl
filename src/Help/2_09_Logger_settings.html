@@ -15,7 +15,7 @@ operation</B>).
 <h2>Logger</h2>
 
 The FRDL Id is the unique identifier FRDL gives to a logger the first 
-time it is connected to FRDL. It is not editable.
+time it is connected to FRDL. It is never editable.
 <p>
 The correct type of logger MUST be selected as the data retrieved from it 
 may otherwise not be processed correctly.
@@ -35,7 +35,7 @@ analysis and scoring systems which should be in the format Given Name <I>(lower 
 FAMILY NAME <I>(upper case)</I>.
 <p>
 <B>Nation</B>: The usual protocol is to use the FAI three letter code.  
-(FAI is the same as the Olympic system which is slightly different to the ISO system, eg 
+(FAI uses the Olympic system which is slightly different to the ISO system, eg
 ISO - DEU = FAI - GER).
 <p>
 <B>Competition number</B>: The competition number of the pilot.  Must be less 
@@ -46,11 +46,18 @@ a competition flight.  This identifies which logger this one is.  The normal
 convention is that only the data from the pilot's primary logger is used in 
 analysis unless there was some sort of technical fault in which case the 
 secondary data is used.
-there 
+<p>
+Operators should be careful not to register pilots with duplicate
+primary or secondary loggers as this could cause confusion in the flight analysis.
+If in doubt, cancel any settings changes and check the list of registered loggers
+from the Info menu.  Note this will not be a definitive list if the pilot is
+using another logger type which cannot be downloaded by FRDL such as an MLR,
+so check the list of registered loggers in that software too.
 
 <h2>Save</h2>
 
-Saves the information to the configuration file on the logger.
+Saves the information to the Championship configuration file and the
+configuration file on the logger.
 
 </body>
 </html>
