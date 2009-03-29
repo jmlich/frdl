@@ -41,19 +41,23 @@ written to the .igc output file.
 Normally this should <B>NOT</B> be checked.  This means that all data written 
 to output .igc files will always be UTC which is the normal convention.
 <p>
-There are however situations when a conversion to local time is convenient.  
+However, there are situations when a conversion to local time is convenient.
 The most notable is when the championship is occurring in a location in the 
 Far East when it is possible normal daytime flights might occur across 
 midnight UTC.  This is not a problem for FRDL, but there is a problem 
-in the output .igc file format which does not easily account for a date 
-change and analysis software can get confused when it encounters a time 
-going from 23:59:59 to 00:00:00.  Conversion to local time solves this.  
+in the output .igc file format which in its standard form has no means of
+recording a date change half way through a track.  Analysis software can
+therefore get confused when it encounters a time going from 23:59:59 to 00:00:00
+in the .igc track file it is reading and might place the fixes it encounters after
+midnight BEFORE the fixes it encountered before midnight.  Conversion to local
+time solves this.
 <p>
-Before setting this, organizers should consider that the software used to 
+Before setting this, championship organizers should consider that the software used to
 download other types of loggers such as the MLR may NOT be capable of 
-inserting a similar local time offset.  The fact that you may end up 
-with some files which do have an offset included, and some which don't may 
-outweigh the convenience of being able to set an offset in FRDL.
+inserting a similar local time offset in their .igc output files.  It may therefore
+be less desirable to end up with some oputput track files which do have an
+offset included, and some which don't, than to use the convenience of being
+able to set an output track time offset in just the tracks which FRDL has downloaded.
 
 <h2>Overall championship window</h2>
 
@@ -63,7 +67,7 @@ period.  Task windows in FRDL cannot be set outside the championship
 window.
 
 <h2>Output path to analysis</h2>
-<p>
+
 Analysis software generally requires its source data to be in one place.  
 All .igc output files will be saved to this location.
 
