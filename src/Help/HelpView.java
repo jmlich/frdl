@@ -207,7 +207,7 @@ public class HelpView extends JPanel implements TreeSelectionListener {
         htmlView.setMinimumSize(minimumSize);
         treeView.setMinimumSize(minimumSize);
         splitPane.setDividerLocation(200);
-        splitPane.setPreferredSize(new Dimension(600, 400));
+        splitPane.setPreferredSize(new Dimension(800, 400));
 
         //Add the split pane to this panel.
         add(splitPane);
