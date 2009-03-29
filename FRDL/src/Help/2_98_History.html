@@ -24,13 +24,13 @@ it only displays GPS time, number of satellites in view, and battery and memory
 status.  There are two <a
 href="http://www.flymicro.com/fr/index.cfm?page=Software%2FMLR%20firmware">firmware
 variants</a>; 2 sec logging and 5 sec logging, which with a memory for 8000
-fixes gives an endurance of 4h 26 min or 11h 6 min.</p>
-
-<p>The talented Spaniard, Jose Luis Esteban designed and wrote
+fixes gives an endurance of 4h 26 min or 11h 6 min.
+<p>
+The talented Spaniard, Jose Luis Esteban designed and wrote
 a MLR download software which has been demonstrated many times to be an
-essential part of the championship organizer's armoury.</p>
-
-<p>The MLR has some significant faults, but in general has
+essential part of the championship organizer's armoury.
+<p>
+The MLR has some significant faults, but in general has
 proven to be robust and reliable.  Unfortunately however, not long after it
 came into use, MLR were taken over by another company who discontinued the
 SP24-XC, and today it is impossible to find. Only one other type, made by Air
@@ -39,30 +39,37 @@ cheap. It is the responsibility of teams or pilots to supply their own loggers,
 but with such limited availability they often don't have them. Championships
 have been saved more than once by FFPlUM, the French microlight federation, who
 bought a substantial quantity of MLR's and often lend their spare ones to
-pilots.  </p>
-
-<p>With so many cheap GPS loggers available today, you might be
+pilots.
+<p>
+With so many cheap GPS loggers available today, you might be
 wondering why there aren't other types in use.  The answer is quite simple; the
 hardware requirement in the specification is only half the story.  The other
 half is in reliably and quickly getting the data out of them in a useful
-format.</p>
+format.
 <A NAME="test"></A>
 <p>In 2008, a new genre of loggers have begun to appear which
 are sometimes described as 'photo loggers'.  They are intended to be used to
 record a fix every second whilst you are out and about taking photographs, and
 then when you get home, a special software is used to match the times in the
 track with the times of the photos to effectively 'geolocate' the photos you
-took.  </p>
-
-<p>The point about these devices is that they often record
+took.
+<p>
+The point about these devices is that they often record
 their tracks to a SD card, or to on-board memory which in either case appears
 to the host computer as just another hard drive in exactly the same way as a standard
-memory stick does. </p>
+memory stick does.
 
+<h2>What FRDL does</h2>
 
-<p>This CIMA FRDL attempts to solve the problem by downloading these devices
-quickly and easily into a CIMA specification .igc file.</p>
-
+FRDL will download the data from any of these devices quickly and easily
+and convert the output into a CIMA specification .igc file which may be read
+by many commonly available flight analysis programs.
+<p>
+FRDL also adds a bit of value by backing up all log files it finds on a logger
+and by instantly displaying a simple outline and altitude profile of the track it has
+downloaded.  This means the downloading can confidently be done the moment
+the pilot lands from a championship task, and in the knowledge of what has been
+downloaded, the logger can immediately be handed back to the pilot.
 
 </body>
 </html>

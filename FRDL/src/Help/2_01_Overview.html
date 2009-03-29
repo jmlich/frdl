@@ -13,7 +13,13 @@ and for team leaders or pilots to all quickly reliably and painlessly
 extract track data relavent to competition tasks from a variety
 of different GPS flight loggers, and then convert it into the FAI
 CIMA specified format for detailed examination in a flight analysis program.
-
+<p>
+FRDL backs up all log files it finds on a logger and instantly displays
+a simple outline and altitude profile of the track it has
+written to the output .igc file.  This means the downloading can
+be done the moment the pilot lands from a championship task, and in the
+mutual knowledge of what has been saved, the logger can confidently be
+immediately returned to the pilot.
 <p>
 FRDL maintains all the information it needs about the championship,
 championship tasks, and the loggers in use in a <b>championship file</b>
@@ -25,18 +31,12 @@ FRDL operates in two different <b>modes</b>:
 <ul>
     <li><b>Full mode</b> is for normal everyday use and for use by the
     championship organization.</li>
-    <li><b>Download only mode</b> If a password is set by the championship
-    organization, then any attempt to download the logger by an instance
-    of FRDL with the incorrect password (eg by a team leader or pilot)
-    will put FRDL into Download only mode.  <p>
-    In download only mode, the latest championship settings for task windows
-    Etc. are copied from the logger to FRDL so pilots
-    and team leaders effectively download their loggers quickly
-    and easily with the exact same
-    settings as the organization is using.  They will therefore have
-    saved identical track data as the organization already has, which
-    they can analyse for themselves.
-    </p>
+    <li><b>Download only mode</b> Designed for team leaders and pilots.  In
+    this mode the settings (task windows, local time offset Etc.) are copied
+    from the logger to their instance of FRDL so they can extract tracks from their
+    loggers using the exact same settings as the organizer has used.  This
+    means they will be able to do their own flight analysis on the same
+    basis as the championship organization.
     </li>
 </ul>
 For further information, see the <b>Modes of operation</b> help item.
@@ -59,15 +59,21 @@ occurred within a pre-set <b>Task window</b>.
 
 <p>
 This is saved to a <b>CIMA specification .igc file</b> which
-is used by other software (eg MicroFlap) to analyse the flight data.
+is used by other software (eg MicroFlap) to analyse the flight data.  This is
+exactly the same data format as output by downloaders of other loggers such
+as the MLR.
 
 <p>
 A <b>basic outline</b> of the track, its altitude profile and some statistics
 are displayed on screen as a 'quick and dirty' indication of what has
 been saved. It is NOT intended to constitute any kind of definitive flight
 analysis which should be done in a dedicated flight analysis
-program (eg MicroFlap).  Gaps of more than 30 seconds in a track
-are shown.
+program (eg MicroFlap), but it is probably good enough for both the
+organizer and the pilot to clearly understand what was recorded by the logger so
+it can be immediately returned to him.  It may also indicate poor reception which
+can be improved by the pilot placing the logger in a better place in his aircraft
+next time, and alert the organizer to important penalties such as outlandings which
+merit further detailed investigation.
 
 <p>
 Assuming a <b>USB-2</b> connection, a <b>good quality USB cable</b> and the
