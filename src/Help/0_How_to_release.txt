@@ -1,0 +1,33 @@
+Notes on releasing a new version of FRDL
+
+After making mods to the point of a new release this
+must be done:
+
+1) Edit Help/2_15_Release_notes.html with details of changes
+2) Edit FRDL/resources/App.properties Application.version=this release version.
+3) Clean and build Main project in Netbeans
+4) Start Packjacket and open FRDL Packjacket config.pjc
+5) In PackJacket, amend General Info --> Application version to this release version.
+6) Create jar and exe in Packjacket.  Names should be setup_FRDL_ver.jar and .exe
+7) Save and close Packjacket
+8) Move old versions of install .jar and .exe to somewhere safe.
+9) Commit Subversion with note "Release xxx"
+10) Copy jar and exe files to dev flymicro.com.frdl/docs/downloads, delete old versions.
+11) Copy any altered help files to dev flymicro.com.frdl/docs/FRDL_Help
+12) Update flymicro.com online with above files.
+13) Amend dev checkLatestVersion.cfm with latest release version
+14) Update flymicro.com online with above file.
+
+Done!
+
+Extra notes:
+
+Packjacket: http://packjacket.sourceforge.net/
+Packjacket needs Izpack: http://izpack.org/
+
+Works OK with Izpack 4.2.1 (earlier versions have Vista problems).
+PackJacket is just a GUI for Izpack.
+
+Beware of clever things like adding icons to shortcuts in Packjacket - seems to
+cause problems with installing on Vista.
+

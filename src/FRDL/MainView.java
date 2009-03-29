@@ -52,6 +52,11 @@ public class MainView extends FrameView {
 
         initComponents();
 
+        //TODO can't get this to work....
+        //URL imgURL = getClass().getResource("resources/jet16.png");
+        //Image icon = Toolkit.getDefaultToolkit().getImage(imgURL);
+        //App.getApplication().getMainFrame().setIconImage(icon);
+
         CheckLatestVersionTask t = new CheckLatestVersionTask();
         t.execute();
 
