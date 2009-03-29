@@ -19,58 +19,81 @@ You will need the <b>Java SE Runtime Environment (JRE)</b>.</td>
 <td><img src="icon_info.png" width="100" height="100" alt="Info" valign="top"></td></tr>
 </table>
 
-<h2>Installing FRDL on a PC</h2>
+<p>
+The xxx in the FRDL setup file name indicates the version.
+<p>
+Versions of FRDL up to and including  0.24 should be uninstalled before installing
+a newer version.  For versions 0.25 and greater it is perfectly OK to install
+over an earlier version of FRDL.
+<p>
+FRDL has been tested on <b>Windows 2000, XP and Vista</b>.
 
-FRDL has been tested on Windows 2000, XP and Vista.
+<h2>Installing FRDL on Windows</h2>
 
-<p>
-    <b>Windows</b> Download the file <b>setup FRDL xxx.exe</b> to your computer from
-    <A href="http://www.flymicro.com/frdl">www.flymicro.com/frdl</A> and
-    double click on it to run the installer.
-<p>
-    <b>Other operating systems</b> (and Windows, if the above doesn't work). Download
-    the file <b>setup FRDL xxx.jar</b> to your computer from
-    <A href="http://www.flymicro.com/frdl">www.flymicro.com/frdl</A> and
-    double click on it to run the installer.   (A .jar file is actually
-    just a zip file recognizable to Java, but the .jar installer may not work correctly
-    on Vista...)
-<p>
-    In both cases the xxx indicates the version. Versions of FRDL up to and including
-    0.24 should be uninstalled before installing a newer version.  For versions 0.25
-    and greater it is perfectly OK to install over an earlier version of FRDL.  In either
-    case no configuration files, logger files or output igc files will be affected.
+Download the file <b>setup_FRDL_xxx.exe</b> to your computer from
+<A href="http://www.flymicro.com/frdl">www.flymicro.com/frdl</A> and
+double click on it to run the installer.
 <p>
 
  <table class="important">
 <tr><td>
-    On Vista you may still get a message from the "Program
-    compatibility assistant": <i>"This program might not have installed correctly"</i>
-    with the Details: IzPack SFX, publisher: Igor Pavlov, Julien Ponge.  This is
-    OK, they are the authors of the installer and probably FRDL has actually installed
-    OK.
+On Vista you may still get a message from the "Program compatibility assistant":
+<i>"This program might not have installed correctly"</i> with the Details:
+IzPack SFX, publisher: Igor Pavlov, Julien Ponge.  This is OK, they are the
+authors of the installer and probably FRDL has actually installed OK.
 <p>
-    The installer does  nothing 'clever' except to put the required files in a place
-    of your choice and creates shortcuts so you can easily start FRDL.</td>
+The installer does  nothing 'clever' except to put the required files in a place
+of your choice and creates shortcuts so you can easily start FRDL.
+<p>
+If the .exe install completely fails to install on your version of Windows, the
+.jar install described below for 'other operating systems' will also work, but
+you may have to install it in 'My Documents' rather than the default 'Program files'.
+    </td>
 <td><img src="icon_important.png" width="100" height="100" alt="Important" valign="top"></td></tr>
 </table>
 
-<h2>Uninstalling FRDL on a PC</h2>
+<h2>Uninstalling FRDL on Windows</h2>
 
-    Select <b>Uninstall FRDL</b> from the start menu.
+Select <b>Uninstall FRDL</b> from the start menu.
 <p>
-    If, for some reason this does not work, search your system for FRDL.jar and
-    delete the folder it is in along with all it's sub-folders, and any shortcuts pointing
-    at these folders (eg in your START menu).  FRDL is now  completely removed from
-    your system.
+If, for some reason this does not work, search your system for FRDL.jar and
+delete the folder it is in along with all it's sub-folders, and any shortcuts pointing
+at these folders (eg in your START menu).  FRDL is now  completely removed from
+your system.
 <p>
-    Uninstalling FRDL will not affect any of the championship files, logger backups
-    or .igc files it may have made while in use.
-    
+Uninstalling FRDL will not affect any of the championship files, logger backups
+or .igc files it may have made while in use.
+<p>
+ <table class="info">
+<tr><td>
+No configuration files, logger files or output igc files will
+be affected by an uninstall so long as they are not stored in the
+same folder as FRDL.jar or any sub-folder. (which is NOT the
+default, and is NOT recommended practice.)
+    </td>
+<td><img src="icon_info.png" width="100" height="100" alt="Info" valign="top"></td></tr>
+</table>
+
 <h2>Installing and uninstalling FRDL on Mac, Linux, Solaris Etc.</h2>
 
-    In principle, FRDL should install, work and uninstall on all these platforms,
-    however it is known that FRDL does not work on a Mac and this is a work in
-    progress.    I
+In principle, FRDL should install, work and uninstall on all these platforms,
+however it is known that FRDL does not work on a Mac and this is a work in
+progress. 
+<p>
+Download the file <b>setup_FRDL_xxx.jar</b> to your computer from
+<A href="http://www.flymicro.com/frdl">www.flymicro.com/frdl</A> and
+double click on it to run the installer.
+
+<table class="info">
+<tr><td>
+    This will also install on Windows, if the above doesn't work.
+    <p>
+    A .jar file is actually just a zip file recognizable to Java, but
+    the .jar installer may not work correctly on Vista...
+</td>
+<td><img src="icon_info.png" width="100" height="100" alt="Info" valign="top"></td></tr>
+</table>
+
 <p>
     FRDL is currently not tested on any other OS.  The developer would be
     interested to hear of any experiences of attempts to use FRDL on them.
