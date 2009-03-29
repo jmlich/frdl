@@ -43,9 +43,10 @@ removing a SD card from a logger; the logger MUST be switched off first.
         <ul>
         <li>FRDL will perform some management exercises on files on the logger (see below).
         <li>FRDL will back up the entire contents of the logger.</li>
-        <li>FRDL will create a .igc file according to the CIMA specification
-        and save it to the location defined in <b>Settings - Championship</b></li>
-        <li>FRDL will display a A basic outline of the track, its height profile
+        <li>FRDL will create a .igc file according to the CIMA specification from data 
+        it finds on the logger which lies within the active task window, and saves
+        it to the location defined in <b>Settings - Championship</b></li>
+        <li>FRDL will display a A basic outline of the track, its altitude profile
         and some statistics.</li>
         </ul>
     </li>
@@ -58,7 +59,10 @@ removing a SD card from a logger; the logger MUST be switched off first.
             or to go into Download only mode.  For further information see the 
             <b>Modes of operation</b> help item.</li>
             <li>If you chose an option which allows the logger to be recognized
-            then FRDL will back up the logger Etc. as normal.</li>
+            then FRDL will write a configuration file to the logger which allows
+            it to be recognized in future, and will then back up the logger, create
+            an output .igc file according to the active task specification and
+            display an outline of the track as normal.</li>
         </ul>
     </ul>
 </p>
@@ -70,12 +74,12 @@ Every time a logger is connected, FRDL deletes any AUTORUN.INF files or folders
 it finds and creates an AUTORUN.INF folder containing a README.TXT file which briefly
 describes why it does this and when it did it.  See <b>Protecting against malware</b>
 for more info on this. Do not place any files inside this AUTORUN.INF folder
-as FRDL will delete them all without warning!
+as FRDL will always delete them all without warning!
 <p>
-Some types of logger, for example the Geochron, require a settings file to be on
-the logger which tells the logger things like what it should log and the
+Some types of logger, for example the GeoChron, require a settings file to be on
+the logger which tells the logger things like what type of data it should log and the
 frequency it should log fixes at.  FRDL always re-writes this file to the
-logger so it is properly configured for CIMA competitions the next time it is used.
+logger so it is correctly configured for CIMA championships the next time it is used.
 <p>
 Some types of logger, for example the Geochron, do not create unique log file names
 but a simple series such as Log0.txt, Log1.txt Log2.txt Etc.  To avert the
@@ -91,13 +95,12 @@ is not affected at all.
 <p>
 Because all the loggers FRDL is compatible with behave exactly like ordinary memory
 sticks it is prefectly possible for you to put other files like photos or documents
-on it.  This is not advisable because it will reduce the memory available for your
-log files, but otherwise FRDL will completely ignore them and it will NOT back them
-up.  FRDL knows that an AMOD writes its log files with .log in the name or a Geochron
-writes them with .txt in the name and it will ignore files with any other file
-name extension on that logger.
-
-
+on them.  This is not advisable because it will reduce the memory available for your
+log files, but otherwise FRDL will completely ignore them and it will <b>NOT</b> back them
+up.  FRDL knows that an AMOD writes its log files with <i>.log</i> as the file extension
+or a Geochron writes them with <i>.txt</i> as the file extension and it will ignore files
+with any other file name extension on that logger apart from the configuration file
+which is always named <i>logger.frdl</i>
 
 </body>
 </html>

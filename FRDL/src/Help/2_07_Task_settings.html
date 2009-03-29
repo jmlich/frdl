@@ -7,13 +7,13 @@
 <h1>Task settings</h1>
 
 <h2>Task</h2>
-<p>
+
 Select the task number to inspect the task window of that task.
 
 <h2>Task window</h2>
 
 FRDL ignores all track fixes it finds on the logger which lie 
-outside the task window of the currently active task.  
+outside the task period, or 'window' of the currently active task.
 <p>
 The ones it finds inside the task window it will write to the 
 eventual output .igc file.
@@ -21,17 +21,20 @@ eventual output .igc file.
 By default, a task window is the entire championship window (see 
 <B>Championship settings</B>) but the people doing the flight 
 analysis would find it very inconvenient to have to analyse track 
-files which contain many flights within this period.
+files which contain many flights within this period.  There are also
+significant technical issues in analysing flights extending over
+more than one day.  (See <b>Adjust output IGC file times to local</b> in
+<b>Championship Settings</b>.)
 <p>
 Because the task window in a championship is always known from 
 the task brief, before any loggers are downloaded with the 
-intention of analysing a task the task window should be set 
+intention of analysing a task, the task window should be set
 to encompass the entire task window.  This way, only flights made 
 by each pilot in that task are saved to the output .igc file.
 <p>
 As flights which either begin before, or finish after a briefed 
 task window are usually penalized, it may be advisable to add a 
-bit to this setting either side of the 'briefed' task window 
+bit to the window setting either side of the 'briefed' task window
 (eg 1 hour each side) which will enable the analysis people to 
 identify flights which should be penalized.
 
@@ -39,10 +42,10 @@ identify flights which should be penalized.
 
 This sets the currently active task and all output .igc files 
 will be generated from fix points which lie within the active 
-task period.
+task window.
 <p>
-If a task is changed while a logger is connected then the 
-logger data will be re-processed according to the newly selected 
+If a different task is activated while a logger is connected then the
+logger data will be re-processed according to the newly activated
 task.
 
 <h2>"Virtual" task numbers</h2>
@@ -57,11 +60,11 @@ both flying the same task number, but in different time windows, it
 is probably NOT a good idea to use different task numbers (eg '2' for 
 one class and '22' for another.).  Instead, it is probably better 
 to download all loggers in task 2 for class A and then change the 
-window time settings and repeat for class B.
+task window time settings and repeat for class B.
 <p>
-This will keep all output files generated for task 2 intact 
+This will keep all the output files generated for task 2 intact
 according to the CIMA output file specification, but of course extra 
 care must be taken to ensure each logger is being downloaded in 
-its correct window.
+the correct task window for the class.
 </body>
 </html>
