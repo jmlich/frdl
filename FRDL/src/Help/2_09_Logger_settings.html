@@ -6,8 +6,16 @@
 <body class="body">
 <h1>Logger settings</h1>
 
-Logger settings are only available when a logger is connected.  <B>Do 
+<table class="warning">
+<tr><td>
+ <B>Do
 NOT disconnect a logger while the logger settings window is open.</B>
+Premature disconnection while data is being transferred can lead
+to unrecoverable data corruption.</td>
+<td><img src="icon_warning.png" width="100" height="100" alt="Warning" valign="top"></td></tr>
+</table>
+
+Logger settings are only available when a logger is connected.
 <p>
 In Download-only mode all logger settings are read-only  (see <B>Modes of 
 operation</B>).
@@ -47,12 +55,16 @@ convention is that only the data from the pilot's primary logger is used in
 analysis unless there was some sort of technical fault in which case the 
 secondary data is used.
 <p>
+ <table class="important">
+<tr><td>
 Operators should be careful not to register pilots with duplicate
 primary or secondary loggers as this could cause confusion in the flight analysis.
 If in doubt, cancel any settings changes and check the list of registered loggers
 from the Info menu.  Note this will not be a definitive list if the pilot is
 using another logger type which cannot be downloaded by FRDL such as an MLR,
-so check the list of registered loggers in that software too.
+so check the list of registered loggers in that software too.</td>
+<td><img src="icon_important.png" width="100" height="100" alt="Important" valign="top"></td></tr>
+</table>
 
 <h2>Save</h2>
 

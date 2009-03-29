@@ -49,3 +49,43 @@ UL,OL {
     margin-left:-10px;
 }
 
+.warning {
+    background : white;
+	font-family : Verdana, Arial, Helvetica, sans-serif;
+	/*color : #CC3333;*/
+	font-size : 1em;
+    border-width:2px;
+    border-color: #CC3333;
+    margin-bottom:5px;
+}
+
+.important {
+    background : white;
+	font-family : Verdana, Arial, Helvetica, sans-serif;
+	/*color : #FF9933;*/
+	font-size : 1em;
+    border-width:2px;
+    border-color: #FF9900;
+    margin-bottom:5px;
+}
+
+.info {
+    background : white;
+	font-family : Verdana, Arial, Helvetica, sans-serif;
+	/*color : #0033CC;*/
+	font-size : 1em;
+    border-width:2px;
+    border-color: #0033CC;
+    margin-bottom:5px;
+}
+
+.good {
+    background : white;
+	font-family : Verdana, Arial, Helvetica, sans-serif;
+	/*color : #009900;*/
+	font-size : 1em;
+    border-width:2px;
+    border-color: #009900;
+    margin-bottom:5px;
+}
+
