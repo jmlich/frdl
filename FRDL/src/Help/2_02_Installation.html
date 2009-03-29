@@ -8,9 +8,9 @@
 
 FRDL is a Java application which means it can work on any operating system which 
 has Java installed on it. You probably have Java already installed; FRDL
-requires you to have at least <b>Java version 5</b> but ideally you should
-have version 6.  If you do not have Java or you need an update, it is available
-from <b>http://java.sun.com/javase/downloads/index.jsp</b>.
+requires you to have at least <b>Java version 1.5</b> but ideally you should
+have version 1.6.  If you do not have Java or you need an update, it is available
+from <A href="http://java.sun.com/javase/downloads/index.jsp">java.sun.com/javase/downloads/index.jsp</A></b>.
 <br>
 You will need the <b>Java SE Runtime Environment (JRE)</b>.
 
@@ -19,24 +19,39 @@ You will need the <b>Java SE Runtime Environment (JRE)</b>.
 FRDL has been tested on Windows 2000, XP and Vista.
 
 <p>
-    Download the file FRDL-xxx.jar file to your computer. (the xxx indicates the
-    version).  (A .jar file is actually just a zip file recognizable to Java.)
+    <b>Windows</b> Download the file <b>setup FRDL xxx.exe</b> to your computer from
+    <A href="http://www.flymicro.com/frdl">www.flymicro.com/frdl</A> and
+    double click on it to run the installer.
 <p>
-    If you are installing a newer version of FRDL then it is recommended you
-    completely uninstall the old version first.  This will ensure you only have
-    one set of shortcuts to FRDL.
+    <b>Other operating systems</b> (and Windows, if the above doesn't work). Download
+    the file <b>setup FRDL xxx.jar</b> to your computer from
+    <A href="http://www.flymicro.com/frdl">www.flymicro.com/frdl</A> and
+    double click on it to run the installer.   (A .jar file is actually
+    just a zip file recognizable to Java, but the .jar installer may not work correctly
+    on Vista...)
 <p>
-    Double click on FRDL-xxx.jar to start the FRDL installer. This installer does
-    nothing 'clever' except to put the required files in a place of your choice and
-    creates shortcuts so you can easily start FRDL.
+    In both cases the xxx indicates the version. Versions of FRDL up to and including
+    0.24 should be uninstalled before installing a newer version.  For versions 0.25
+    and greater it is perfectly OK to install over an earlier version of FRDL.  In either
+    case no configuration files, logger files or output igc files will be affected.
+<p>
+    On Vista you may still get a message from the "Program
+    compatibility assistant": <i>"This program might not have installed correctly"</i>
+    with the Details: IzPack SFX, publisher: Igor Pavlov, Julien Ponge.  This is
+    OK, they are the authors of the installer and probably FRDL has actually installed
+    OK.
+<p>
+    The installer does  nothing 'clever' except to put the required files in a place
+    of your choice and creates shortcuts so you can easily start FRDL.
 
 <h2>Uninstalling FRDL on a PC</h2>
 
-    Select <b>Uninstall CIMA FRDL</b> from the start menu.
+    Select <b>Uninstall FRDL</b> from the start menu.
 <p>
     If, for some reason this does not work, search your system for FRDL.jar and
-    delete the folder it is in along with all it's sub-folders.  FRDL is now
-    completely removed from your system.
+    delete the folder it is in along with all it's sub-folders, and any shortcuts pointing
+    at these folders (eg in your START menu).  FRDL is now  completely removed from
+    your system.
 <p>
     Uninstalling FRDL will not affect any of the championship files, logger backups
     or .igc files it may have made while in use.
