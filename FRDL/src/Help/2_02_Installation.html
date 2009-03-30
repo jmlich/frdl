@@ -12,15 +12,23 @@ FRDL is a Java application which means it can work on any operating system which
 has Java installed on it. You probably have Java already installed; FRDL
 requires you to have at least <b>Java version 1.5</b> but ideally you should
 have version 1.6.  If you do not have Java or you need an update, it is available
-from<br>
+at no cost from<br>
 <A href="http://java.sun.com/javase/downloads/index.jsp">java.sun.com/javase/downloads/index.jsp</A></b>.
 <br>
-You will need the <b>Java SE Runtime Environment (JRE)</b>.</td>
-<td><img src="icon_info.png" width="100" height="100" alt="Info" valign="top"></td></tr>
+You will need the <b>Java SE Runtime Environment (JRE)</b>.
+<p>
+FRDL is not tested on other flavours of Java, eg IBM, though it will probably be OK.
+<p>
+To find the Java version currently on your computer, type the following at the
+command line:  <b>java -version</b> or go to <a href="http://www.javatester.org/version.html">www.javatester.org/version.html</a>
+</td>
+<td><img src="javaLogo.png" width="100" height="100" alt="Java" valign="top"></td></tr>
 </table>
-
 <p>
 The xxx in the FRDL setup file name indicates the version.
+<p>
+FRDL installers do  nothing 'clever' except to put the required files in a place
+of your choice and creates shortcuts so you can easily start FRDL.
 <p>
 Versions of FRDL up to and including  0.24 should be uninstalled before installing
 a newer version.  For versions 0.25 and greater it is perfectly OK to install
@@ -42,17 +50,58 @@ On Vista you may still get a message from the "Program compatibility assistant":
 IzPack SFX, publisher: Igor Pavlov, Julien Ponge.  This is OK, they are the
 authors of the installer and probably FRDL has actually installed OK.
 <p>
-The installer does  nothing 'clever' except to put the required files in a place
-of your choice and creates shortcuts so you can easily start FRDL.
-<p>
-If the .exe install completely fails to install on your version of Windows, the
-.jar install described below for 'other operating systems' will also work, but
-you may have to install it in 'My Documents' rather than the default 'Program files'.
+If the .exe install completely fails to install FRDL on your version of Windows, the
+.jar or manual installs described below will also work.
     </td>
 <td><img src="icon_important.png" width="100" height="100" alt="Important" valign="top"></td></tr>
 </table>
 
-<h2>Uninstalling FRDL on Windows</h2>
+
+<h2>Installing FRDL on Mac, Linux, Solaris Etc.</h2>
+
+In principle, FRDL should install, work and uninstall on all these platforms.
+<p>
+Download the file <b>setup_FRDL_xxx.jar</b> to your computer from
+<A href="http://www.flymicro.com/frdl">www.flymicro.com/frdl</A> and
+double click on it to run the installer.
+<p>
+
+ <table class="important">
+<tr><td>
+It is known that FRDL does not work on a Mac and this is a work in
+progress.  FRDL is currently not tested on any other OS.  The developer would be
+interested to hear of any experiences of attempts to use FRDL on them.
+    </td>
+<td><img src="icon_important.png" width="100" height="100" alt="Important" valign="top"></td></tr>
+</table>
+
+
+<table class="info">
+<tr><td>
+    This will also install on Windows, if the option above doesn't work but
+    Vista may not recognize it as an installer file and consequently
+    not go into the necessary 'administrator mode' which allows the installer to
+    write to the 'Program files' folder.  It may well install OK to some
+    other location though.
+</td>
+<td><img src="icon_info.png" width="100" height="100" alt="Info" valign="top"></td></tr>
+</table>
+
+<h2>Manual install on any operating system</h2>
+
+Should either installer fail to create the correct shortcuts or otherwise fail to
+work correctly, FRDL can be easily installed manually.
+<p>
+Download the file <b>FRDL_xxx.zip</b> to your computer from
+<A href="http://www.flymicro.com/frdl">www.flymicro.com/frdl</A> and
+extract the contents to a suitable location on your computer.
+<p>
+The final structure is rather simple:  <b>FRDL.jar</b> is the application
+executable.  In the same folder should be one sub-folder: <b>lib</b> and all the
+other files included in the distribution should be in this sub-folder.  FRDL can be
+started by double clicking on FRDL.jar or a shortcut pointing at FRDL.jar.
+
+<h2>Uninstalling FRDL</h2>
 
 Select <b>Uninstall FRDL</b> from the start menu.
 <p>
@@ -60,9 +109,6 @@ If, for some reason this does not work, search your system for FRDL.jar and
 delete the folder it is in along with all it's sub-folders, and any shortcuts pointing
 at these folders (eg in your START menu).  FRDL is now  completely removed from
 your system.
-<p>
-Uninstalling FRDL will not affect any of the championship files, logger backups
-or .igc files it may have made while in use.
 <p>
  <table class="info">
 <tr><td>
@@ -73,30 +119,5 @@ default, and is NOT recommended practice.)
     </td>
 <td><img src="icon_info.png" width="100" height="100" alt="Info" valign="top"></td></tr>
 </table>
-
-<h2>Installing and uninstalling FRDL on Mac, Linux, Solaris Etc.</h2>
-
-In principle, FRDL should install, work and uninstall on all these platforms,
-however it is known that FRDL does not work on a Mac and this is a work in
-progress. 
-<p>
-Download the file <b>setup_FRDL_xxx.jar</b> to your computer from
-<A href="http://www.flymicro.com/frdl">www.flymicro.com/frdl</A> and
-double click on it to run the installer.
-
-<table class="info">
-<tr><td>
-    This will also install on Windows, if the above doesn't work.
-    <p>
-    A .jar file is actually just a zip file recognizable to Java, but
-    the .jar installer may not work correctly on Vista...
-</td>
-<td><img src="icon_info.png" width="100" height="100" alt="Info" valign="top"></td></tr>
-</table>
-
-<p>
-    FRDL is currently not tested on any other OS.  The developer would be
-    interested to hear of any experiences of attempts to use FRDL on them.
-
 </body>
 </html>
