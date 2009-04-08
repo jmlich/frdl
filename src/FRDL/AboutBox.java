@@ -7,7 +7,6 @@
 
 package FRDL;
 
-import java.net.URL;
 import java.util.ArrayList;
 import javax.swing.DefaultListModel;
 import org.jdesktop.application.Action;

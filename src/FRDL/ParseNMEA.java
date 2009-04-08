@@ -30,13 +30,14 @@ public class ParseNMEA {
     private LocalDateTime recordDt = null;
     private String lat = null;
     private String lon = null;
-    private String alt = null;
+    private String alt = "00000";
     private Double dLat = 0.0;
     private Double dLon = 0.0;
     private Double dAlt = 0.0;
-    private String val = "X";
+    private String fixValidity = "X";
     private String loggerModel = null;
     private String loggerFirmwareVer = null;
+    private int lastDay = 0;
     
     private static Pattern NMEA_PATTERN = Pattern.compile("^\\$(GPRMC|GPGGA|GPGSA|GPWPL|ADVER).+$", 32);
     private LocalDateTime windowOpen = null;
@@ -173,9 +174,9 @@ public class ParseNMEA {
         } else if (sb[0].compareTo("$GPGSA") == 0 && len >= 2) {
             //NMEA GSA line has fix validity but no date,time,lat,lon,alt
             try {
-                val = "X";
-                if (sb[2].equals("3")) val = "A";
-                if (sb[2].equals("2")) val = "V";
+                fixValidity = "X";
+                if (sb[2].equals("3")) fixValidity = "A";
+                if (sb[2].equals("2")) fixValidity = "V";
                 //System.out.println("GSA len: " + len);
             } catch (Exception e) {
                 MainView.addLog("ERROR parsing GSA line " + Integer.toString(lineNo) + " in " + fileName + " ["  + str + "] " + e);
@@ -220,8 +221,23 @@ public class ParseNMEA {
                     recordDt = recordDt.plusHours(utcOffsetH).plusMinutes(utcOffsetM);
                 }
             }
-            //write the igc line
+
             String igcLine = "";
+
+            //go into a new day?  for full CIMA spec need to write a 'L' record with the
+            //new day.  Probably no analysis software will read it, but it's there for
+            //the record and can be spotted quite easily manually....
+            if (lastDay > 0 && recordDt.getDayOfYear() != lastDay ) {
+                //make a time +250ms so it definitely gets included in the resulting data map
+                LocalDateTime dtX = recordDt.plusMillis(250);
+                igcLine = "LCMASDTETRACKDATE:" + nmeaDateFormat.print(dtX);
+                //write it to the track
+                track.put(dtX, new GpsPoint(igcLine,"L",dLat,dLon,dAlt,0.0));
+                igcLine = "";
+            }
+            lastDay = recordDt.getDayOfYear();
+            
+            //write the normal igc line
             if (wayPointDetected) {
                 // E "Event" line
                 igcLine = "E" +
@@ -235,7 +251,7 @@ public class ParseNMEA {
                     nmeaTimeFormat.print(recordDt) +
                     lat +
                     lon +
-                    val +
+                    fixValidity +
                     //"00000" +
                     alt + //we are filling pressure alt with GPS alt
                     alt;
