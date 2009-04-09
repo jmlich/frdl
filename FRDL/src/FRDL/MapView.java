@@ -180,7 +180,6 @@ public class MapView extends JPanel {
                 gp.lineTo(p2.getX(),p2.getY());
                 totalDist += p.getDist();
             } else {
-                gp.lineTo(p2.getX(),p2.getY());
                 //end this generalpath
                 if (fixValidity.equals("V")) colour = TRACK_COLOUR_V;
                 if (fixValidity.equals("X")) colour = TRACK_COLOUR_X;
