@@ -103,23 +103,26 @@ public class HelpView extends JPanel implements TreeSelectionListener {
 
         book = new DefaultMutableTreeNode(new BookInfo("Logger settings","2_09_Logger_settings.html"));
         category.add(book);
-
-        book = new DefaultMutableTreeNode(new BookInfo("Protecting against malware","2_10_Protecting_against_malware.html"));
+        
+        book = new DefaultMutableTreeNode(new BookInfo("Track & Altitude display","2_10_Track_and_Altitude_display.html"));
         category.add(book);
 
-        book = new DefaultMutableTreeNode(new BookInfo("Modes of operation","2_11_Modes_of_operation.html"));
+        book = new DefaultMutableTreeNode(new BookInfo("Protecting against malware","2_11_Protecting_against_malware.html"));
         category.add(book);
 
-        book = new DefaultMutableTreeNode(new BookInfo("Disconnecting a logger","2_12_Disconnecting_a_logger.html"));
+        book = new DefaultMutableTreeNode(new BookInfo("Modes of operation","2_12_Modes_of_operation.html"));
         category.add(book);
 
-        book = new DefaultMutableTreeNode(new BookInfo("Language","2_13_Language.html"));
+        book = new DefaultMutableTreeNode(new BookInfo("Disconnecting a logger","2_13_Disconnecting_a_logger.html"));
         category.add(book);
 
-        book = new DefaultMutableTreeNode(new BookInfo("Errors","2_14_Errors.html"));
+        book = new DefaultMutableTreeNode(new BookInfo("Language","2_14_Language.html"));
         category.add(book);
 
-        book = new DefaultMutableTreeNode(new BookInfo("Release notes","2_15_Release_notes.html"));
+        book = new DefaultMutableTreeNode(new BookInfo("Errors","2_15_Errors.html"));
+        category.add(book);
+
+        book = new DefaultMutableTreeNode(new BookInfo("Release notes","2_16_Release_notes.html"));
         category.add(book);
 
         book = new DefaultMutableTreeNode(new BookInfo("History","2_98_History.html"));

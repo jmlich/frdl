@@ -28,7 +28,9 @@ import org.joda.time.LocalDateTime;
 public class AltitudeView extends JPanel {
 
     private static final Color LEGEND_COLOUR  = Color.BLACK;
-    private static final Color TRACK_COLOUR     = Color.BLUE;
+    private static final Color TRACK_COLOUR_A     = new Color(0,0,153); //Color.BLUE;
+    private static final Color TRACK_COLOUR_V     = new Color(255,0,0); //red 
+    private static final Color TRACK_COLOUR_X     = new Color(153,153,153); //gray
     private static final int        LINE_SIZE       = 2;
     private static final int        FONT_SIZE       = 11;
     private static final int        PADDING = 20;
@@ -44,7 +46,7 @@ public class AltitudeView extends JPanel {
     private double hScale;
 
     private static final long GAP_BETWEEN_TRACKS = 30; //threshold in sec before a new line is generated
-    private ArrayList <GeneralPath> gPaths = null;
+    private ArrayList <TrackPath> trackPaths = null;
 
     /* this is the inherited method to actually draw in the component
      *
@@ -55,7 +57,7 @@ public class AltitudeView extends JPanel {
         super.paintComponent(g2d);
 
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON);
-        g2d.setPaint(TRACK_COLOUR);
+        //g2d.setPaint(TRACK_COLOUR_A);
         Stroke stroke = new BasicStroke(LINE_SIZE, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND);
         g2d.setStroke(stroke);
         g2d.setFont(new Font("Arial", 0, FONT_SIZE));
@@ -66,8 +68,9 @@ public class AltitudeView extends JPanel {
                 setScale();
                 //g2d.draw(drawTrack());  //one single track; not used
                 if (drawTracks()) {
-                    for (GeneralPath gp : gPaths) {
-                        g2d.draw(gp);
+                    for (TrackPath tp : trackPaths) {
+                        g2d.setPaint(tp.getColour());
+                        g2d.draw(tp.getGp());
                     }
                 }
                 drawStats();
@@ -115,14 +118,16 @@ public class AltitudeView extends JPanel {
      * creates possibly multiple lines to draw on the screen
      */
     private Boolean drawTracks () {
-        gPaths = new ArrayList <GeneralPath> ();
+        trackPaths = new ArrayList <TrackPath> ();
         GeneralPath gp = null;
         Double alt = null;
         Point2D p2 = null;
+        String fixValidity = "X";
         
         DateTime t = ((LocalDateTime) App.track.firstEntry().getKey()).toDateTime(DateTimeZone.UTC);
         long elapsed = new Duration(start_time,t).getStandardSeconds();
         long lastElapsed = elapsed;
+        Color colour = TRACK_COLOUR_A;
 
         for (Iterator it=App.track.entrySet().iterator(); it.hasNext(); ) {
             Map.Entry entry = (Map.Entry)it.next();
@@ -133,26 +138,57 @@ public class AltitudeView extends JPanel {
             if (gp == null) {
                 //new generalpath
                 gp = new GeneralPath(GeneralPath.WIND_EVEN_ODD);
+                fixValidity = ((GpsPoint) entry.getValue()).getFixValidity();
                 gp.moveTo(p2.getX(),p2.getY()); //track start point
             }
-            if (elapsed - lastElapsed < GAP_BETWEEN_TRACKS) {
+            if (elapsed - lastElapsed < GAP_BETWEEN_TRACKS &&
+                    ((GpsPoint) entry.getValue()).getFixValidity().equals(fixValidity)) {
                 //continue this generalpath
                 gp.lineTo(p2.getX(),p2.getY()); 
             } else {
+                gp.lineTo(p2.getX(),p2.getY());
                 //end this generalpath
-                gPaths.add(gp);
+                if (fixValidity.equals("V")) colour = TRACK_COLOUR_V;
+                if (fixValidity.equals("X")) colour = TRACK_COLOUR_X;
+                trackPaths.add(new TrackPath(gp,colour));
+                //set the colour back to normal
+                colour = TRACK_COLOUR_A;
                 //and start a new one
                 gp = new GeneralPath(GeneralPath.WIND_EVEN_ODD);
+                fixValidity = ((GpsPoint) entry.getValue()).getFixValidity();
                 gp.moveTo(p2.getX(),p2.getY()); //track start point
             }
             lastElapsed = elapsed;
         }
         //add the last one
-        if (gp != null) gPaths.add(gp);
+        if (fixValidity.equals("V")) colour = TRACK_COLOUR_V;
+        if (fixValidity.equals("X")) colour = TRACK_COLOUR_X;
+        if (gp != null) trackPaths.add(new TrackPath(gp,colour));
 
-        if (gPaths == null) return false;
+        if (trackPaths == null) return false;
 
         return true;
+    }
+
+    /* container for paths and their colour
+     *
+    */
+    private class TrackPath {
+        private GeneralPath gp = null;
+        private Color colour = null;
+        //constructor
+        public TrackPath(GeneralPath _gp, Color _colour) {
+            gp = _gp;
+            colour = _colour;
+        }
+
+        public GeneralPath getGp() {
+            return this.gp;
+        }
+
+        public Color getColour() {
+            return this.colour;
+        }
     }
 
     /*

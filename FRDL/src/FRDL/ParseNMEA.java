@@ -232,7 +232,7 @@ public class ParseNMEA {
                 LocalDateTime dtX = recordDt.plusMillis(250);
                 igcLine = "LCMASDTETRACKDATE:" + nmeaDateFormat.print(dtX);
                 //write it to the track
-                track.put(dtX, new GpsPoint(igcLine,"L",dLat,dLon,dAlt,0.0));
+                track.put(dtX, new GpsPoint(igcLine,"L",fixValidity,dLat,dLon,dAlt,0.0));
                 igcLine = "";
             }
             lastDay = recordDt.getDayOfYear();
@@ -244,7 +244,7 @@ public class ParseNMEA {
                     nmeaTimeFormat.print(recordDt) +
                     "PEV" +
                     pevDescr;
-                    track.put(recordDt, new GpsPoint(igcLine,"E",dLat,dLon,dAlt,0.0));
+                    track.put(recordDt, new GpsPoint(igcLine,"E",fixValidity,dLat,dLon,dAlt,0.0));
             } else {
                 // Ordinary B fix line
                 igcLine = "B" +
@@ -255,7 +255,7 @@ public class ParseNMEA {
                     //"00000" +
                     alt + //we are filling pressure alt with GPS alt
                     alt;
-                track.put(recordDt,new GpsPoint(igcLine,"B",dLat,dLon,dAlt,0.0));
+                track.put(recordDt,new GpsPoint(igcLine,"B",fixValidity,dLat,dLon,dAlt,0.0));
             }
         }
     }
