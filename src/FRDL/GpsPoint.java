@@ -1,44 +1,40 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package FRDL;
 
 /**
- *
+ * A gpsPoint is just that.
+ * is filled with the igcString and other more
+ * detailed info useful for drawing the two track views
  * @author rmh
  */
 public class GpsPoint {
     public String igcString;
     public String pointType;
+    public String fixValidity;
     public double lat;
     public double lon;
     public double alt;
-
-    //added by Nathan
-    // This is so my elevation view can project on this dimension,
-    // which is distance from track start.
-    // If you can think of a slicker way to do this, by all means be my guest.
     public double dist;
 
     /**
      * Constructor with pre-existing information
-     * @param _name String name
-     * @param _desc String description
+     * @param _igcString String the complete igc string
+     * @param _pointType String igc line type, will be B or L or E
+     * @param _fixValidity String : A = 3-D fix, V = 2-D fix and X = unknown.
      * @param _lat	double latitude
      * @param _lon	double longitude
-     * @param _ele  double elevation
-     * @param _time long time
+     * @param _alt  double altitude
+     * @param _dist double dist from previous fix in m
      */
     public GpsPoint(String _igcString,
                     String _pointType,
+                    String _fixValidity,
                     double _lat,
                     double _lon,
                     double _alt,
                     double _dist)    {
         igcString    = _igcString;
         pointType   = _pointType;
+        fixValidity = _fixValidity;
         lat     = _lat;
         lon     = _lon;
         alt     = _alt;
@@ -47,15 +43,15 @@ public class GpsPoint {
 
 
     /**
-     * Returns name parameter
-     * @return name
+     * Returns igcString parameter
+     * @return igcString
      */
     public String getIgcString() {
         return igcString;
     }
 
     /**
-     * Set Waypoint name
+     * Set igcString
      * @param String x
      */
     public void setIgcString(String x) {
@@ -96,15 +92,15 @@ public class GpsPoint {
     }
 
     /**
-     * Returns elevation parameter
-     * @return elevation
+     * Returns altitude parameter
+     * @return alt
      */
     public double getAlt() {
         return alt;
     }
 
     /**
-     * Set elevation
+     * Set altitude
      * @param double x
      */
     public void setAlt(double x) {
@@ -127,15 +123,23 @@ public class GpsPoint {
         pointType = x;
     }
 
+    public String getFixValidity() {
+        return fixValidity;
+    }
+
+    public void setFixValidity(String x) {
+        fixValidity = x;
+    }
+
     @Override
     public String toString() {
         return getIgcString() + "," +
                 getPointType() + "," +
+                getFixValidity() + "," + 
                 getLat() + "," +
                 getLon() + "," +
                 getAlt() + "," +
                 getDist();
-
     }
 
 }
