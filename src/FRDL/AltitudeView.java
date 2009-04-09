@@ -146,7 +146,6 @@ public class AltitudeView extends JPanel {
                 //continue this generalpath
                 gp.lineTo(p2.getX(),p2.getY()); 
             } else {
-                gp.lineTo(p2.getX(),p2.getY());
                 //end this generalpath
                 if (fixValidity.equals("V")) colour = TRACK_COLOUR_V;
                 if (fixValidity.equals("X")) colour = TRACK_COLOUR_X;
