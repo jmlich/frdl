@@ -10,13 +10,14 @@ must be done:
 5) In PackJacket, amend General Info --> Application version to this release version.
 6) Create jar and exe in Packjacket.  Names should be setup_FRDL_ver.jar and .exe
 7) Save and close Packjacket
-8) Move old versions of install .jar and .exe to somewhere safe.
-9) Commit Subversion with note "Release xxx"
-10) Copy jar and exe files to dev flymicro.com.frdl/docs/downloads, delete old versions.
-11) Copy any altered help files to dev flymicro.com.frdl/docs/FRDL_Help
-12) Update flymicro.com online with above files.
-13) Amend dev checkLatestVersion.cfm with latest release version
-14) Update flymicro.com online with above file.
+8) Create FRDL_ver.zip from /dist contents: FRDL.jar in the root and /lib subdir with all contents.
+9) Move old versions of install .jar, .exe and .zip to somewhere safe.
+10) Commit Subversion with note "Release xxx"
+11) Copy jar, exe, zip files to dev flymicro.com.frdl/docs/downloads, delete old versions.
+12) Copy any altered help files to dev flymicro.com.frdl/docs/FRDL_Help
+13) Update flymicro.com online with above files.
+14) Amend dev checkLatestVersion.cfm with latest release version
+15) Update flymicro.com online with above file.
 
 Done!
 
