@@ -64,6 +64,7 @@ public class MapView extends JPanel {
     
     private static final long GAP_BETWEEN_TRACKS = 30; //threshold in sec before a new line is generated
     private ArrayList <TrackPath> trackPaths = null;
+    private ArrayList <GpsPoint> pevs = null; //PEV = PilotEVent - when the MARK button was pressed
 
       /*
        * test: this just draws random lines on the map panel
@@ -83,7 +84,7 @@ public class MapView extends JPanel {
 
     /*
      * This is the method which actually draws the track
-     * is fired by a window resize or represh()
+     * is fired by a window resize or refresh()
     */
 
     @Override
@@ -108,7 +109,7 @@ public class MapView extends JPanel {
                         g2d.draw(tp.getGp());
                     }
                 }
-                drawStartAndFinish();
+                drawPoints();
                 drawScale();
                 drawStats();
                 //System.out.println("DONE DRAWING");
@@ -150,6 +151,7 @@ public class MapView extends JPanel {
      */
     private Boolean drawTracks () {
         trackPaths = new ArrayList <TrackPath> ();
+        pevs = new ArrayList <GpsPoint> ();
         GeneralPath gp = null;
         GpsPoint p = null;
         Point2D p2 = null;
@@ -163,35 +165,45 @@ public class MapView extends JPanel {
 
         for (Iterator it=App.track.entrySet().iterator(); it.hasNext(); ) {
             Map.Entry entry = (Map.Entry)it.next();
-            t = ((LocalDateTime) entry.getKey()).toDateTime(DateTimeZone.UTC);
-            elapsed = new Duration(start_time,t).getStandardSeconds();
             p = (GpsPoint) entry.getValue();
-            p2 = projectMapToScreen(p.getLon(),p.getLat());
-
-            if (gp == null) {
-                //new generalpath
-                gp = new GeneralPath(GeneralPath.WIND_EVEN_ODD);
-                fixValidity = ((GpsPoint) entry.getValue()).getFixValidity();
-                gp.moveTo(p2.getX(),p2.getY()); //track start point
-            }
-            if (elapsed - lastElapsed < GAP_BETWEEN_TRACKS &&
-                    ((GpsPoint) entry.getValue()).getFixValidity().equals(fixValidity)) {
-                //continue this generalpath
-                gp.lineTo(p2.getX(),p2.getY());
-                totalDist += p.getDist();
+            if (p.pointType.equals("E")) {
+                //is an event, add to pevs
+                pevs.add(p);
+            } else if (p.pointType.equals("L")) {
+                //probably a date change.  
+                //do nothing for now
+                //TODO put a warning icon on map?
             } else {
-                //end this generalpath
-                if (fixValidity.equals("V")) colour = TRACK_COLOUR_V;
-                if (fixValidity.equals("X")) colour = TRACK_COLOUR_X;
-                trackPaths.add(new TrackPath(gp,colour));
-                //set the colour back to normal
-                colour = TRACK_COLOUR_A;
-                //and start a new one
-                gp = new GeneralPath(GeneralPath.WIND_EVEN_ODD);
-                fixValidity = ((GpsPoint) entry.getValue()).getFixValidity();
-                gp.moveTo(p2.getX(),p2.getY()); //track start point
+                //regular track point
+                t = ((LocalDateTime) entry.getKey()).toDateTime(DateTimeZone.UTC);
+                elapsed = new Duration(start_time,t).getStandardSeconds();
+                p2 = projectMapToScreen(p.getLon(),p.getLat());
+
+                if (gp == null) {
+                    //new generalpath
+                    gp = new GeneralPath(GeneralPath.WIND_EVEN_ODD);
+                    fixValidity = ((GpsPoint) entry.getValue()).getFixValidity();
+                    gp.moveTo(p2.getX(),p2.getY()); //track start point
+                }
+                if (elapsed - lastElapsed < GAP_BETWEEN_TRACKS &&
+                        ((GpsPoint) entry.getValue()).getFixValidity().equals(fixValidity)) {
+                    //continue this generalpath
+                    gp.lineTo(p2.getX(),p2.getY());
+                    totalDist += p.getDist();
+                } else {
+                    //end this generalpath
+                    if (fixValidity.equals("V")) colour = TRACK_COLOUR_V;
+                    if (fixValidity.equals("X")) colour = TRACK_COLOUR_X;
+                    trackPaths.add(new TrackPath(gp,colour));
+                    //set the colour back to normal
+                    colour = TRACK_COLOUR_A;
+                    //and start a new one
+                    gp = new GeneralPath(GeneralPath.WIND_EVEN_ODD);
+                    fixValidity = ((GpsPoint) entry.getValue()).getFixValidity();
+                    gp.moveTo(p2.getX(),p2.getY()); //track start point
+                }
+                lastElapsed = elapsed;
             }
-            lastElapsed = elapsed;
         }
         //add the last one
         if (fixValidity.equals("V")) colour = TRACK_COLOUR_V;
@@ -203,7 +215,7 @@ public class MapView extends JPanel {
         return true;
     }
 
-        /* container for paths and their colour
+    /* container for paths and their colour
      *
     */
     private class TrackPath {
@@ -360,48 +372,52 @@ public class MapView extends JPanel {
     }
 
     /*
-     * puts start and finish points on screen with their time
+     * puts start and finish points on screen
+     * plus any PEV's found in the track
      *
     */
-     private void drawStartAndFinish() {
-        //DateTimeFormatter fmt = DateTimeFormat.forPattern("HH:mm:ss");
-        //DateTime t = ((LocalDateTime) App.track.firstEntry().getKey()).toDateTime(DateTimeZone.UTC);
-    
-        GpsPoint p = (FRDL.GpsPoint) App.track.firstEntry().getValue();
-        //drawPoint(projectMapToScreen(p.getLon(),p.getLat()),Color.GREEN,"Start " + t.toString(fmt));
-        drawPoint(projectMapToScreen(p.getLon(),p.getLat()),Color.GREEN,"");
-
-        //t = ((LocalDateTime) App.track.lastEntry().getKey()).toDateTime(DateTimeZone.UTC);
-        p = (FRDL.GpsPoint) App.track.lastEntry().getValue();
-        //drawPoint(projectMapToScreen(p.getLon(),p.getLat()),Color.RED,"Finish " + t.toString(fmt));
-        drawPoint(projectMapToScreen(p.getLon(),p.getLat()),Color.RED,"");
+     private void drawPoints() {
+        //start and finish
+        drawPoint((GpsPoint) App.track.firstEntry().getValue(),Color.GREEN,"");
+        drawPoint((GpsPoint) App.track.lastEntry().getValue(),Color.RED,"");
+        //pevs
+        if (pevs.size() > 0) {
+            for(GpsPoint p : pevs) {
+                drawPoint(p,null,"");
+            }
+        }
     }
 
-
-    /*
+         /*
      * draws a circular point
+     * with colour fill if c != null
      * with some text if txt length > 0
      *
     */
-    private void drawPoint(Point2D p, Color c, String txt) {
+    private void drawPoint(GpsPoint p, Color c, String txt) {
+        Point2D p2d = projectMapToScreen(p.getLon(),p.getLat());
         g2d.setStroke (new BasicStroke (1));
-        Ellipse2D e = new Ellipse2D.Double(p.getX() - WAYPOINT_SIZE/2.0,
-                                            p.getY() - WAYPOINT_SIZE/2.0,
+        Ellipse2D e = new Ellipse2D.Double(p2d.getX() - WAYPOINT_SIZE/2.0,
+                                            p2d.getY() - WAYPOINT_SIZE/2.0,
                                             WAYPOINT_SIZE,
                                             WAYPOINT_SIZE);
-        g2d.setPaint(c);
-        g2d.fill(e);
+        if (c != null) {
+            g2d.setPaint(c);
+            g2d.fill(e);
+        }
+
         g2d.setPaint (LEGEND_COLOUR);
         g2d.draw (e);
         if (txt.trim().length() > 0) {
             g2d.setFont(new Font("Arial", 0, FONT_SIZE));
-            g2d.drawString(txt,(float) p.getX()+ WAYPOINT_SIZE,(float) p.getY());
+            g2d.drawString(txt,(float) p2d.getX()+ WAYPOINT_SIZE,(float) p2d.getY());
         }
 
     }
 
+
     /*
-     * writes various interisting stats about the track to screen
+     * writes various interesting stats about the track to screen
      */
     private void drawStats () {
         g2d.setPaint (LEGEND_COLOUR);

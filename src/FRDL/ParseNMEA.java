@@ -108,8 +108,10 @@ public class ParseNMEA {
         } else {
             String warning = "WARNING cannot find ";
             if (ldt[0] == null) warning = warning + "starting ";
+            if (ldt[0] == null && ldt[1] == null) warning = warning + "and ";
             if (ldt[1] == null) warning = warning + "ending ";
-            MainView.addLog(warning + "date-time in " + f.getName());
+            MainView.addLog(warning + "date-time in " + f.getName() +
+                    " (only significant if this is a NMEA log file.)");
         }
        return false;
     }
