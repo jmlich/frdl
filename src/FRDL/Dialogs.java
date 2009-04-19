@@ -18,6 +18,13 @@ public class Dialogs {
 	JOptionPane.showMessageDialog(App.getApplication().getMainFrame(), message, title, type);
     }
 
+    public void showErrorDialog(String message) {
+	String title = rm.getString("Application.shortTitle") + " " + rm.getString("errorTitle");
+	int type = JOptionPane.ERROR_MESSAGE;
+	message = rm.getString("errorTitle") + ": " + message + "\n";
+	JOptionPane.showMessageDialog(App.getApplication().getMainFrame(), message, title, type);
+    }
+
     public void showInfoDialog(String message) {
 	String title = rm.getString("Application.shortTitle") + " " + rm.getString("infoTitle");
 	int type = JOptionPane.INFORMATION_MESSAGE;
