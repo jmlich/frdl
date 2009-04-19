@@ -873,6 +873,8 @@ public class MainView extends FrameView {
         TaskService tS = appC.getTaskService();
         tS.execute(mT);
         //tM.setForegroundTask(mT);
+
+
     }
 
     /*
@@ -899,7 +901,6 @@ public class MainView extends FrameView {
             this.winOpen = App.thisChampionship.getItemAsLocalDT("task." + activetask + ".windowOpen");
             this.winClose = App.thisChampionship.getItemAsLocalDT("task." + activetask + ".windowClose");
             //this.logger = App.logr;
-
         }
 
         @Override protected Object doInBackground() {
@@ -958,9 +959,20 @@ public class MainView extends FrameView {
             // the result computed by doInBackground().
             if (result != null) {
                 //MainView.addLog("Backed up " + ctr + " files");
+                if (!Utilities.directoryExists(App.thisChampionship.getItemAsString("master.pathToFlightAnalysis"))) {
+                    //show warning that igc filse dir is not available
+                    //and will save to championship files dir instead
+                    addLog("ERROR: Cannot find the igc files folder.");
+                    Dialogs d = new Dialogs();
+                    d.showErrorDialog(App.getResourceMap().getString("cannotFindIgcFilesDirErr.line1") + "\n"  +
+                            App.getResourceMap().getString("cannotFindIgcFilesDirErr.line2") + "\n\n" +
+                            App.getResourceMap().getString("cannotFindIgcFilesDirErr.line3") + "\n" +
+                            App.getResourceMap().getString("cannotFindIgcFilesDirErr.line4")  + "\n\n" +
+                            App.getResourceMap().getString("cannotFindIgcFilesDirErr.line5") + "\n" +
+                            App.getResourceMap().getString("cannotFindIgcFilesDirErr.line6"));
+                }
                 setMainStatus(App.getResourceMap().getString("savedMsg") + " " + result.toString());
                 setBottomStatus(App.getResourceMap().getString("mayDisconnect"));
-
                 repaintMaps();
             }
         }
@@ -971,6 +983,8 @@ public class MainView extends FrameView {
         //super.finished();
         stopRepaint(false);
         driveScan = null;
+
+
         startDriveScanTask();
 
         }

@@ -477,6 +477,13 @@ public class GpsLogger {
             if (!Utilities.directoryExists(igcFilesPath)) {
                 //create it
                 Boolean success = (new File(igcFilesPath)).mkdirs();
+                System.out.println("Success: " + success);
+                if (!success) {
+                    //igcFilesPath as set in championship settings
+                    //not available, perhaps a network error?
+                    //so save to same location as the championship file
+                    igcFilesPath = App.pathToAllFiles + File.separatorChar;
+                }
             }
 
             //String ct = Integer.toString(App.currentTask);
