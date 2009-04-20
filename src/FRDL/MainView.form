@@ -343,14 +343,15 @@
                 <MenuItem class="javax.swing.JMenuItem" name="languageMenuItem_CZ">
                   <Properties>
                     <Property name="text" type="java.lang.String" resourceKey="languageMenuItem_CZ.text"/>
-                    <Property name="enabled" type="boolean" value="false"/>
                     <Property name="name" type="java.lang.String" value="languageMenuItem_CZ" noResource="true"/>
                   </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="languageMenuItem_CZActionPerformed"/>
+                  </Events>
                 </MenuItem>
                 <MenuItem class="javax.swing.JMenuItem" name="languageMenuItem_FR">
                   <Properties>
                     <Property name="text" type="java.lang.String" resourceKey="languageMenuItem_FR.text"/>
-                    <Property name="enabled" type="boolean" value="false"/>
                     <Property name="name" type="java.lang.String" value="languageMenuItem_FR" noResource="true"/>
                   </Properties>
                   <Events>
@@ -360,9 +361,11 @@
                 <MenuItem class="javax.swing.JMenuItem" name="languageMenuItem_ES">
                   <Properties>
                     <Property name="text" type="java.lang.String" resourceKey="languageMenuItem_ES.text"/>
-                    <Property name="enabled" type="boolean" value="false"/>
                     <Property name="name" type="java.lang.String" value="languageMenuItem_ES" noResource="true"/>
                   </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="languageMenuItem_ESActionPerformed"/>
+                  </Events>
                 </MenuItem>
               </SubComponents>
             </Menu>
