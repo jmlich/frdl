@@ -92,12 +92,12 @@
                       <Group type="102" alignment="0" attributes="0">
                           <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
-                          <Component id="loggerUuidLabel" pref="455" max="32767" attributes="1"/>
+                          <Component id="loggerUuidLabel" pref="464" max="32767" attributes="1"/>
                       </Group>
                       <Group type="102" alignment="0" attributes="0">
                           <Component id="cimaStatusTxt" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
-                          <Component id="cimaStatusLabel" pref="428" max="32767" attributes="0"/>
+                          <Component id="cimaStatusLabel" pref="440" max="32767" attributes="0"/>
                       </Group>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
@@ -207,7 +207,7 @@
                               <EmptySpace min="-2" pref="326" max="-2" attributes="0"/>
                           </Group>
                           <Group type="102" attributes="0">
-                              <Component id="pilotNameTextField" pref="374" max="32767" attributes="0"/>
+                              <Component id="pilotNameTextField" pref="395" max="32767" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
                           </Group>
                       </Group>

@@ -382,6 +382,55 @@ public class Utilities {
         }
         return x;
     }
+    
+    /*
+     * a little bit basic, but will probably work in most cases...
+     * 
+    */
+    public static String removeAccents(String s){
+        s = s.replaceAll("[ÀÁÂÃÄÅ]","A");
+        s = s.replaceAll("[àáâãäå]","a");
+        s = s.replaceAll("Æ","AE");
+        s = s.replaceAll("æ","ae");
+        s = s.replaceAll("[ĆĈĊČÇ]","C");
+        s = s.replaceAll("[ćĉċčç]","c");
+        s = s.replaceAll("[ĎĐ]","D");
+        s = s.replaceAll("[ďđ]","d");
+        s = s.replaceAll("[ĒĔĖĘĚÈÉÊË]","E");
+        s = s.replaceAll("[ēĕėęěèéêë]","e");
+        s = s.replaceAll("[ĜĞĠĢ]","G");
+        s = s.replaceAll("[ĝğġģ]","g");
+        s = s.replaceAll("[ĤĦ]","H");
+        s = s.replaceAll("[ĥħ]","h");
+        s = s.replaceAll("[ÌÍÎÏĨĪĬĮİ]","I");
+        s = s.replaceAll("[ĩīĭįıîïìí]","i");
+        s = s.replaceAll("Ĵ","J");
+        s = s.replaceAll("ĵ","j");
+        s = s.replaceAll("Ķ","K");
+        s = s.replaceAll("[ķĸ]","k");
+        s = s.replaceAll("[ĹĻĽĿŁ]","L");
+        s = s.replaceAll("[ĺļľŀł]","l");
+        s = s.replaceAll("[ŃŅŇŊÑ]", "N");
+        s = s.replaceAll("[ńņňŉŋňñ]", "n");
+        s = s.replaceAll("[ÒÓÔÕÖŌŎŐ]","O");
+        s = s.replaceAll("[ôõöòóōŏő]","o");
+        s = s.replaceAll("[ŔŖŘ]","R");
+        s = s.replaceAll("[ŕŗř]","r");
+        s = s.replaceAll("[ŚŜŞŠ]","S");
+        s = s.replaceAll("[śŝşš]","s");
+        s = s.replaceAll("ß", "ss");
+        s = s.replaceAll("[ŢŤŦ]","T");
+        s = s.replaceAll("[ţťŧ]","t");
+        s = s.replaceAll("[ŨŪŬŮŰŲÙÚÛÜ]","U");
+        s = s.replaceAll("[ûüùúũūŭůűų]","u");
+        s = s.replaceAll("Ŵ", "W");
+        s = s.replaceAll("ŵ", "w");
+        s = s.replaceAll("[ÝŶŸ]", "Y");
+        s = s.replaceAll("[ýŷ]", "y");
+        s = s.replaceAll("[ŹŻŽ]", "Z");
+        s = s.replaceAll("[źżž]", "z");
+        return s;
+    } 
    
 }
 
