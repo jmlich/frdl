@@ -52,6 +52,8 @@ public class MainView extends FrameView {
 
         initComponents();
 
+        setQuickAccessMenuItem();
+
         //TODO can't get this to work....
         //URL imgURL = getClass().getResource("resources/jet16.png");
         //Image icon = Toolkit.getDefaultToolkit().getImage(imgURL);
@@ -191,6 +193,19 @@ public class MainView extends FrameView {
         MainView.addLog("Language will be "+lang+" on next startup");
         d.showInfoDialog(rm.getString("changeLangRestartMessage"));
     }
+        
+    private void setQuickAccessMenuItem () {
+        quickOpenMenuItem.setVisible(false);
+        quickOpenSeparator.setVisible(false);
+        if (App.sessionProperties.getProperty("lastChampionshipFile") != null) {
+            File f = new File(App.sessionProperties.getProperty("lastChampionshipFile"));
+            if (Utilities.fileExists(f.getAbsolutePath())) {
+                quickOpenMenuItem.setText(f.getName());
+                quickOpenMenuItem.setVisible(!isChampFileIsOpen());
+                quickOpenSeparator.setVisible(!isChampFileIsOpen());
+            }
+        }
+    }
 
 
     /** This method is called from within the constructor to
@@ -213,6 +228,8 @@ public class MainView extends FrameView {
         mainStatusLabel = new javax.swing.JLabel();
         menuBar = new javax.swing.JMenuBar();
         javax.swing.JMenu fileMenu = new javax.swing.JMenu();
+        quickOpenMenuItem = new javax.swing.JMenuItem();
+        quickOpenSeparator = new javax.swing.JSeparator();
         openChampMenuItem = new javax.swing.JMenuItem();
         newChampMenuItem = new javax.swing.JMenuItem();
         saveChampAsMenuItem = new javax.swing.JMenuItem();
@@ -270,7 +287,7 @@ public class MainView extends FrameView {
         );
         mapPanelLayout.setVerticalGroup(
             mapPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(0, 200, Short.MAX_VALUE)
+            .add(0, 201, Short.MAX_VALUE)
         );
 
         innerSplitPane.setLeftComponent(mapPanel);
@@ -287,7 +304,7 @@ public class MainView extends FrameView {
         );
         altPanelLayout.setVerticalGroup(
             altPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(0, 276, Short.MAX_VALUE)
+            .add(0, 278, Short.MAX_VALUE)
         );
 
         innerSplitPane.setRightComponent(altPanel);
@@ -316,7 +333,7 @@ public class MainView extends FrameView {
             topPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(topPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .add(mainStatusLabel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 431, Short.MAX_VALUE)
+                .add(mainStatusLabel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 435, Short.MAX_VALUE)
                 .addContainerGap())
         );
         topPanelLayout.setVerticalGroup(
@@ -336,13 +353,22 @@ public class MainView extends FrameView {
             .add(mainPanelLayout.createSequentialGroup()
                 .add(topPanel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(outerSplitPane, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 493, Short.MAX_VALUE))
+                .add(outerSplitPane, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 496, Short.MAX_VALUE))
         );
 
         menuBar.setName("menuBar"); // NOI18N
 
         fileMenu.setText(resourceMap.getString("fileMenu.text")); // NOI18N
         fileMenu.setName("fileMenu"); // NOI18N
+
+        quickOpenMenuItem.setText(resourceMap.getString("quickOpenMenuItem.text")); // NOI18N
+        quickOpenMenuItem.setHideActionText(true);
+        quickOpenMenuItem.setName("quickOpenMenuItem"); // NOI18N
+        quickOpenMenuItem.addActionListener(formListener);
+        fileMenu.add(quickOpenMenuItem);
+
+        quickOpenSeparator.setName("quickOpenSeparator"); // NOI18N
+        fileMenu.add(quickOpenSeparator);
 
         openChampMenuItem.setText(resourceMap.getString("openChampMenuItem.text")); // NOI18N
         openChampMenuItem.setName("openChampMenuItem"); // NOI18N
@@ -473,7 +499,7 @@ public class MainView extends FrameView {
             .add(statusPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .add(statusMessageLabel)
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 276, Short.MAX_VALUE)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 285, Short.MAX_VALUE)
                 .add(progressBar, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(statusAnimationLabel)
@@ -516,6 +542,9 @@ public class MainView extends FrameView {
             else if (evt.getSource() == languageMenuItem_FR) {
                 MainView.this.languageMenuItem_FRActionPerformed(evt);
             }
+            else if (evt.getSource() == quickOpenMenuItem) {
+                MainView.this.quickOpenMenuItemActionPerformed(evt);
+            }
         }
     }// </editor-fold>//GEN-END:initComponents
 
@@ -543,6 +572,11 @@ public class MainView extends FrameView {
     private void languageMenuItem_FRActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_languageMenuItem_FRActionPerformed
         setUserLanguage("fr");
     }//GEN-LAST:event_languageMenuItem_FRActionPerformed
+
+    private void quickOpenMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_quickOpenMenuItemActionPerformed
+        File f = new File(App.sessionProperties.getProperty("lastChampionshipFile"));
+        Utilities.loadChampionshipFile(f);
+    }//GEN-LAST:event_quickOpenMenuItemActionPerformed
     
     // Begin swingWorker
     /* Starts the task which (almost) continuously scans
@@ -1014,6 +1048,7 @@ public class MainView extends FrameView {
         } else {
             stopDriveScanTask();
         }
+        setQuickAccessMenuItem();
     }
 
     public boolean isLoggerIsConnected() {
@@ -1065,6 +1100,8 @@ public class MainView extends FrameView {
     private javax.swing.JMenuItem openChampMenuItem;
     private javax.swing.JSplitPane outerSplitPane;
     private javax.swing.JProgressBar progressBar;
+    private javax.swing.JMenuItem quickOpenMenuItem;
+    private javax.swing.JSeparator quickOpenSeparator;
     private javax.swing.JMenuItem saveChampAsMenuItem;
     private javax.swing.JMenu settingsMenu;
     private javax.swing.JLabel statusAnimationLabel;

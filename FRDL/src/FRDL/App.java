@@ -17,6 +17,9 @@ import org.jdesktop.application.Application;
 import org.jdesktop.application.ResourceMap;
 import org.jdesktop.application.SingleFrameApplication;
 import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 
 /**
  * The main class of the application.
@@ -26,6 +29,9 @@ public class App extends SingleFrameApplication {
 
     public static SimpleDateFormat standardDateFormat;
     public static Properties sessionProperties = null;
+    private static final String sessionPropertiesFileName = System.getProperty("user.home") +
+                    File.separatorChar +
+                    "FRDL_session_Properties";
     public static File[] startupRoots = File.listRoots();
     
     public static String pathToAllFiles = null;
@@ -41,6 +47,7 @@ public class App extends SingleFrameApplication {
     public static boolean champFileIsOpen = false;
 
     public static String userLanguage = "en";
+    public static String userLocalTimeOffset = "+00:00"; //used to pre-fill the offset of a new championship
 
 
         @Override
@@ -94,9 +101,20 @@ public class App extends SingleFrameApplication {
      * Main method launching the application.
      */
     public static void main(String[] args) {
-        // VERY important we are calculating in UTC
+        DateTime dt = new DateTime();
+        //test only...
+        //dt = dt.withZone(DateTimeZone.forID("Asia/Katmandu"));
+        DateTimeFormatter fmt = DateTimeFormat.forPattern("ZZ");
+        userLocalTimeOffset = fmt.print(dt);
+        MainView.addLog("User local time offset: " + userLocalTimeOffset);
+
+        // VERY important we are calculating in UTC, so set defaults
+        // for joda time and for java.util.TimeZone
+        DateTimeZone.setDefault(DateTimeZone.UTC);
+        TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
         System.setProperty("user.timezone", "UTC");
-        MainView.addLog("Application timezone: " + new DateTime().getZone().getID());
+        //MainView.addLog("Application timezone: " + new DateTime().getZone().getID());
+        MainView.addLog("Application timezone offset: " + fmt.print(new DateTime()));
 
         // also VERY important, set timezone for standard date format to UTC
         TimeZone tz = TimeZone.getTimeZone("GMT");
@@ -128,13 +146,16 @@ public class App extends SingleFrameApplication {
      * but should be OK after that...
     */
     private void readSessionProperties() {
+        if (!Utilities.fileExists(sessionPropertiesFileName)) {
+            writeSessionProperties();
+        }
         try {
             // now load properties from last invocation
-            FileInputStream in = new FileInputStream("sessionProperties");
+            FileInputStream in = new FileInputStream(sessionPropertiesFileName);
             sessionProperties.load(in);
             in.close();
         } catch (IOException ex) {
-            MainView.addLog("ERROR: failed to read session properties.  This is expected if it is the first time you are using FRDL");
+            MainView.addLog("ERROR: failed to read session properties.");
         }
     }
     /*
@@ -143,7 +164,7 @@ public class App extends SingleFrameApplication {
     */
     private void writeSessionProperties() {
         try {
-            FileOutputStream out = new FileOutputStream("sessionProperties");
+            FileOutputStream out = new FileOutputStream(sessionPropertiesFileName);
             sessionProperties.store(out, "---FRDL properties - DO NOT MANUALLY EDIT---");
             out.close();
         } catch (IOException ex) {
