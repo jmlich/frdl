@@ -47,6 +47,8 @@ public class ParseNMEA {
     private GpsLogger logger = null;
     private TreeMap track;
 
+    private static final String crlf = "\r\n"; //\r\n = CFLF
+
     //originally GPGGA|GPRMC|GPGLL|GPGSA|GPGSV|GPVTG|GPRMC|ADPMB
 
    
@@ -287,7 +289,7 @@ public class ParseNMEA {
                     Map.Entry entry = (Map.Entry)it.next();
                     //Object key = entry.getKey();
                     //Object value = entry.getValue();
-                    out.write(((GpsPoint) entry.getValue()).getIgcString() + "\n");
+                    out.write(((GpsPoint) entry.getValue()).getIgcString() + crlf); //\r\n = CFLF
                 }
             } else {
                 App.mapCaption = App.getResourceMap().getString("noTrackFoundMsg") +
@@ -337,18 +339,18 @@ public class ParseNMEA {
 
         String header = "AXXXXXX" + 
                 App.gpsLoggersMaster.getValue(loggertype, "make") + "," + loggerModel + "," + 
-                App.logr.loggerFileContent.readValue("logger.uuid") + "\n" +
-                "HSDTE" + firstLogDt + "\n" +
-                "HSFXA010\n" +
+                App.logr.loggerFileContent.readValue("logger.uuid") + crlf +
+                "HSDTE" + firstLogDt + crlf +
+                "HSFXA010" + crlf +
                 "HSPLTPILOT:" + 
-                App.logr.loggerFileContent.readValue("pilot.name") + "\n" +
-                "HSDTM100GPSDATUM:WGS84\n" +
-                "HSRFWFIRMWAREVERSION:" + loggerFirmwareVer + "\n" +
+                App.logr.loggerFileContent.readValue("pilot.name") + crlf +
+                "HSDTM100GPSDATUM:WGS84" + crlf +
+                "HSRFWFIRMWAREVERSION:" + loggerFirmwareVer + crlf +
                 "HSRHWHARDWAREVERSION:" + 
-                App.gpsLoggersMaster.getValue(loggertype, "make") + "," + loggerModel + "\n" +
+                App.gpsLoggersMaster.getValue(loggertype, "make") + "," + loggerModel + crlf +
                 "HSFTYFRTYPE:" + 
                 App.gpsLoggersMaster.getValue(loggertype, "make") + "," + loggerModel + "," + 
-                App.logr.loggerFileContent.readValue("logger.uuid") + "\n" +
+                App.logr.loggerFileContent.readValue("logger.uuid") + crlf +
                 "HSGPS:" + 
                 App.gpsLoggersMaster.getValue(loggertype, "GPSmfg") +
                 "," + 
@@ -356,24 +358,24 @@ public class ParseNMEA {
                 "," + 
                 App.gpsLoggersMaster.getValue(loggertype, "GPSchannels") + 
                 "," + 
-                App.gpsLoggersMaster.getValue(loggertype, "GPSmaxAlt") + "\n" +
-                "HSPRS:NOTFITTED\n" +
+                App.gpsLoggersMaster.getValue(loggertype, "GPSmaxAlt") + crlf +
+                "HSPRS:NOTFITTED" + crlf +
                 "HSDFSFILESPECIFICATION:"  + 
-                "CIMA," + App.getResourceMap().getString("meetsCimaSpecificationYear") + "\n" +
+                "CIMA," + App.getResourceMap().getString("meetsCimaSpecificationYear") + crlf +
                 "HSCIDCOMPETITIONID:" + 
-                App.logr.loggerFileContent.readValue("pilot.compNo") + "\n" +
+                App.logr.loggerFileContent.readValue("pilot.compNo") + crlf +
                 //I records here = none for CIMA spec
                 "LCMASTSNDATATRANSFERSOFTWARENAME:" + 
-                App.getResourceMap().getString("Application.shortTitle") + "\n" +
+                App.getResourceMap().getString("Application.shortTitle") + crlf +
                 "LCMASTSVDATATRANSFERSOFTWAREVERSION:" + 
-                App.getResourceMap().getString("Application.version") + "\n" +
-                "LCMASTSDDATATRANSFERDATE:" + nmeaDateFormat.print(dt) + "\n" +
-                "LCMASTSTDATATRANSFERTIME:" + nmeaTimeFormat.print(dt) + "\n" +
+                App.getResourceMap().getString("Application.version") + crlf +
+                "LCMASTSDDATATRANSFERDATE:" + nmeaDateFormat.print(dt) + crlf +
+                "LCMASTSTDATATRANSFERTIME:" + nmeaTimeFormat.print(dt) + crlf +
                 "LCMASTSKTASKNUMBER:" + 
-                App.thisChampionship.champData.readValue("championship.activeTask") + "\n" +
-                "LCMASPRSPRESSALTFILL:GNSSALT" + "\n" +
-                "LCMASTZNTIMEZONEOFFSET:" + forcedTimezoneOffset + "\n" +
-                "LCMASDTETRACKDATE:" + firstLogDt + "\n"
+                App.thisChampionship.champData.readValue("championship.activeTask") + crlf +
+                "LCMASPRSPRESSALTFILL:GNSSALT" + crlf +
+                "LCMASTZNTIMEZONEOFFSET:" + forcedTimezoneOffset + crlf +
+                "LCMASDTETRACKDATE:" + firstLogDt + crlf
                 ;
         return header;
     }
