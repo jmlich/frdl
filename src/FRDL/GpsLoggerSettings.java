@@ -107,7 +107,8 @@ public class GpsLoggerSettings extends javax.swing.JDialog {
 
         App.logr.loggerFileContent.writeProperty("logger.type",(String) loggerTypeComboBox.getSelectedItem());
 
-        App.logr.loggerFileContent.writeProperty("pilot.name", pilotNameTextField.getText().trim());
+        
+        App.logr.loggerFileContent.writeProperty("pilot.name", Utilities.removeAccents(pilotNameTextField.getText().trim()));
         App.logr.loggerFileContent.writeProperty("pilot.nation", pilotNationTextField.getText().trim());
         App.logr.loggerFileContent.writeProperty("pilot.compNo", pilotCompNoTextField.getText().trim());
         App.logr.loggerFileContent.writeProperty("pilot.loggerPriority", Integer.toString(loggerPriorityComboBox.getSelectedIndex() + 1));
