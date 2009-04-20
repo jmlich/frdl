@@ -434,19 +434,18 @@ public class MainView extends FrameView {
         LanguageMenu.add(languageMenuItem_EN);
 
         languageMenuItem_CZ.setText(resourceMap.getString("languageMenuItem_CZ.text")); // NOI18N
-        languageMenuItem_CZ.setEnabled(false);
         languageMenuItem_CZ.setName("languageMenuItem_CZ"); // NOI18N
+        languageMenuItem_CZ.addActionListener(formListener);
         LanguageMenu.add(languageMenuItem_CZ);
 
         languageMenuItem_FR.setText(resourceMap.getString("languageMenuItem_FR.text")); // NOI18N
-        languageMenuItem_FR.setEnabled(false);
         languageMenuItem_FR.setName("languageMenuItem_FR"); // NOI18N
         languageMenuItem_FR.addActionListener(formListener);
         LanguageMenu.add(languageMenuItem_FR);
 
         languageMenuItem_ES.setText(resourceMap.getString("languageMenuItem_ES.text")); // NOI18N
-        languageMenuItem_ES.setEnabled(false);
         languageMenuItem_ES.setName("languageMenuItem_ES"); // NOI18N
+        languageMenuItem_ES.addActionListener(formListener);
         LanguageMenu.add(languageMenuItem_ES);
 
         settingsMenu.add(LanguageMenu);
@@ -545,6 +544,12 @@ public class MainView extends FrameView {
             else if (evt.getSource() == quickOpenMenuItem) {
                 MainView.this.quickOpenMenuItemActionPerformed(evt);
             }
+            else if (evt.getSource() == languageMenuItem_CZ) {
+                MainView.this.languageMenuItem_CZActionPerformed(evt);
+            }
+            else if (evt.getSource() == languageMenuItem_ES) {
+                MainView.this.languageMenuItem_ESActionPerformed(evt);
+            }
         }
     }// </editor-fold>//GEN-END:initComponents
 
@@ -570,13 +575,27 @@ public class MainView extends FrameView {
     }//GEN-LAST:event_languageMenuItem_ENActionPerformed
 
     private void languageMenuItem_FRActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_languageMenuItem_FRActionPerformed
-        setUserLanguage("fr");
+        //setUserLanguage("fr");
+        Dialogs d = new Dialogs();
+        d.showInfoDialog("There is no French translation at the moment,\nbut with your help there could be....\n\nPlease contact the developer.");
     }//GEN-LAST:event_languageMenuItem_FRActionPerformed
 
     private void quickOpenMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_quickOpenMenuItemActionPerformed
         File f = new File(App.sessionProperties.getProperty("lastChampionshipFile"));
         setChampFileIsOpen(Utilities.loadChampionshipFile(f));
     }//GEN-LAST:event_quickOpenMenuItemActionPerformed
+
+    private void languageMenuItem_CZActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_languageMenuItem_CZActionPerformed
+        //setUserLanguage("cz");
+        Dialogs d = new Dialogs();
+        d.showInfoDialog("There is no Czech translation at the moment,\nbut with your help there could be....\n\nPlease contact the developer.");
+    }//GEN-LAST:event_languageMenuItem_CZActionPerformed
+
+    private void languageMenuItem_ESActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_languageMenuItem_ESActionPerformed
+        //setUserLanguage("es");
+        Dialogs d = new Dialogs();
+        d.showInfoDialog("There is no Spanish translation at the moment,\nbut with your help there could be....\n\nPlease contact the developer.");
+    }//GEN-LAST:event_languageMenuItem_ESActionPerformed
     
     // Begin swingWorker
     /* Starts the task which (almost) continuously scans
