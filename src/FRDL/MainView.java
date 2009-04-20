@@ -575,7 +575,7 @@ public class MainView extends FrameView {
 
     private void quickOpenMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_quickOpenMenuItemActionPerformed
         File f = new File(App.sessionProperties.getProperty("lastChampionshipFile"));
-        Utilities.loadChampionshipFile(f);
+        setChampFileIsOpen(Utilities.loadChampionshipFile(f));
     }//GEN-LAST:event_quickOpenMenuItemActionPerformed
     
     // Begin swingWorker

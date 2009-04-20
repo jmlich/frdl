@@ -167,8 +167,7 @@ public class Utilities {
         int returnVal = fc.showOpenDialog(null);
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             File f = fc.getSelectedFile();
-            loadChampionshipFile(f);
-            return true;
+            return loadChampionshipFile(f);
         } else {
         MainView.addLog("File - Open Championship command cancelled by user.");
         return false;
@@ -219,7 +218,7 @@ public class Utilities {
             //now load the new blank championship
             if (test) {
                 File f = new File(newFileName);
-                loadChampionshipFile(f);
+                if (!loadChampionshipFile(f)) return false;
 
                 //load some default settings into the new file
                 //default output path is the same one as the
@@ -282,7 +281,7 @@ public class Utilities {
             // If the dst file does not exist, it is created
             File f = new File(newFileName);
             if (test) test = copy(App.thisChampionship.fChamp,f);
-            if (test) loadChampionshipFile(f);
+            if (test) test = loadChampionshipFile(f);
             return test;
         } else {
         MainView.addLog("File - New Championship command cancelled by user.");
@@ -290,14 +289,20 @@ public class Utilities {
         }
     }
     
-    public static void loadChampionshipFile(File f) {
-        App.pathToAllFiles = f.getParent();
-        App.thisChampionship = new Championship(f);
-        setWindowTitle(f.getName());
-        App.sessionProperties.setProperty("lastChampionshipFile", f.getAbsolutePath());
-        App.mapCaption = App.getResourceMap().getString("waitingForLoggerMsg");
-        MainView.setMainStatus("");
-        MainView.addLog("Loaded championship: " + f.getName());
+    public static Boolean loadChampionshipFile(File f) {
+        try {
+            App.pathToAllFiles = f.getParent();
+            App.thisChampionship = new Championship(f);
+            setWindowTitle(f.getName());
+            App.sessionProperties.setProperty("lastChampionshipFile", f.getAbsolutePath());
+            App.mapCaption = App.getResourceMap().getString("waitingForLoggerMsg");
+            MainView.setMainStatus("");
+            MainView.addLog("Loaded championship: " + f.getName());
+            return true;
+        } catch (Exception e) {
+            MainView.addLog("ERROR: failed to load championship: " + f.getName() + " " + e.getMessage());
+            return false;
+        }
 	}
 
     public static void setWindowTitle(String openFileName) {
