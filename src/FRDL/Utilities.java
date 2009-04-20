@@ -166,17 +166,8 @@ public class Utilities {
         //int returnVal = 0;
         int returnVal = fc.showOpenDialog(null);
         if (returnVal == JFileChooser.APPROVE_OPTION) {
-            //System.out.println("app local storage:" + ctx.getLocalStorage().getDirectory().getCanonicalPath().toString());
-            MainView.addLog("Opening championship: " + fc.getSelectedFile().getPath());
-            App.pathToAllFiles = fc.getSelectedFile().getParent();
-            //System.out.println("Path to all files: " + App.pathToAllFiles);
-
-            App.thisChampionship = new Championship(fc.getSelectedFile());
-
-            setWindowTitle(fc.getSelectedFile().getName());
-            App.mapCaption = App.getResourceMap().getString("waitingForLoggerMsg");
-
-            MainView.setMainStatus("");
+            File f = fc.getSelectedFile();
+            loadChampionshipFile(f);
             return true;
         } else {
         MainView.addLog("File - Open Championship command cancelled by user.");
@@ -228,9 +219,7 @@ public class Utilities {
             //now load the new blank championship
             if (test) {
                 File f = new File(newFileName);
-                App.pathToAllFiles = f.getParent();
-                App.thisChampionship = new Championship(f);
-                setWindowTitle(f.getName());
+                loadChampionshipFile(f);
 
                 //load some default settings into the new file
                 //default output path is the same one as the
@@ -245,12 +234,12 @@ public class Utilities {
                 //and championship window close to today + 10 days + 1 min less than one day
                 dt = dt.plusDays(10).plusMinutes(1439);
                 App.thisChampionship.champData.writeProperty("championship.windowClose", dt.toString());
-                //App.thisChampionship.champData.writeProperty("task.1.windowClose", dt.toString());
-                
-                //App.thisChampionship.champData.writeProperty("championship.activeTask", "1");
-                
-                App.mapCaption = App.getResourceMap().getString("waitingForLoggerMsg");
-                MainView.setMainStatus("");
+                //user's local time offset - of course might not be set on user's computer correctly, but
+                //we can try anyway
+                int[] ltz = getTimeZoneOffset (App.userLocalTimeOffset);
+                App.thisChampionship.champData.writeProperty("championship.utcOffsetH", Integer.toString(ltz[0]));
+                App.thisChampionship.champData.writeProperty("championship.utcOffsetM", Integer.toString(ltz[1]));
+
             }
             return test;
         } else {
@@ -291,22 +280,25 @@ public class Utilities {
             //now create the file
             // Copies src file to dst file.
             // If the dst file does not exist, it is created
-            if (test) test = copy(App.thisChampionship.fChamp,new File(newFileName));
-            
-            if (test) {
-                App.pathToAllFiles = fc.getSelectedFile().getParent();
-                App.thisChampionship = new Championship(fc.getSelectedFile());
-                setWindowTitle((new File(newFileName)).getName());
-                MainView.addLog("Opening championship: " + newFileName);
-                App.mapCaption = App.getResourceMap().getString("waitingForLoggerMsg");
-                MainView.setMainStatus("");
-            }
+            File f = new File(newFileName);
+            if (test) test = copy(App.thisChampionship.fChamp,f);
+            if (test) loadChampionshipFile(f);
             return test;
         } else {
         MainView.addLog("File - New Championship command cancelled by user.");
         return false;
         }
     }
+    
+    public static void loadChampionshipFile(File f) {
+        App.pathToAllFiles = f.getParent();
+        App.thisChampionship = new Championship(f);
+        setWindowTitle(f.getName());
+        App.sessionProperties.setProperty("lastChampionshipFile", f.getAbsolutePath());
+        App.mapCaption = App.getResourceMap().getString("waitingForLoggerMsg");
+        MainView.setMainStatus("");
+        MainView.addLog("Loaded championship: " + f.getName());
+	}
 
     public static void setWindowTitle(String openFileName) {
         JFrame mainFrame = App.getApplication().getMainFrame();
@@ -362,6 +354,28 @@ public class Utilities {
         }
 
         return ret;
+    }
+
+    /*
+     * Give this a string eg "+01:45" or "-05:45" and
+     * it returns an integer array where ar[0] = hours and ar[1] = minutes
+     *
+     * designed for parsing timezone offsets, particularly
+     * App.userLocalTimeOffset
+     */
+    public static int[] getTimeZoneOffset (String st) {
+        int[] x = {0,0};
+        try {
+            String str[] = st.split(":");
+            int ofH = Integer.parseInt(str[0].substring(1));
+            if (str[0].substring(0, 1).equals("-")) ofH = ofH * -1;
+            int ofM = Integer.parseInt(str[1]);
+            x[0] = ofH;
+            x[1] = ofM;
+        } catch (Exception e) {
+            //nothing to do here
+        }
+        return x;
     }
    
 }
