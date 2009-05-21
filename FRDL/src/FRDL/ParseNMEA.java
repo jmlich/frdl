@@ -301,6 +301,8 @@ public class ParseNMEA {
             if (track != null) {
 
                 LocalDateTime lastKey = (LocalDateTime) track.firstKey();
+                //write a connect event at the beginning
+                out.write("E" + nmeaTimeFormat.print(lastKey) + "GCN" + crlf);
 
                     // For both the keys and values of a map
                 for (Iterator it=track.entrySet().iterator(); it.hasNext(); ) {
@@ -332,6 +334,9 @@ public class ParseNMEA {
                     }
                     //out.write(((GpsPoint) entry.getValue()).getIgcString() + crlf); //\r\n = CFLF
                 }
+                //write a disconnect event at the end
+                out.write("E" + nmeaTimeFormat.print((LocalDateTime) track.lastKey()) + "GDC" + crlf);
+                
             } else {
                 App.mapCaption = App.getResourceMap().getString("noTrackFoundMsg") +
                         " " +
