@@ -109,8 +109,10 @@ public class GpsLogger {
                         App.getResourceMap().getString("doYouWantToAddThisLoggerMsg.line2") + "\n" +
                         App.getResourceMap().getString("doYouWantToAddThisLoggerMsg.line3")
                         )) {
-                    MainView.setMainStatus(App.getResourceMap().getString("youMayDisconnectMsg"));
+                    //MainView.setMainStatus(App.getResourceMap().getString("youMayDisconnectMsg"));
+                    MainView.setMainStatus("");
                     MainView.setBottomStatus(App.getResourceMap().getString("youMayDisconnectMsg"));
+                    App.mapCaption = App.getResourceMap().getString("youMayDisconnectMsg");
                     return false;
                 } else {
                     //add the logger to the championship file

@@ -1,7 +1,3 @@
-/*
- * NMEA5App.java
- */
-
 package FRDL;
 
 import java.io.File;
@@ -91,7 +87,7 @@ public class App extends SingleFrameApplication {
 
     /**
      * A convenient static getter for the application instance.
-     * @return the instance of NMEA5App
+     * @return the instance of App
      */
     public static App getApplication() {
         return Application.getInstance(App.class);
@@ -125,7 +121,7 @@ public class App extends SingleFrameApplication {
         launch(App.class, args);
     }
 
-            /*
+    /*
      * this runs immnediately before the app is closed
     */
     @Override
@@ -141,9 +137,9 @@ public class App extends SingleFrameApplication {
         System.out.println("about to shut down");
     }
 
-            /*
-     * reads session properties - this is guaranteed to fail on first run
-     * but should be OK after that...
+     /*
+     * reads session properties - kept in the System.user.home dir
+     * in the properties file: FRDL_session_Properties
     */
     private void readSessionProperties() {
         if (!Utilities.fileExists(sessionPropertiesFileName)) {
@@ -159,8 +155,9 @@ public class App extends SingleFrameApplication {
         }
     }
     /*
-     * writes session properties to a .properties file called sessionProperties
-     * location is set by the system, but it should be consistent....
+     * writes session properties to
+     * the properties file: FRDL_session_Properties
+     * kept in the System.user.home dir
     */
     private void writeSessionProperties() {
         try {
@@ -172,6 +169,13 @@ public class App extends SingleFrameApplication {
         }
     }
 
+    /*
+     * returns the stuff in App.properties
+     * very important since most strings for messages Etc are
+     * kept in this properties file and it is the one which
+     * is internationalized
+     *
+    */
     public static ResourceMap getResourceMap () {
         return org.jdesktop.application.Application.getInstance(FRDL.App.class).getContext().getResourceMap(App.class);
     }
