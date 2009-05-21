@@ -6,7 +6,7 @@
 <body class="body">
 <h1>FRDL release notes</h1>
 
-<p><b>0.28</b> xx May 2009:
+<p><b>0.28</b> 21 May 2009:
 <br>
 - Improved on-screen messaging.
 <br>
@@ -17,6 +17,11 @@ not written to the output .igc file by default.  In the case where a logger
 has been set up wrong and fix validity was not recorded (ie the entire track is
 grey on the display) these can be written to a new igc file by selecting
 settings --> force download and selecting "Yes".
+<br>
+- Gaps of more than 30 sec in a track are flagged in the IGC file with the
+Event codes GDC (GNSS Disconnect) and GCN (GNSS connect). Although not in the
+CIMA specification, this is standard IGC format and microFLAP uses these codes to
+display segments of tracks which don't actually have fixes.
 
 <p><b>0.27</b> 20 Apr 2009:
 <br>

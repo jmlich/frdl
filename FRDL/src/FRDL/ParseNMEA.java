@@ -10,7 +10,9 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.regex.Pattern;
+import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
+import org.joda.time.Duration;
 import org.joda.time.LocalDate;
 import org.joda.time.LocalDateTime;
 import org.joda.time.LocalTime;
@@ -46,6 +48,9 @@ public class ParseNMEA {
     private int utcOffsetM = 0;
     private GpsLogger logger = null;
     private TreeMap track;
+
+    //threshold in sec before a disconnect / connect event is written to the igc file
+    private static final long GAP_BETWEEN_TRACKS = 30;
 
     //private static final int secondsBeforeDisconnect = 30;
     //
@@ -293,9 +298,10 @@ public class ParseNMEA {
 
             out.write(makeIgcHeader());
 
-            LocalDateTime lastKey = (LocalDateTime) track.firstKey();
-
             if (track != null) {
+
+                LocalDateTime lastKey = (LocalDateTime) track.firstKey();
+
                     // For both the keys and values of a map
                 for (Iterator it=track.entrySet().iterator(); it.hasNext(); ) {
                     Map.Entry entry = (Map.Entry)it.next();
@@ -307,13 +313,23 @@ public class ParseNMEA {
                     Boolean writeLine = true;
                     if (p.fixValidity.equals("X")) {
                         writeLine = App.includeInvalidFixesInIgcFile;
-                        System.out.println(writeLine + " " + p.getIgcString());
+                        //System.out.println(writeLine + " " + p.getIgcString());
                     }
                     if (writeLine)  {
-
+                        //check for gap between track points and write
+                        //disconnect / connect events if gap is > GAP_BETWEEN_TRACKS
+                        DateTime lastKey2 = lastKey.toDateTime(DateTimeZone.UTC);
+                        DateTime thisKey = ((LocalDateTime) entry.getKey()).toDateTime(DateTimeZone.UTC);
+                        int elapsed = (int) new Duration(lastKey2,thisKey).getStandardSeconds();
+                        if (elapsed > GAP_BETWEEN_TRACKS) {
+                            out.write("E" + nmeaTimeFormat.print(lastKey) + "GDC" + crlf);
+                            out.write(((GpsPoint) track.get(lastKey)).getIgcString() + crlf);
+                            out.write("E" + nmeaTimeFormat.print(thisKey) + "GCN" + crlf);
+                        }
                         out.write(p.getIgcString() + crlf);
+
+                        lastKey = (LocalDateTime) entry.getKey();
                     }
-                    lastKey = (LocalDateTime) entry.getKey();
                     //out.write(((GpsPoint) entry.getValue()).getIgcString() + crlf); //\r\n = CFLF
                 }
             } else {
