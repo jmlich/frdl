@@ -29,7 +29,7 @@
           <Group type="102" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="taskWindowPanel" alignment="0" max="32767" attributes="1"/>
+                  <Component id="taskWindowPanel" alignment="0" pref="355" max="32767" attributes="1"/>
                   <Component id="taskPanel" alignment="0" max="32767" attributes="1"/>
                   <Component id="statusLabel" alignment="0" pref="355" max="32767" attributes="0"/>
               </Group>
