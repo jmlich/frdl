@@ -111,7 +111,7 @@ public class Utilities {
         } catch (IOException ex) {
             bo = false;
             //Logger.getLogger(Utilities.class.getName()).log(Level.SEVERE, null, ex);
-            MainView.addLog("File copy error: " + ex);
+            MainView.addLog("ERROR: File copy error: " + ex);
         }
         return bo;
     }
@@ -119,7 +119,7 @@ public class Utilities {
     /*
      * Generates the default CIMA igc file name
      * looks in the target dir and NEVER writes duplicates
-     * 
+     * will fall over if it gets beyond z...
     */
     public static String makeCimaFileName (String compNo, String taskNo, String fileVersion, String loggerPriority, String pilotName) {
         //35 has got to be enough hasn't it?
@@ -412,8 +412,10 @@ public class Utilities {
         s = s.replaceAll("[ĺļľŀł]","l");
         s = s.replaceAll("[ŃŅŇŊÑ]", "N");
         s = s.replaceAll("[ńņňŉŋňñ]", "n");
-        s = s.replaceAll("[ÒÓÔÕÖŌŎŐ]","O");
-        s = s.replaceAll("[ôõöòóōŏő]","o");
+        s = s.replaceAll("[ÒÓÔÕÖŌŎŐØ]","O");
+        s = s.replaceAll("[ôõöòóōŏőø]","o");
+        s = s.replaceAll("Œ", "OE");
+        s = s.replaceAll("œ", "oe");
         s = s.replaceAll("[ŔŖŘ]","R");
         s = s.replaceAll("[ŕŗř]","r");
         s = s.replaceAll("[ŚŜŞŠ]","S");

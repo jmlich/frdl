@@ -1,14 +1,9 @@
-/*
- * MainView.java
- */
-
 package FRDL;
 
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.CancellationException;
-//import javax.swing.SwingWorker;
 import org.jdesktop.application.Application;
 import org.jdesktop.application.ApplicationContext;
 import org.jdesktop.application.Task;
@@ -34,6 +29,7 @@ import org.joda.time.LocalDateTime;
 
 /**
  * The application's main frame.
+ * All gui stuff starts from this page.
  */
 public class MainView extends FrameView {
     public static DefaultListModel logListModel = new DefaultListModel();
@@ -44,14 +40,15 @@ public class MainView extends FrameView {
     private JDialog loggerSettings;
     private JDialog loggersInfo;
     private boolean loggerIsConnected = false;
-    //private boolean champFileIsOpen = false;
     private boolean stopRepaint = false;
 
     public MainView(SingleFrameApplication main_app) {
         super(main_app);
 
+        //initialize all the GUI bits
         initComponents();
 
+        //a quick link to the last championship file which was opened.
         setQuickAccessMenuItem();
 
         //TODO can't get this to work....
@@ -59,12 +56,9 @@ public class MainView extends FrameView {
         //Image icon = Toolkit.getDefaultToolkit().getImage(imgURL);
         //App.getApplication().getMainFrame().setIconImage(icon);
 
+        //check with flymicro.com to see if this is the latest version
         CheckLatestVersionTask t = new CheckLatestVersionTask();
         t.execute();
-
-        //outerSplitPane.getRightComponent().setSize(outerSplitPane.getRightComponent().getWidth(), 0);
-        //logPane.ge
-        //logList.
 
         // status bar initialization - message timeout, idle icon and busy animation, etc
         ResourceMap resourceMap = getResourceMap();
@@ -153,7 +147,7 @@ public class MainView extends FrameView {
         }
     }
 
-                @Action(enabledProperty = "loggerIsConnected")
+    @Action(enabledProperty = "loggerIsConnected")
     public void showLoggerSettings() {
         JFrame mainFrame = App.getApplication().getMainFrame();
         loggerSettings = new GpsLoggerSettings(mainFrame);
@@ -163,7 +157,7 @@ public class MainView extends FrameView {
         System.out.println("is this after the dialog has closed?");
     }
 
-        @Action(enabledProperty = "champFileIsOpen")
+    @Action(enabledProperty = "champFileIsOpen")
     public void showLoggersInfo() {
         JFrame mainFrame = App.getApplication().getMainFrame();
         loggersInfo = new GpsLoggersInfo(mainFrame);
