@@ -45,6 +45,7 @@ public class App extends SingleFrameApplication {
     public static String userLanguage = "en";
     public static String userLocalTimeOffset = "+00:00"; //used to pre-fill the offset of a new championship
 
+    public static Boolean includeInvalidFixesInIgcFile = false;
 
         @Override
     protected void initialize(String[] args) {

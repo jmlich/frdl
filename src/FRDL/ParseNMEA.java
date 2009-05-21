@@ -47,6 +47,9 @@ public class ParseNMEA {
     private GpsLogger logger = null;
     private TreeMap track;
 
+    //private static final int secondsBeforeDisconnect = 30;
+    //
+
     private static final String crlf = "\r\n"; //\r\n = CFLF
 
     //originally GPGGA|GPRMC|GPGLL|GPGSA|GPGSV|GPVTG|GPRMC|ADPMB
@@ -290,13 +293,28 @@ public class ParseNMEA {
 
             out.write(makeIgcHeader());
 
+            LocalDateTime lastKey = (LocalDateTime) track.firstKey();
+
             if (track != null) {
                     // For both the keys and values of a map
                 for (Iterator it=track.entrySet().iterator(); it.hasNext(); ) {
                     Map.Entry entry = (Map.Entry)it.next();
                     //Object key = entry.getKey();
                     //Object value = entry.getValue();
-                    out.write(((GpsPoint) entry.getValue()).getIgcString() + crlf); //\r\n = CFLF
+                    // we are now NOT writing invalid gps points to igc
+                    // unless forced by user
+                    GpsPoint p = (GpsPoint) entry.getValue();
+                    Boolean writeLine = true;
+                    if (p.fixValidity.equals("X")) {
+                        writeLine = App.includeInvalidFixesInIgcFile;
+                        System.out.println(writeLine + " " + p.getIgcString());
+                    }
+                    if (writeLine)  {
+
+                        out.write(p.getIgcString() + crlf);
+                    }
+                    lastKey = (LocalDateTime) entry.getKey();
+                    //out.write(((GpsPoint) entry.getValue()).getIgcString() + crlf); //\r\n = CFLF
                 }
             } else {
                 App.mapCaption = App.getResourceMap().getString("noTrackFoundMsg") +
@@ -307,6 +325,9 @@ public class ParseNMEA {
             }
             
             out.close();
+            
+            //always set this back to default
+            App.includeInvalidFixesInIgcFile = false;
             
             File f = new File(fileName);
             MainView.addLog("IGC file saved: " + f.getName());

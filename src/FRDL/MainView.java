@@ -1076,6 +1076,15 @@ public class MainView extends FrameView {
 
     @Action(enabledProperty = "loggerIsConnected")
     public void forceDownload() {
+        Dialogs d = new Dialogs();
+        if(d.showQuestionDialogYesNo(rm.getString("writeInvalidFixesMsgLine1") + "\r\n" +
+                rm.getString("writeInvalidFixesMsgLine2") + "\r\n" +
+                rm.getString("writeInvalidFixesMsgLine3") + "\r\n"
+                ,false)) {
+            //
+            //yes selected: temporarily set to download invalid points
+            App.includeInvalidFixesInIgcFile = true;
+        } 
         runBackupAndProcessTask();
     }
 

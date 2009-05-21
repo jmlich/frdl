@@ -102,7 +102,7 @@ public class TaskSettings extends javax.swing.JDialog {
                         App.getResourceMap().getString("multipleDayWarningMsg.line7") + "\n" +
                         App.getResourceMap().getString("multipleDayWarningMsg.line8") + "\n" +
                         App.getResourceMap().getString("multipleDayWarningMsg.line9");
-                return !d.showQuestionDialog(st);
+                return !d.showQuestionDialogOkCancel(st);
             }
         }
         return true;
