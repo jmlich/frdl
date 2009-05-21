@@ -31,10 +31,31 @@ public class Dialogs {
 	JOptionPane.showMessageDialog(App.getApplication().getMainFrame(), message, title, type);
     }
 
-    public Boolean showQuestionDialog(String message) {
+    public Boolean showQuestionDialogOkCancel(String message) {
 	String title = rm.getString("Application.shortTitle") + " " + rm.getString("infoTitle");
 	int type = JOptionPane.OK_CANCEL_OPTION;
 	int answer = JOptionPane.showConfirmDialog(App.getApplication().getMainFrame(), message, title, type);
+        if (answer == JOptionPane.YES_OPTION) {
+            // User clicked YES.
+            return true;
+        } else {
+            // User clicked NO.
+            return false;
+        }
+    }
+
+    public Boolean showQuestionDialogYesNo(String message,Boolean yesIsDefault) {
+        String title = rm.getString("Application.shortTitle") + " " + rm.getString("infoTitle");
+        int type = JOptionPane.YES_NO_OPTION;
+        int icon = JOptionPane.QUESTION_MESSAGE;
+        Object[] options = {rm.getString("yesMsg"),rm.getString("noMsg")};
+        //if yesIsDefault = true then Yes is the default button, false and No is the default button
+        Object def = options[0];
+        if(!yesIsDefault) {
+            def = options[1];
+        }
+        int answer = JOptionPane.showOptionDialog(App.getApplication().getMainFrame(),
+            message, title, type, icon, null,  options, def);
         if (answer == JOptionPane.YES_OPTION) {
             // User clicked YES.
             return true;

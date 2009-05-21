@@ -200,7 +200,7 @@ public class Utilities {
                     + "." + rm.getString("frdcFileExtension");
             //System.out.println("new file name is: " + newFileName);
 
-            if (fileExists(newFileName)) test = d.showQuestionDialog(rm.getString("overWriteExistingFileQuestion"));
+            if (fileExists(newFileName)) test = d.showQuestionDialogOkCancel(rm.getString("overWriteExistingFileQuestion"));
 
             //now write the content
             if (test) {
@@ -274,7 +274,7 @@ public class Utilities {
                     + "." + rm.getString("frdcFileExtension");
             //System.out.println("new file name is: " + newFileName);
 
-            if (fileExists(newFileName)) test = d.showQuestionDialog(rm.getString("overWriteExistingFileQuestion"));
+            if (fileExists(newFileName)) test = d.showQuestionDialogOkCancel(rm.getString("overWriteExistingFileQuestion"));
             
             //now create the file
             // Copies src file to dst file.

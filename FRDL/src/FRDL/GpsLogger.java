@@ -66,7 +66,7 @@ public class GpsLogger {
 
             Dialogs q = new Dialogs();
             if (this.loggerFile == null) {
-                if (!q.showQuestionDialog(App.getResourceMap().getString("noLoggerConfigFileMsg") +
+                if (!q.showQuestionDialogOkCancel(App.getResourceMap().getString("noLoggerConfigFileMsg") +
                         " " + path + "\n " +
                         App.getResourceMap().getString("createNewMsg"))) {
                     MainView.setMainStatus(App.getResourceMap().getString("youMayDisconnectMsg"));
@@ -100,7 +100,7 @@ public class GpsLogger {
                     // or passwords do match, so is a secured app and we are downloading
                     // on organizer box
                     // - add logger to championship?
-                if (!q.showQuestionDialog(
+                if (!q.showQuestionDialogOkCancel(
                         App.getResourceMap().getString("doYouWantToAddThisLoggerMsg.line1") + "\n\n" +
                         App.logr.loggerFileContent.readValue("championship.name") + "\n" +
                         App.logr.loggerFileContent.readValue("pilot.compNo") + " - " +
@@ -141,7 +141,7 @@ public class GpsLogger {
             // so in fact the only option we need is a one-time dialog to set into
             // download mode for this championship
      
-            if (!q.showQuestionDialog(App.getResourceMap().getString("enterDownloadMode.line1") + "\n\n" +
+            if (!q.showQuestionDialogOkCancel(App.getResourceMap().getString("enterDownloadMode.line1") + "\n\n" +
                     App.getResourceMap().getString("enterDownloadMode.line2") + "\n\n" +
                     App.getResourceMap().getString("enterDownloadMode.line3") + "\n" +
                     App.getResourceMap().getString("enterDownloadMode.line4") + "\n" +
@@ -151,7 +151,7 @@ public class GpsLogger {
                 MainView.setBottomStatus(App.getResourceMap().getString("youMayDisconnectMsg"));
                 return false;
             } else {
-                if (!q.showQuestionDialog(App.getResourceMap().getString("areYouSureMsg.line1") + "\n\n" +
+                if (!q.showQuestionDialogOkCancel(App.getResourceMap().getString("areYouSureMsg.line1") + "\n\n" +
                     App.getResourceMap().getString("areYouSureMsg.line2") + "")) {
                     MainView.setMainStatus(App.getResourceMap().getString("youMayDisconnectMsg"));
                     MainView.setBottomStatus(App.getResourceMap().getString("youMayDisconnectMsg"));
