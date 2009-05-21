@@ -169,7 +169,14 @@ public class ParseNMEA {
                     dLon = parseLon(sb[4],sb[5]);
                     dAlt = Double.parseDouble(sb[9]);
                     int iAlt = dAlt.intValue();
-                    alt = repeatString("0",5 - Integer.toString(iAlt).length()) + Integer.toString(iAlt);
+                    if (iAlt < 0) {
+                        //negative altitude
+                        iAlt = Math.abs(iAlt);
+                        alt = "-" + repeatString("0",4 - Integer.toString(iAlt).length()) + Integer.toString(iAlt);
+                    } else {
+                        //positive altitude
+                        alt = repeatString("0",5 - Integer.toString(iAlt).length()) + Integer.toString(iAlt);
+                    }
                 } catch (Exception e) {
                     MainView.addLog("ERROR parsing GGA line " + Integer.toString(lineNo) + " in " + fileName + " ["  + str + "] " + e);
                 }
