@@ -350,7 +350,8 @@ public class ParseNMEA {
                             } else if (track.higherEntry(entry.getKey()) != null) {
                                 //check for gap between track points and write
                                 //disconnect / connect events if gap is > GAP_BETWEEN_TRACKS
-                                DateTime nextKey = ((LocalDateTime) track.higherEntry(entry.getKey()).getKey()).toDateTime(DateTimeZone.UTC);
+                                //DateTime nextKey = ((LocalDateTime) track.higherEntry(entry.getKey()).getKey()).toDateTime(DateTimeZone.UTC);
+                                DateTime nextKey = getNextValidKey(((LocalDateTime) track.higherEntry(entry.getKey()).getKey())).toDateTime(DateTimeZone.UTC);
                                 DateTime thisKey = ((LocalDateTime) entry.getKey()).toDateTime(DateTimeZone.UTC);
                                 int elapsed = (int) new Duration(thisKey,nextKey).getStandardSeconds(); 
                                 if (elapsed >= GAP_BETWEEN_TRACKS) {
@@ -500,6 +501,31 @@ public class ParseNMEA {
          } else {
              return 180.0; // invalid longitude
          }
+     }
+     
+     /*
+      * iterates over track from currentKey until 
+      * it finds a valid B fix and returns the key
+      * 
+     */
+     private LocalDateTime getNextValidKey(LocalDateTime currentKey) {
+        //System.out.println("currentKey: " + currentKey.toString());
+       LocalDateTime k = null;
+        for (Iterator it=track.tailMap(currentKey).entrySet().iterator(); it.hasNext(); ) {
+            Map.Entry entry = (Map.Entry)it.next();
+            GpsPoint p = (GpsPoint) entry.getValue();
+            k = (LocalDateTime) entry.getKey();
+            if (App.includeInvalidFixesInIgcFile) {
+                if (p.getPointType().equals("B")) return k;
+            } else {
+                if (!p.fixValidity.equals("X") && p.getPointType().equals("B")) {
+                    //System.out.println("returnKey: " + entry.getKey().toString());
+                    return k;
+                }
+            }
+        }
+        //return null;
+        return k;
      }
 
      /*
