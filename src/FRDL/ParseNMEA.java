@@ -37,7 +37,7 @@ public class ParseNMEA {
     private String fixValidity = "X";
     private String loggerModel = null;
     private String loggerFirmwareVer = null;
-    private int lastDay = 0;
+    private int lastDay = -1;
     
     private static Pattern NMEA_PATTERN = Pattern.compile("^\\$(GPRMC|GPGGA|GPGSA|GPWPL|ADVER).+$", 32);
     private LocalDateTime windowOpen = null;
@@ -87,6 +87,7 @@ public class ParseNMEA {
         if (track.size() == 0) {
             track = null;
         } else {
+            setValidEvents();
             setPointDistances();
             //I don't think this is a deep copy, but it seems to do the trick
             //to solve a big problem of the maps which were looking at
@@ -202,7 +203,7 @@ public class ParseNMEA {
             if (recordDt != null) {
                 try {
                     wayPointDetected = true;
-                    recordDt = recordDt.plusMillis(500);
+                    recordDt = recordDt.minusMillis(500);
                     String[] q = sb[5].split("\\*");
                     pevDescr = q[0];
                 } catch (Exception e) {
@@ -241,9 +242,10 @@ public class ParseNMEA {
             //go into a new day?  for full CIMA spec need to write a 'L' record with the
             //new day.  Probably no analysis software will read it, but it's there for
             //the record and can be spotted quite easily manually....
-            if (lastDay > 0 && recordDt.getDayOfYear() != lastDay ) {
-                //make a time +250ms so it definitely gets included in the resulting data map
-                LocalDateTime dtX = recordDt.plusMillis(250);
+            if (lastDay >= 0 && recordDt.getDayOfYear() != lastDay ) {
+                //make a time -250ms so it definitely gets included in the resulting data map
+                //at the row immediately before the day change
+                LocalDateTime dtX = recordDt.minusMillis(250);
                 igcLine = "LCMASDTETRACKDATE:" + nmeaDateFormat.print(dtX);
                 //write it to the track
                 track.put(dtX, new GpsPoint(igcLine,"L",fixValidity,dLat,dLon,dAlt,0.0));
@@ -255,7 +257,7 @@ public class ParseNMEA {
             if (wayPointDetected) {
                 // E "Event" line
                 igcLine = "E" +
-                    nmeaTimeFormat.print(recordDt) +
+                    nmeaTimeFormat.print(recordDt.plusMillis(500)) +
                     "PEV" +
                     pevDescr;
                     track.put(recordDt, new GpsPoint(igcLine,"E",fixValidity,dLat,dLon,dAlt,0.0));
@@ -306,7 +308,7 @@ public class ParseNMEA {
                     Boolean writeLine = true;
                     if (p.fixValidity.equals("X")) {
                         writeLine = App.includeInvalidFixesInIgcFile;
-                        System.out.println(writeLine + " " + p.getIgcString());
+                        //System.out.println(writeLine + " " + p.getIgcString());
                     }
                     if (writeLine)  {
 
@@ -470,6 +472,44 @@ public class ParseNMEA {
                 p.setDist(distanceTo(p, lastPoint));
                 entry.setValue(p);
                 lastPoint = p;
+            }
+        }
+     }
+
+          /*
+      * once the track is made then we can iterate with this over all entries in it
+      * (because they are definitely now in order) PEV's were set in the map at
+      * time - 500ms and there MUST be a B record with that time + 500ms (ie on the whole second).
+      * Probably there is one, but if there isn't, then we insert one copied from the
+      * the previous B record
+     */
+
+     private void setValidEvents () {
+         GpsPoint lastPoint = (GpsPoint) track.firstEntry().getValue();
+         LocalDateTime bKey;
+         // For both the keys and values of a map
+        for (Iterator it=track.entrySet().iterator(); it.hasNext(); ) {
+            Map.Entry entry = (Map.Entry)it.next();
+            GpsPoint p = (GpsPoint) entry.getValue();
+            if (p.getPointType().equals("B")) {
+                lastPoint = p;
+            }
+            if (p.getPointType().equals("E")) {
+                //ignore anything but E events (eg B fixes)
+                bKey = ((LocalDateTime) entry.getKey()).plusMillis(500);
+                if (!track.containsKey(bKey)) {
+                    //then we need to put one in
+                    //System.out.println("need put in key at " + bKey.toString() + " with value " + lastPoint.toString());
+                    //use lastPoint, but change the time in the igcString
+                    String oldIgcString = lastPoint.getIgcString();
+                    String newIgcLine = "B" +
+                        nmeaTimeFormat.print(bKey) +
+                        oldIgcString.substring(7, oldIgcString.length());
+                    lastPoint.setIgcString(newIgcLine);
+                    //put it in the map
+                    track.put(bKey,lastPoint);
+                    //System.out.println("new igc line is: " + newIgcLine);
+                }
             }
         }
      }
