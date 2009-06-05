@@ -302,7 +302,8 @@ public class ParseNMEA {
                 //loop from the bottom of the track to get the last valid key
                 //so we can eventually put in a disconnect event
                 LocalDateTime lastValidKey = (LocalDateTime) track.lastKey();
-                while (lastValidKey != track.firstKey()) {
+                
+                while (!lastValidKey.equals(track.firstKey())) {
                     GpsPoint p = (GpsPoint) track.get(lastValidKey);
                     if (App.includeInvalidFixesInIgcFile) {
                         if (p.pointType.equals("B")) break; //this is a good one
