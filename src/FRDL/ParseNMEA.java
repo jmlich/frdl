@@ -87,6 +87,7 @@ public class ParseNMEA {
         if (track.size() == 0) {
             track = null;
         } else {
+            //TODO put the two methods below into one so there's only one iteration
             setValidEvents();
             setPointDistances();
             //I don't think this is a deep copy, but it seems to do the trick
@@ -296,7 +297,7 @@ public class ParseNMEA {
             out.write(makeIgcHeader());
 
             if (track != null) {
-                LocalDateTime lastKey = (LocalDateTime) track.firstKey();
+                LocalDateTime mostRecentValidKey = null;
                     // For both the keys and values of a map
                 for (Iterator it=track.entrySet().iterator(); it.hasNext(); ) {
                     Map.Entry entry = (Map.Entry)it.next();
@@ -311,10 +312,15 @@ public class ParseNMEA {
                         //System.out.println(writeLine + " " + p.getIgcString());
                     }
                     if (writeLine)  {
-
+                        if (mostRecentValidKey == null && p.pointType.equals("B")) {
+                            //this is the very first B record so write a matching connect event
+                            out.write("E" + nmeaTimeFormat.print((LocalDateTime) entry.getKey()) + "GCN" + crlf);
+                        }
                         out.write(p.getIgcString() + crlf);
+
+                        mostRecentValidKey = (LocalDateTime) entry.getKey();
                     }
-                    lastKey = (LocalDateTime) entry.getKey();
+                    
                     //out.write(((GpsPoint) entry.getValue()).getIgcString() + crlf); //\r\n = CFLF
                 }
             } else {
