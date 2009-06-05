@@ -10,7 +10,9 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.regex.Pattern;
+import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
+import org.joda.time.Duration;
 import org.joda.time.LocalDate;
 import org.joda.time.LocalDateTime;
 import org.joda.time.LocalTime;
@@ -46,6 +48,7 @@ public class ParseNMEA {
     private int utcOffsetM = 0;
     private GpsLogger logger = null;
     private TreeMap track;
+    private final int GAP_BETWEEN_TRACKS = 30;  //seconds before a disconnect / connect event is written
 
     //private static final int secondsBeforeDisconnect = 30;
     //
@@ -310,10 +313,13 @@ public class ParseNMEA {
                     } else {
                         if (!p.fixValidity.equals("X") && p.pointType.equals("B")) break; //this is a good one
                     }
+                    //cunning way of getting the next one from the bottom of the treeMap
                     lastValidKey = (LocalDateTime) track.headMap(lastValidKey).lastKey();
                 }
                 //System.out.println("lastValidKey: " + lastValidKey.toString());
-           
+                
+                Boolean writeConnect = false;
+                
                     // For both the keys and values of a map
                 for (Iterator it=track.entrySet().iterator(); it.hasNext(); ) {
                     Map.Entry entry = (Map.Entry)it.next();
@@ -328,21 +334,35 @@ public class ParseNMEA {
                         //System.out.println(writeLine + " " + p.getIgcString());
                     }
                     if (writeLine)  {
-                        if (mostRecentValidKey == null && p.pointType.equals("B")) {
-                            //this is the very first B record so write a matching connect event
-                            out.write("E" + nmeaTimeFormat.print((LocalDateTime) entry.getKey()) + "GCN" + crlf);
+                        if (p.pointType.equals("B")) {
+                            if (mostRecentValidKey == null) {
+                                //this is the very first B record so write a matching connect event
+                                writeConnect = true;
+                            }
+                            //various connect / disconnect event possibilities
+                            //all mutually exclusive
+                            if (writeConnect) {
+                                out.write("E" + nmeaTimeFormat.print((LocalDateTime) entry.getKey()) + "GCN" + crlf);
+                                writeConnect = false;
+                            } else if (entry.getKey().equals(lastValidKey)) {
+                                //this is the very last B record so write a matching disconnect event
+                                out.write("E" + nmeaTimeFormat.print((LocalDateTime) entry.getKey()) + "GDC" + crlf);
+                            } else if (track.higherEntry(entry.getKey()) != null) {
+                                //check for gap between track points and write
+                                //disconnect / connect events if gap is > GAP_BETWEEN_TRACKS
+                                DateTime nextKey = ((LocalDateTime) track.higherEntry(entry.getKey()).getKey()).toDateTime(DateTimeZone.UTC);
+                                DateTime thisKey = ((LocalDateTime) entry.getKey()).toDateTime(DateTimeZone.UTC);
+                                int elapsed = (int) new Duration(thisKey,nextKey).getStandardSeconds(); 
+                                if (elapsed >= GAP_BETWEEN_TRACKS) {
+                                    out.write("E" + nmeaTimeFormat.print((LocalDateTime) entry.getKey()) + "GDC" + crlf);
+                                    writeConnect = true; //so it will write a connect the next time round
+                                }
+                            }
+                            mostRecentValidKey = (LocalDateTime) entry.getKey();
                         }
-                        if (entry.getKey().equals(lastValidKey)) {
-                            //this is the very last B record so write a matching disconnect event
-                            out.write("E" + nmeaTimeFormat.print((LocalDateTime) entry.getKey()) + "GDC" + crlf);
-                        }
-
+                        //now the line itself
                         out.write(p.getIgcString() + crlf);
-
-                        mostRecentValidKey = (LocalDateTime) entry.getKey();
                     }
-                    
-                    //out.write(((GpsPoint) entry.getValue()).getIgcString() + crlf); //\r\n = CFLF
                 }
             } else {
                 App.mapCaption = App.getResourceMap().getString("noTrackFoundMsg") +
