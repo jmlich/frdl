@@ -298,6 +298,21 @@ public class ParseNMEA {
 
             if (track != null) {
                 LocalDateTime mostRecentValidKey = null;
+                
+                //loop from the bottom of the track to get the last valid key
+                //so we can eventually put in a disconnect event
+                LocalDateTime lastValidKey = (LocalDateTime) track.lastKey();
+                while (lastValidKey != track.firstKey()) {
+                    GpsPoint p = (GpsPoint) track.get(lastValidKey);
+                    if (App.includeInvalidFixesInIgcFile) {
+                        if (p.pointType.equals("B")) break; //this is a good one
+                    } else {
+                        if (!p.fixValidity.equals("X") && p.pointType.equals("B")) break; //this is a good one
+                    }
+                    lastValidKey = (LocalDateTime) track.headMap(lastValidKey).lastKey();
+                }
+                //System.out.println("lastValidKey: " + lastValidKey.toString());
+           
                     // For both the keys and values of a map
                 for (Iterator it=track.entrySet().iterator(); it.hasNext(); ) {
                     Map.Entry entry = (Map.Entry)it.next();
@@ -316,6 +331,11 @@ public class ParseNMEA {
                             //this is the very first B record so write a matching connect event
                             out.write("E" + nmeaTimeFormat.print((LocalDateTime) entry.getKey()) + "GCN" + crlf);
                         }
+                        if (entry.getKey().equals(lastValidKey)) {
+                            //this is the very last B record so write a matching disconnect event
+                            out.write("E" + nmeaTimeFormat.print((LocalDateTime) entry.getKey()) + "GDC" + crlf);
+                        }
+
                         out.write(p.getIgcString() + crlf);
 
                         mostRecentValidKey = (LocalDateTime) entry.getKey();
