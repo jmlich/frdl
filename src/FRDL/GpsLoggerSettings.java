@@ -93,7 +93,7 @@ public class GpsLoggerSettings extends javax.swing.JDialog {
     private void saveSettings() {
         if (newLoggerPath != null) {
             //this is a new logger
-            App.logr.loggerFile = new File(newLoggerPath + App.getResourceMap().getString("loggerConfigFileName"));
+            App.logr.loggerFile = new File(newLoggerPath +"/" + App.getResourceMap().getString("loggerConfigFileName"));
             App.logr.loggerFileContent = new PropertiesIO(App.logr.loggerFile.getAbsolutePath());
             MainView.addLog("Created new " + App.getResourceMap().getString("loggerConfigFileName"));
             DateTime now = new DateTime().withZone(DateTimeZone.UTC);

@@ -788,7 +788,7 @@ public class MainView extends FrameView {
 
         @Override  protected driveData doInBackground() {
             //this is happening quietly in a separate thread
-            File[] currentRoots = File.listRoots();
+            File[] currentRoots = LinuxMounts.listRootsAll(); //File.listRoots();
             //loops continuously looking for any change in
             //the drive roots.  If there is a change, then it
             //breaks out.
@@ -796,11 +796,12 @@ public class MainView extends FrameView {
                 try {
                     Thread.sleep(1000);
                     //System.out.println("orig:" + App.startupRoots.length + " now:" + f.length);
-                    currentRoots = File.listRoots();
+                    currentRoots = LinuxMounts.listRootsAll();
                 } catch (InterruptedException ex) {
                     return null;
                 } 
             }
+
 
             String msg = "No drive change";  //if this shows up in the log there was some sort of error...
             String path = null;
@@ -852,7 +853,8 @@ public class MainView extends FrameView {
          */
         @Override public void done() {
             driveData scanResult = null;
-            App.startupRoots = File.listRoots();
+            App.startupRoots = LinuxMounts.listRootsAll(); //File.listRoots();
+
 
             try {
                 scanResult = get();

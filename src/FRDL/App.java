@@ -28,7 +28,8 @@ public class App extends SingleFrameApplication {
     private static final String sessionPropertiesFileName = System.getProperty("user.home") +
                     File.separatorChar +
                     "FRDL_session_Properties";
-    public static File[] startupRoots = File.listRoots();
+    public static File[] startupRoots = LinuxMounts.listRootsAll(); //File.listRoots();
+
     
     public static String pathToAllFiles = null;
     public static Championship thisChampionship = null;

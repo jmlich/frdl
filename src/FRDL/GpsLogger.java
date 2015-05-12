@@ -41,8 +41,8 @@ public class GpsLogger {
             File f = fRoot;
             String loggerConfigFileName = App.getResourceMap().getString("loggerConfigFileName");
             //logger.frdl MUST be in the root
-            if (Utilities.fileExists(path + loggerConfigFileName)) {
-                this.loggerFile = new File(path + loggerConfigFileName);
+            if (Utilities.fileExists(path + "/" +loggerConfigFileName)) {
+                this.loggerFile = new File(path + "/" +loggerConfigFileName);
                 this.loggerFileContent = new PropertiesIO(loggerFile.getAbsolutePath());
             }
             //puts every file in allLogFiles except the logger config file
@@ -314,7 +314,7 @@ public class GpsLogger {
             DateTimeFormatter fmt = DateTimeFormat.forPattern("yyyyMMddHHmmss");
             
             //delete any AUTORUN.INF file or dir
-            String autorunName = path + "AUTORUN.INF";
+            String autorunName = path + "/AUTORUN.INF";
             //delete directory first as this is the most likely
             if (Utilities.directoryExists(autorunName)) {
                 //delete it
@@ -363,7 +363,7 @@ public class GpsLogger {
             //writes the file
             if (configFileName.trim().length() > 0) {
                 try {
-                    BufferedWriter out = new BufferedWriter(new FileWriter(path + configFileName));
+                    BufferedWriter out = new BufferedWriter(new FileWriter(path + "/" + configFileName));
                     out.write(configFileContent);
                     out.close();
                     MainView.addLog("Logger configuration file " + configFileName + " written to logger.");
@@ -438,7 +438,7 @@ public class GpsLogger {
                         loggerFileContent.readValue("pilot.loggerPriority"),
                         loggerFileContent.readValue("pilot.name"));
 
-            loggerBackupDir = App.pathToAllFiles + File.separatorChar + name;
+            loggerBackupDir = App.pathToAllFiles + "/" + File.separatorChar + name;
             //System.out.println("backup path:" + loggerBackupDir);
 
             Boolean success = false;
