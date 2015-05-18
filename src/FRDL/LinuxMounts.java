@@ -30,7 +30,7 @@ public class LinuxMounts {
 
             // the line will be formatted as "... on <filesystem> (...)"; get the substring we need
                 int indexStart = line.indexOf ( " on /" )+4;
-                int indexEnd = line.indexOf ( " ", indexStart);
+                int indexEnd = line.indexOf ( " type ", indexStart);
                 String m_path = line.substring ( indexStart, indexEnd);
 //                System.out.println( "debug: " + m_path );
                 if (m_path.length() > 0) {
