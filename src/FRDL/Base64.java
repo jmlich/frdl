@@ -365,6 +365,7 @@ public class Base64
      * Encodes or decodes two files from the command line;
      * <strong>feel free to delete this method (in fact you probably should)
      * if you're embedding this code into a larger program.</strong>
+     * @param args command line arguments
      */
     public final static void main( String[] args )
     {
@@ -600,6 +601,7 @@ public class Base64
      * Does not GZip-compress data.
      *
      * @param source The data to convert
+     * @return encoded bytes
      * @since 1.4
      */
     public static String encodeBytes( byte[] source )
@@ -628,6 +630,7 @@ public class Base64
      * @see Base64#GZIP
      * @see Base64#DONT_BREAK_LINES
      * @since 2.0
+     * @return encoded bytes
      */
     public static String encodeBytes( byte[] source, int options )
     {   
@@ -642,6 +645,7 @@ public class Base64
      * @param source The data to convert
      * @param off Offset in array where conversion should begin
      * @param len Length of data to convert
+     * @return encoded bytes
      * @since 1.4
      */
     public static String encodeBytes( byte[] source, int off, int len )
@@ -668,11 +672,11 @@ public class Base64
      * @param source The data to convert
      * @param off Offset in array where conversion should begin
      * @param len Length of data to convert
-     * @param options Specified options
-	 * @param options alphabet type is pulled from this (standard, url-safe, ordered)
+     * @param options Specified options - alphabet type is pulled from this (standard, url-safe, ordered)
      * @see Base64#GZIP
      * @see Base64#DONT_BREAK_LINES
      * @since 2.0
+     * @return the encoded bytes
      */
     public static String encodeBytes( byte[] source, int off, int len, int options )
     {
@@ -875,6 +879,7 @@ public class Base64
      * @param source The Base64 encoded data
      * @param off    The offset of where to begin decoding
      * @param len    The length of characters to decode
+     * @param options are composed of 0 | URL_SAFE | ORDERED
      * @return decoded data
      * @since 1.3
      */
@@ -1677,6 +1682,7 @@ public class Base64
         /**
          * Method added by PHIL. [Thanks, PHIL. -Rob]
          * This pads the buffer without closing the stream.
+         * @throws java.io.IOException error when is not possible to write to file
          */
         public void flushBase64() throws java.io.IOException 
         {
@@ -1722,6 +1728,7 @@ public class Base64
          * base640-encoded data in a stream.
          *
          * @since 1.5.1
+         * @throws java.io.IOException error when is not possible to write to file
          */
         public void suspendEncoding() throws java.io.IOException 
         {

@@ -37,7 +37,7 @@ public class AppStatus {
      * = If a hash of the ChampionshipPassword matches the Password, then user has full
      * write privileges on logger.  (this is the typical organizer situation).<br>
      * = If a hash of the ChampionshipPassword does NOT match the Password then FRDL uses the
-     * championship & task settings on the logger and sets itself to 'download' mode where
+     * championship &amp; task settings on the logger and sets itself to 'download' mode where
      * most settings are read-only.  (this is thge typical team leader or pilot situation
      * and means he will be using the exact same download settings as the organizer used.)
       * <p>

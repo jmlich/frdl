@@ -52,7 +52,7 @@ public class GpsPoint {
 
     /**
      * Set igcString
-     * @param String x
+     * @param x Igc String
      */
     public void setIgcString(String x) {
         igcString = x;
@@ -69,7 +69,7 @@ public class GpsPoint {
 
     /**
      * Set Latitude
-     * @param double x
+     * @param x Latitude
      */
     public void setLat(double x) {
         lat = x;
@@ -85,7 +85,7 @@ public class GpsPoint {
 
     /**
      * Set longitude
-     * @param double x
+     * @param x Longitude
      */
     public void setLon(double x) {
         lon = x;
@@ -101,7 +101,7 @@ public class GpsPoint {
 
     /**
      * Set altitude
-     * @param double x
+     * @param x altitude
      */
     public void setAlt(double x) {
         alt = x;

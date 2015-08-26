@@ -589,8 +589,8 @@ public class ParseNMEA {
 
     /**
     * Get the distance between 2 points
-    * @param GpsPoint pt1 a point
-    * @param GpsPoint pt2 another point
+    * @param pt1 a point
+    * @param pt2 another point
     * @return Double value of the distance in metres
     * Uses a simple spherical model of the earth, NOT WGS84 so is
     * only approximate, but adequate for purpose

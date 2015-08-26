@@ -83,6 +83,7 @@ public class CimaApprovedLoggers {
      /**
      * Read all values in properties file which match a subKey value
      * into ArrayList object
+     * @param subKey value to match
      * @return ArrayList object containing these values in properties file
      */
     public ArrayList readAllValues(String subKey){
@@ -111,6 +112,7 @@ public class CimaApprovedLoggers {
      * this will return the last 2 parts, the equivalent
      * to removing the first part.  It is used when searching
      * for subkeys
+     * @param in something
     */
 
      private String makeBaseKey (String in) {

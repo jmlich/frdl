@@ -49,6 +49,9 @@ public class App extends SingleFrameApplication {
     public static Boolean includeInvalidFixesInIgcFile = false;
 
         @Override
+    /*
+    @param args command line arguments
+    */
     protected void initialize(String[] args) {
 
         // create and load default properties
@@ -97,6 +100,7 @@ public class App extends SingleFrameApplication {
 
     /**
      * Main method launching the application.
+     * @param args command line arguments (they are passed to launch method)
      */
     public static void main(String[] args) {
         DateTime dt = new DateTime();

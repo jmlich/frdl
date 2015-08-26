@@ -30,11 +30,19 @@ public class PropertiesIO {
         this.loadProperties();
     }
 
+    /**
+     * @param file to load
+     */
+
     public PropertiesIO(URL file){
         this.propertiesFile = file.toExternalForm();
         p = new Properties();
         this.loadProperties();
     }
+
+    /**
+     * @param p other instance to copy
+     */
 
     public PropertiesIO(Properties p){
         this.p = p;
@@ -42,6 +50,10 @@ public class PropertiesIO {
         //p = new Properties();
         //this.loadProperties();
     }
+
+    /**
+     * @param b resource; but this does nothing
+     */
 
     public PropertiesIO(ResourceBundle b) {
         //this.p = b.
@@ -53,6 +65,7 @@ public class PropertiesIO {
      * are NOT written out to the properties file.
      * they are only for reading if not present in the properties table.
      * @param file to load
+     * @param defaultsFile to load default values
      */
     public PropertiesIO(String file, String defaultsFile){
         this.propertiesFile = file;
@@ -104,6 +117,7 @@ public class PropertiesIO {
         /**
      * Read all values in properties file which match a subKey value
      * into ArrayList object
+     * @param subKey the matched value
      * @return ArrayList object containing these values in properties file
      */
     public ArrayList readAllValues(String subKey){
@@ -157,8 +171,8 @@ public class PropertiesIO {
 
     /**
      * Write key/value pair into properties file
-     * @param key
-     * @param value
+     * @param key represenst name of property
+     * @param value represents its content
      */
     public void writeProperty(String key, String value){
         p.setProperty(key, value);
