@@ -44,6 +44,7 @@ ant
 %install
 mkdir -p %{buildroot}%{_javadir}
 mkdir -p %{buildroot}%{_javadir}/lib
+mkdir -p %{buildroot}%{_datadir}/icons/hicolor/32x32/apps/
 install -p -m 644 dist/FRDL.jar %{buildroot}%{_javadir}/FRDL.jar
 
 for lib in $(find dist/lib -type f); do 
@@ -53,6 +54,7 @@ for lib in $(find dist/lib -type f); do
 done
 
 desktop-file-install --dir=${RPM_BUILD_ROOT}%{_datadir}/applications %{name}.desktop
+install -p -m 644 jet32.png ${RPM_BUILD_ROOT}%{_datadir}/icons/hicolor/32x32/apps/FRDL.png
 
 # 1    main class
 # 2    flags
@@ -67,6 +69,7 @@ desktop-file-install --dir=${RPM_BUILD_ROOT}%{_datadir}/applications %{name}.des
 %{_bindir}/FRDL
 %{_javadir}/FRDL.jar
 %{_datadir}/applications/%{name}.desktop
+%{_datadir}/icons/hicolor/32x32/apps/FRDL.png
 
 
 %changelog
