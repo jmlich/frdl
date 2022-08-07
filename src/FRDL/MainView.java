@@ -359,6 +359,7 @@ public class MainView extends FrameView {
         quickOpenMenuItem.setHideActionText(true);
         quickOpenMenuItem.setName("quickOpenMenuItem"); // NOI18N
         quickOpenMenuItem.addActionListener(formListener);
+        quickOpenMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_R, java.awt.event.InputEvent.CTRL_MASK));
         fileMenu.add(quickOpenMenuItem);
 
         quickOpenSeparator.setName("quickOpenSeparator"); // NOI18N
@@ -367,6 +368,7 @@ public class MainView extends FrameView {
         openChampMenuItem.setText(resourceMap.getString("openChampMenuItem.text")); // NOI18N
         openChampMenuItem.setName("openChampMenuItem"); // NOI18N
         openChampMenuItem.addActionListener(formListener);
+        openChampMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_O, java.awt.event.InputEvent.CTRL_MASK));
         fileMenu.add(openChampMenuItem);
 
         newChampMenuItem.setText(resourceMap.getString("newChampMenuItem.text")); // NOI18N
