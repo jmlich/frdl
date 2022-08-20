@@ -35,7 +35,7 @@ in use in a championship file (*.frdc). Once a championship file is open, FRDL i
 %global debug_package %{nil}
 
 %prep
-%setup -q -n %{name}-%{version}
+%setup -q -n %{name}-master
 
 
 %build
