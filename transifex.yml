@@ -4,6 +4,46 @@ git:
       # all supported i18n types: https://docs.transifex.com/formats
       file_format: UNICODEPROPERTIES
       source_language: en
-      source_file: ./src/FRDL/resources/MainView.properties
+      source_file: ./src/FRDL/resources/ChampionshipSettings.properties
       # path expression to translation files, must contain <lang> placeholder
+      translation_files_expression: './src/FRDL/resources/ChampionshipSettings_<lang>.properties'
+    - filter_type: file
+      file_format: UNICODEPROPERTIES
+      source_language: en
+      source_file: ./src/FRDL/resources/App.properties
+      translation_files_expression: './src/FRDL/resources/App_<lang>.properties'
+    - filter_type: file
+      file_format: UNICODEPROPERTIES
+      source_language: en
+      source_file: ./src/FRDL/resources/GpsLoggerSettings.properties
+      translation_files_expression: './src/FRDL/resources/GpsLoggerSettings_<lang>.properties'
+    - filter_type: file
+      file_format: UNICODEPROPERTIES
+      source_language: en
+      source_file: ./src/FRDL/resources/MainView.properties
       translation_files_expression: './src/FRDL/resources/MainView_<lang>.properties'
+    - filter_type: file
+      file_format: UNICODEPROPERTIES
+      source_language: en
+      source_file: ./src/FRDL/resources/Dialogs.properties
+      translation_files_expression: './src/FRDL/resources/Dialogs_<lang>.properties'
+    - filter_type: file
+      file_format: UNICODEPROPERTIES
+      source_language: en
+      source_file: ./src/FRDL/resources/CimaApprovedLoggers.properties
+      translation_files_expression: './src/FRDL/resources/CimaApprovedLoggers_<lang>.properties'
+    - filter_type: file
+      file_format: UNICODEPROPERTIES
+      source_language: en
+      source_file: ./src/FRDL/resources/AboutBox.properties
+      translation_files_expression: './src/FRDL/resources/AboutBox_<lang>.properties'
+    - filter_type: file
+      file_format: UNICODEPROPERTIES
+      source_language: en
+      source_file: ./src/FRDL/resources/GpsLoggersInfo.properties
+      translation_files_expression: './src/FRDL/resources/GpsLoggersInfo_<lang>.properties'
+    - filter_type: file
+      file_format: UNICODEPROPERTIES
+      source_language: en
+      source_file: ./src/FRDL/resources/TaskSettings.properties
+      translation_files_expression: './src/FRDL/resources/TaskSettings_<lang>.properties'
